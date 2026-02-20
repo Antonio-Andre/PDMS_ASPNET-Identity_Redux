@@ -1,0 +1,271 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Migrations\\20260220174448_RenameTaxIdAndDepartment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20260220174448_RenameTaxIdAndDepartment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Migrations\\20260220174226_RenameTaxIdAndDepartment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20260220174226_RenameTaxIdAndDepartment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|d:\\projects\\gdpa - teste\\test identity from scratch\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|solutionrelative:models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|d:\\projects\\gdpa - teste\\test identity from scratch\\features\\registeruser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|solutionrelative:features\\registeruser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|d:\\projects\\gdpa - teste\\test identity from scratch\\requests.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|solutionrelative:requests.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/tester_DB_XPTO/True/SqlTable/identity.AspNetUsers.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|d:\\projects\\gdpa - teste\\test identity from scratch\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|d:\\projects\\gdpa - teste\\test identity from scratch\\models\\stock.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|solutionrelative:models\\stock.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|d:\\projects\\gdpa - teste\\test identity from scratch\\models\\domainenums.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|solutionrelative:models\\domainenums.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|d:\\projects\\gdpa - teste\\test identity from scratch\\models\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|solutionrelative:models\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|d:\\projects\\gdpa - teste\\test identity from scratch\\data\\dbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|solutionrelative:data\\dbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|d:\\projects\\gdpa - teste\\test identity from scratch\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|d:\\projects\\gdpa - teste\\test identity from scratch\\models\\holdingcompany.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|solutionrelative:models\\holdingcompany.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|d:\\projects\\gdpa - teste\\test identity from scratch\\models\\van.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|solutionrelative:models\\van.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|d:\\projects\\gdpa - teste\\test identity from scratch\\models\\delivery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7934E9B5-5C06-4661-BE5F-882D0F11A63F}|test Identity from Scratch.csproj|solutionrelative:models\\delivery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "20260220174448_RenameTaxIdAndDepartment.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Migrations\\20260220174448_RenameTaxIdAndDepartment.cs",
+              "RelativeDocumentMoniker": "Migrations\\20260220174448_RenameTaxIdAndDepartment.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Migrations\\20260220174448_RenameTaxIdAndDepartment.cs",
+              "RelativeToolTip": "Migrations\\20260220174448_RenameTaxIdAndDepartment.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T17:44:49.102Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "20260220174226_RenameTaxIdAndDepartment.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Migrations\\20260220174226_RenameTaxIdAndDepartment.cs",
+              "RelativeDocumentMoniker": "Migrations\\20260220174226_RenameTaxIdAndDepartment.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Migrations\\20260220174226_RenameTaxIdAndDepartment.cs",
+              "RelativeToolTip": "Migrations\\20260220174226_RenameTaxIdAndDepartment.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T17:42:26.4Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "identity.AspNetUsers [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/tester_DB_XPTO/True/SqlTable/identity.AspNetUsers.sql",
+              "ToolTip": "identity.AspNetUsers [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2026-02-20T17:25:04.385Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Stock.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\Stock.cs",
+              "RelativeDocumentMoniker": "Models\\Stock.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\Stock.cs",
+              "RelativeToolTip": "Models\\Stock.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T17:15:29.418Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Company.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\Company.cs",
+              "RelativeDocumentMoniker": "Models\\Company.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\Company.cs",
+              "RelativeToolTip": "Models\\Company.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAgwB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T16:58:52.073Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "HoldingCompany.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\HoldingCompany.cs",
+              "RelativeDocumentMoniker": "Models\\HoldingCompany.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\HoldingCompany.cs",
+              "RelativeToolTip": "Models\\HoldingCompany.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T16:56:16.75Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Delivery.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\Delivery.cs",
+              "RelativeDocumentMoniker": "Models\\Delivery.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\Delivery.cs",
+              "RelativeToolTip": "Models\\Delivery.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAA5wBgAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T16:31:12.149Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Van.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\Van.cs",
+              "RelativeDocumentMoniker": "Models\\Van.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\Van.cs",
+              "RelativeToolTip": "Models\\Van.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAwwBcAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T16:30:10.543Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RegisterUser.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Features\\RegisterUser.cs",
+              "RelativeDocumentMoniker": "Features\\RegisterUser.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Features\\RegisterUser.cs",
+              "RelativeToolTip": "Features\\RegisterUser.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAuwCUAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-17T20:26:31.628Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Employee.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\Employee.cs",
+              "RelativeDocumentMoniker": "Models\\Employee.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\Employee.cs",
+              "RelativeToolTip": "Models\\Employee.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAQwBQAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-17T20:04:58.159Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAvwDkAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-13T20:30:56.667Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DbInitializer.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Data\\DbInitializer.cs",
+              "RelativeDocumentMoniker": "Data\\DbInitializer.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Data\\DbInitializer.cs",
+              "RelativeToolTip": "Data\\DbInitializer.cs",
+              "ViewState": "AgIAAEcAAAAAAAAAAAAwwE4AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:31:29.59Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Data\\ApplicationDbContext.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAQwBMAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:29:55.102Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "requests.http",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\requests.http",
+              "RelativeDocumentMoniker": "requests.http",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\requests.http",
+              "RelativeToolTip": "requests.http",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2026-02-13T21:07:50.403Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "DomainEnums.cs",
+              "DocumentMoniker": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\DomainEnums.cs",
+              "RelativeDocumentMoniker": "Models\\DomainEnums.cs",
+              "ToolTip": "D:\\Projects\\GDPA - teste\\test Identity from Scratch\\Models\\DomainEnums.cs",
+              "RelativeToolTip": "Models\\DomainEnums.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-13T19:41:53.455Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
