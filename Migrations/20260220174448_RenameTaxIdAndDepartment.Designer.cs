@@ -211,7 +211,7 @@ namespace test_Identity_from_Scratch.Migrations
                     b.ToTable("Companies", "identity");
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.Delivery", b =>
+            modelBuilder.Entity("test_Identity_from_Scratch.Models.Shipment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -219,7 +219,7 @@ namespace test_Identity_from_Scratch.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("DataEntregaOuDevolucao")
+                    b.Property<DateTime?>("DateOfDeliveryOrReturn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Item")
@@ -227,7 +227,7 @@ namespace test_Identity_from_Scratch.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("Observacoes")
+                    b.Property<string>("Observations")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -242,7 +242,7 @@ namespace test_Identity_from_Scratch.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("movement")
+                    b.Property<int>("Movement")
                         .HasColumnType("int");
 
                     b.Property<int>("status")

@@ -2,7 +2,7 @@
 
 namespace test_Identity_from_Scratch.Models
 {
-    public class Delivery
+    public class Shipment
     {
         public int Id { get; set; }
 
@@ -15,16 +15,16 @@ namespace test_Identity_from_Scratch.Models
         public decimal WeightKg { get; set; }
 
         [Required]
-        public TransferenceDirection movement { get; set; }
+        public TransferenceDirection Movement { get; set; }
 
         [Required]
         [StringLength(200)]
         public string Item { get; set; } = string.Empty;
         public DeliveryStatus status { get; set; } = DeliveryStatus.Registered;
 
-        public DateTime? DataEntregaOuDevolucao { get; set; }
+        public DateTime? DateOfDeliveryOrReturn { get; set; }
 
         // Como sugeriste, uma string para notas livres
-        public string Observacoes { get; set; } = string.Empty;
+        public string Observations { get; set; } = string.Empty;
     }
 }

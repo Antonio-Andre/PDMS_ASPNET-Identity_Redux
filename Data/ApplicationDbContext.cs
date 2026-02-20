@@ -14,7 +14,7 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
 
     public DbSet<Stock> Stocks { get; set; }
     public DbSet<Van> Vans { get; set; }
-    public DbSet<Delivery> Deliveries { get; set; }
+    public DbSet<Shipment> Deliveries { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Company> Companies { get; set; }
     public DbSet<HoldingCompany> HoldingCompanies { get; set; }
@@ -31,7 +31,7 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
         builder.Entity<Company>()
             .HasIndex(e => e.taxId).IsUnique();
 
-        builder.Entity<Delivery>()
+        builder.Entity<Shipment>()
             .HasIndex(e => e.RegisterNumber).IsUnique();
 
         builder.Entity<Employee>(entity =>

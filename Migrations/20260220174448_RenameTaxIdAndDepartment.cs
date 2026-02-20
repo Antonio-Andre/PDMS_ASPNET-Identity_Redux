@@ -96,11 +96,11 @@ namespace test_Identity_from_Scratch.Migrations
                     RegisterNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     RegisterData = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WeightKg = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    movement = table.Column<int>(type: "int", nullable: false),
+                    Movement = table.Column<int>(type: "int", nullable: false),
                     Item = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     status = table.Column<int>(type: "int", nullable: false),
-                    DataEntregaOuDevolucao = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Observacoes = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    DateOfDeliveryOrReturn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Observations = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
