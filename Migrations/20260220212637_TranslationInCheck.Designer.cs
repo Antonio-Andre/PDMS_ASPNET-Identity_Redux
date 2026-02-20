@@ -12,8 +12,8 @@ using test_Identity_from_Scratch.Data;
 namespace test_Identity_from_Scratch.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260220211518_DeliveryUpdatedToShipment")]
-    partial class DeliveryUpdatedToShipment
+    [Migration("20260220212637_TranslationInCheck")]
+    partial class TranslationInCheck
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

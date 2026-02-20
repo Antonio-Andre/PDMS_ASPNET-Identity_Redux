@@ -5,7 +5,7 @@
 namespace test_Identity_from_Scratch.Migrations
 {
     /// <inheritdoc />
-    public partial class DeliveryUpdatedToShipment : Migration
+    public partial class TranslationInCheck : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
