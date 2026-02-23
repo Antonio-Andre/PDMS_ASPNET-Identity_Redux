@@ -1,10 +1,10 @@
-﻿using test_Identity_from_Scratch.Models;
+﻿using PDMS.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 
 
-namespace test_Identity_from_Scratch.Data
+namespace PDMS.Data
 {
     public static class DbInitializer
     {

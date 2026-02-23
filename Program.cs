@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using System.Security.Claims;
-using test_Identity_from_Scratch.Data;
-using test_Identity_from_Scratch.Features;
-using test_Identity_from_Scratch.Models;
+using PDMS.Data;
+using PDMS.Endpoints.EmployeeEndpoints;
+using PDMS.Models;
+using PDMS.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,7 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:3000") // Onde o teu React vai morar
               .AllowAnyHeader()                     
               .AllowAnyMethod()                    
-              .AllowCredentials();                  // OBRIGATÓRIO para os Cookies funcionarem!
+              .AllowCredentials();                  
     });
 });
 
@@ -37,6 +38,8 @@ builder.Services.AddIdentityCore<Employee>()
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); //need to re-check this later
+
+builder.Services.AddScoped<EmployeeService>();
 
 var app = builder.Build();
 
@@ -72,7 +75,8 @@ app.UseCors("ReactPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
-RegisterUser.MapEndpoint(app);
+app.RegisterEmployeeEndpoints();
+
 app.MapIdentityApi<Employee>();
 
 app.Run();

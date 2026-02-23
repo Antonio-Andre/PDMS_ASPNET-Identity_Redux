@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>test_Identity_from_Scratch</RootNamespace>
+    <RootNamespace>PDMS</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +24,6 @@
     <Folder Include="Endpoints\ShipmentEndpoints\" />
     <Folder Include="Endpoints\StockEndpoints\" />
     <Folder Include="Endpoints\VanEndpoints\" />
-    <Folder Include="Endpoints\EmployeeEndpoints\" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace test_Identity_from_Scratch.Models
+namespace PDMS.Models
 {
     // Herdando de IdentityUser<int> para usar IDs inteiros
     public class Employee : IdentityUser<int>
@@ -30,4 +30,16 @@ namespace test_Identity_from_Scratch.Models
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public EmployeeStatus Status { get; set; } = EmployeeStatus.Active;
     }
+
+    public record UserRequest(
+        string Email,
+        string Password,
+        string Initials,
+        string Name,
+        string TaxId,
+        string Department,
+        string PhoneNumber,
+        bool EnableNotifications = false
+    );
+
 }

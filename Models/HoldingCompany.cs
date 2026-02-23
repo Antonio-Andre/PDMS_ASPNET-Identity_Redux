@@ -1,5 +1,5 @@
 ﻿
-namespace test_Identity_from_Scratch.Models
+namespace PDMS.Models
 {
     public class HoldingCompany
     {

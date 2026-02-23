@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
-using test_Identity_from_Scratch.Models;
+using PDMS.Models;
 
-namespace test_Identity_from_Scratch.Data;
+namespace PDMS.Data;
 
 
 public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int>, int>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace test_Identity_from_Scratch.Migrations
+namespace PDMS.Migrations
 {
     /// <inheritdoc />
     public partial class RenameTaxIdAndDepartment : Migration

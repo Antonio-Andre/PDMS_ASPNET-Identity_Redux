@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using test_Identity_from_Scratch.Data;
+using PDMS.Data;
 
 #nullable disable
 
-namespace test_Identity_from_Scratch.Migrations
+namespace PDMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20260220174448_RenameTaxIdAndDepartment")]
@@ -159,7 +159,7 @@ namespace test_Identity_from_Scratch.Migrations
                     b.ToTable("AspNetUserTokens", "identity");
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.Company", b =>
+            modelBuilder.Entity("PDMS.Models.Company", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -211,7 +211,7 @@ namespace test_Identity_from_Scratch.Migrations
                     b.ToTable("Companies", "identity");
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.Shipment", b =>
+            modelBuilder.Entity("PDMS.Models.Shipment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -256,7 +256,7 @@ namespace test_Identity_from_Scratch.Migrations
                     b.ToTable("Deliveries", "identity");
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.Employee", b =>
+            modelBuilder.Entity("PDMS.Models.Employee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -356,7 +356,7 @@ namespace test_Identity_from_Scratch.Migrations
                     b.ToTable("AspNetUsers", "identity");
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.HoldingCompany", b =>
+            modelBuilder.Entity("PDMS.Models.HoldingCompany", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -374,7 +374,7 @@ namespace test_Identity_from_Scratch.Migrations
                     b.ToTable("HoldingCompanies", "identity");
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.Stock", b =>
+            modelBuilder.Entity("PDMS.Models.Stock", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -411,7 +411,7 @@ namespace test_Identity_from_Scratch.Migrations
                     b.ToTable("Stocks", "identity");
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.Van", b =>
+            modelBuilder.Entity("PDMS.Models.Van", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -455,7 +455,7 @@ namespace test_Identity_from_Scratch.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("test_Identity_from_Scratch.Models.Employee", null)
+                    b.HasOne("PDMS.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -464,7 +464,7 @@ namespace test_Identity_from_Scratch.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("test_Identity_from_Scratch.Models.Employee", null)
+                    b.HasOne("PDMS.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -479,7 +479,7 @@ namespace test_Identity_from_Scratch.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("test_Identity_from_Scratch.Models.Employee", null)
+                    b.HasOne("PDMS.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -488,16 +488,16 @@ namespace test_Identity_from_Scratch.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("test_Identity_from_Scratch.Models.Employee", null)
+                    b.HasOne("PDMS.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.HoldingCompany", b =>
+            modelBuilder.Entity("PDMS.Models.HoldingCompany", b =>
                 {
-                    b.HasOne("test_Identity_from_Scratch.Models.Company", "Company")
+                    b.HasOne("PDMS.Models.Company", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)

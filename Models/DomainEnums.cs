@@ -1,4 +1,4 @@
-﻿namespace test_Identity_from_Scratch.Models
+﻿namespace PDMS.Models
 {
     public enum TransferenceDirection { Entered, Left }
     public enum VanStatus { Available, Loading, Transporting, Returning, Unloading, BrokenOrMaintence }
