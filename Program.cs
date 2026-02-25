@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using System.Security.Claims;
 using PDMS.Data;
-using PDMS.Endpoints.EmployeeEndpoints;
 using PDMS.Models;
 using PDMS.Services;
+using PDMS.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,6 +76,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.RegisterEmployeeEndpoints();
+app.RegisterCompanyEndpoints();
 
 app.MapIdentityApi<Employee>();
 

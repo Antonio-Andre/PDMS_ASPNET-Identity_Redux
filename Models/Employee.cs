@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity; // Adicionar este namespace
+using PDMS.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -22,7 +23,7 @@ namespace PDMS.Models
 
         [Required]
         [RegularExpression(@"^\d{9}$", ErrorMessage = "taxId must have exactly 9 dígits.")]
-        public string taxId { get; set; } = string.Empty;
+        public string TaxId { get; set; } = string.Empty;
 
         public DateOnly DateOfAdmission { get; set; }
 
@@ -30,16 +31,5 @@ namespace PDMS.Models
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public EmployeeStatus Status { get; set; } = EmployeeStatus.Active;
     }
-
-    public record UserRequest(
-        string Email,
-        string Password,
-        string Initials,
-        string Name,
-        string TaxId,
-        string Department,
-        string PhoneNumber,
-        bool EnableNotifications = false
-    );
-
 }
+

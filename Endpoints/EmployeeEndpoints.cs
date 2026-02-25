@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PDMS.Data;
-using PDMS.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using PDMS.DTO;
 using PDMS.Services;
 
 
-namespace PDMS.Endpoints.EmployeeEndpoints
+namespace PDMS.Endpoints
 {
     public static class EmployeesEnpoints
     {
@@ -27,6 +24,7 @@ namespace PDMS.Endpoints.EmployeeEndpoints
         public static async Task<IResult> GetAllEmployees([FromServices] EmployeeService employeeService)
         {
             var employees = await employeeService.GetAllEmployees();
+
             return Results.Ok(employees);
         }
 
@@ -35,17 +33,11 @@ namespace PDMS.Endpoints.EmployeeEndpoints
             var employee = await employeeService.GetEmployeeById(id);
 
             return employee is not null
-                ? Results.Ok(new{
-                    employee.Id,
-                    employee.Name,
-                    employee.Initials,
-                    employee.Email,
-                    employee.PhoneNumber
-                })
+                ? Results.Ok(new EmployeeResponseDTO(employee))
                 : Results.NotFound();
         }
 
-        public static async Task<IResult> RegisterEmployee(UserRequest request, [FromServices] EmployeeService employeeService)
+        public static async Task<IResult> RegisterEmployee(RegisterEmployeeDTO request, [FromServices] EmployeeService employeeService)
         {
             var result = await employeeService.RegisterEmployeeAsync(request);
 
@@ -54,16 +46,10 @@ namespace PDMS.Endpoints.EmployeeEndpoints
                 return Results.BadRequest(result.Errors);
             }
 
-            return Results.Ok(new
-            {
-                request.Name,
-                request.Initials,
-                request.Email,
-                request.PhoneNumber
-            });
+            return Results.Ok(new { Message = "Employee registered successfully!" });
         }
 
-        public static async Task<IResult> UpdateEmployeeById(int id, UserRequest request, [FromServices] EmployeeService employeeService)
+        public static async Task<IResult> UpdateEmployeeById(int id, UpdateEmployeeDTO request, [FromServices] EmployeeService employeeService)
         {
             var success = await employeeService.UpdateEmployeeAsync(id, request);
 
@@ -74,7 +60,7 @@ namespace PDMS.Endpoints.EmployeeEndpoints
 
             return Results.NoContent();
         }
-        public static async Task<IResult> AdminUpdateEmployee(int id, UserRequest request, [FromServices] EmployeeService employeeService)
+        public static async Task<IResult> AdminUpdateEmployee(int id, AdminUpdateEmployeeDTO request, [FromServices] EmployeeService employeeService)
         {
             var success = await employeeService.AdminUpdateEmployeeAsync(id, request);
 

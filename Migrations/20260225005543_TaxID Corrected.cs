@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PDMS.Migrations
 {
     /// <inheritdoc />
-    public partial class RenameTaxIdAndDepartment : Migration
+    public partial class TaxIDCorrected : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,12 +41,12 @@ namespace PDMS.Migrations
                     EnableNotifications = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     Initials = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
                     Department = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    taxId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TaxId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DateOfAdmission = table.Column<DateOnly>(type: "date", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -72,14 +72,14 @@ namespace PDMS.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    taxId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TaxId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     StreetAdress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IndustryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShareCapital = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false)
+                    ShareCapital = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -322,10 +322,10 @@ namespace PDMS.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_taxId",
+                name: "IX_AspNetUsers_TaxId",
                 schema: "identity",
                 table: "AspNetUsers",
-                column: "taxId",
+                column: "TaxId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -337,10 +337,10 @@ namespace PDMS.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Companies_taxId",
+                name: "IX_Companies_TaxId",
                 schema: "identity",
                 table: "Companies",
-                column: "taxId",
+                column: "TaxId",
                 unique: true);
 
             migrationBuilder.CreateIndex(

@@ -12,8 +12,8 @@ using PDMS.Data;
 namespace PDMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260220174448_RenameTaxIdAndDepartment")]
-    partial class RenameTaxIdAndDepartment
+    [Migration("20260225005543_TaxID Corrected")]
+    partial class TaxIDCorrected
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -191,7 +191,7 @@ namespace PDMS.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("ShareCapital")
+                    b.Property<decimal?>("ShareCapital")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
@@ -199,61 +199,16 @@ namespace PDMS.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("taxId")
+                    b.Property<string>("TaxId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("taxId")
+                    b.HasIndex("TaxId")
                         .IsUnique();
 
                     b.ToTable("Companies", "identity");
-                });
-
-            modelBuilder.Entity("PDMS.Models.Shipment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("DateOfDeliveryOrReturn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Item")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Observations")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RegisterData")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RegisterNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("WeightKg")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Movement")
-                        .HasColumnType("int");
-
-                    b.Property<int>("status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RegisterNumber")
-                        .IsUnique();
-
-                    b.ToTable("Deliveries", "identity");
                 });
 
             modelBuilder.Entity("PDMS.Models.Employee", b =>
@@ -279,6 +234,7 @@ namespace PDMS.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -329,16 +285,16 @@ namespace PDMS.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("TaxId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("taxId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -350,7 +306,7 @@ namespace PDMS.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("taxId")
+                    b.HasIndex("TaxId")
                         .IsUnique();
 
                     b.ToTable("AspNetUsers", "identity");
@@ -372,6 +328,51 @@ namespace PDMS.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("HoldingCompanies", "identity");
+                });
+
+            modelBuilder.Entity("PDMS.Models.Shipment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DateOfDeliveryOrReturn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Item")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Movement")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Observations")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegisterData")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RegisterNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("WeightKg")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RegisterNumber")
+                        .IsUnique();
+
+                    b.ToTable("Deliveries", "identity");
                 });
 
             modelBuilder.Entity("PDMS.Models.Stock", b =>

@@ -8,7 +8,7 @@ namespace PDMS.Models
         public string Name { get; set; } = string.Empty;
 
         [RegularExpression(@"^\d{9}$", ErrorMessage = "taxId inválido.")]
-        public string taxId { get; set; } = string.Empty;
+        public string TaxId { get; set; } = string.Empty;
 
         public string StreetAdress { get; set; } = string.Empty;
 
@@ -23,8 +23,9 @@ namespace PDMS.Models
 
         public string IndustryCode { get; set; } = string.Empty;
 
-        [Range(typeof(decimal), "0.00", "999999999.99")]
-        public decimal ShareCapital { get; set; }
+        [Range(typeof(decimal), "0.00", "9999999999.99")]
+        public decimal? ShareCapital { get; set; }
     }
 
 }
+

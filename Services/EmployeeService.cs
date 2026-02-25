@@ -1,9 +1,8 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PDMS.Data;
-using PDMS.Endpoints.EmployeeEndpoints;
 using PDMS.Models;
+using PDMS.DTO;
 
 namespace PDMS.Services
 {
@@ -18,23 +17,9 @@ namespace PDMS.Services
             _userManager = userManager;
         }
         
-        public async Task<IdentityResult> RegisterEmployeeAsync(UserRequest request)
+        public async Task<IdentityResult> RegisterEmployeeAsync(RegisterEmployeeDTO request)
         {
-
-            var user = new Employee
-            {
-                UserName = request.Email,
-                Email = request.Email,
-                Name = request.Name,
-                Initials = request.Initials,
-                taxId = request.TaxId,
-                Department = string.IsNullOrWhiteSpace(request.Department) ? "Unassigned" : request.Department,
-                PhoneNumber = request.PhoneNumber,
-                EnableNotifications = request.EnableNotifications,
-                DateOfAdmission = DateOnly.FromDateTime(DateTime.Now),
-                Status = EmployeeStatus.Active
-            };
-
+            Employee user = request.ToEntity();
 
             IdentityResult identityResult = await _userManager.CreateAsync(user, request.Password);
 
@@ -44,13 +29,21 @@ namespace PDMS.Services
             {
                 await _userManager.AddToRoleAsync(user, JobTitle.Operator.ToString());
             }
-
             return identityResult;
         }
 
-        public async Task<List<Employee>> GetAllEmployees()
+        public async Task<List<EmployeeResponseDTO>> GetAllEmployees()
         {
-            return await _context.Employees.ToListAsync();
+            var employees = await _context.Employees.ToListAsync();
+
+            return employees.Select(e => new EmployeeResponseDTO(
+                e.Id,
+                e.Name,
+                e.Email!,
+                e.Department,
+                e.PhoneNumber,
+                e.EnableNotifications 
+            )).ToList();
         }
 
         public async Task<Employee?> GetEmployeeById(int id)
@@ -58,21 +51,29 @@ namespace PDMS.Services
             return await _context.Employees.FindAsync(id);
         }
 
-        public async Task<bool> UpdateEmployeeAsync(int id, UserRequest request)
+        public async Task<bool> UpdateEmployeeAsync(int id, UpdateEmployeeDTO request)
         {
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null) return false;
 
-            employee.Name = request.Name;
-            employee.Initials = request.Initials;
-            employee.taxId = request.TaxId;
-            employee.PhoneNumber = request.PhoneNumber;
-            employee.EnableNotifications = request.EnableNotifications;
+            request.UpdateEntity(employee);
 
             _context.Employees.Update(employee);
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> AdminUpdateEmployeeAsync(int id, AdminUpdateEmployeeDTO request)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null) return false;
+
+            request.AdminUpdateEntity(employee);
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
 
         public async Task<bool> DeleteEmployeeAsync(int id)
         {
@@ -85,19 +86,6 @@ namespace PDMS.Services
             return true;
         }
 
-        public async Task<bool> AdminUpdateEmployeeAsync(int id, UserRequest request)
-        {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null) return false;
 
-            employee.Email = request.Email;
-            employee.UserName = request.Email;
-            employee.Department = request.Department;
-            employee.Name = request.Name;
-            employee.taxId = request.TaxId;
-
-            await _context.SaveChangesAsync();
-            return true;
-        }
     }
 }

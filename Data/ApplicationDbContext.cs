@@ -26,10 +26,20 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
         // Unicidade de Matrícula
         builder.Entity<Van>()
             .HasIndex(c => c.LicensePlate).IsUnique();
+        
         builder.Entity<Employee>()
-            .HasIndex(f => f.taxId).IsUnique();
+            .HasIndex(f => f.TaxId).IsUnique();
+        
+        builder.Entity<Employee>()
+            .Property(e => e.Email)
+            .IsRequired();
+        
         builder.Entity<Company>()
-            .HasIndex(e => e.taxId).IsUnique();
+            .HasIndex(e => e.TaxId).IsUnique();
+        
+        builder.Entity<Company>()
+            .Property(c => c.ShareCapital)
+            .HasColumnType("decimal(18,2)");
 
         builder.Entity<Shipment>()
             .HasIndex(e => e.RegisterNumber).IsUnique();
@@ -43,7 +53,7 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
 
         foreach (var property in builder.Model.GetEntityTypes()
         .SelectMany(t => t.GetProperties())
-        .Where(p => p.ClrType == typeof(decimal)))
+        .Where(p => p.ClrType == typeof(decimal) || p.ClrType == typeof(decimal?)))
         {
             property.SetPrecision(18);
             property.SetScale(2);

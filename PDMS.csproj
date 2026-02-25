@@ -19,11 +19,4 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Endpoints\CompanyEndpoints\" />
-    <Folder Include="Endpoints\ShipmentEndpoints\" />
-    <Folder Include="Endpoints\StockEndpoints\" />
-    <Folder Include="Endpoints\VanEndpoints\" />
-  </ItemGroup>
-
 </Project>

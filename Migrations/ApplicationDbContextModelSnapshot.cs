@@ -188,7 +188,7 @@ namespace PDMS.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("ShareCapital")
+                    b.Property<decimal?>("ShareCapital")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
@@ -196,13 +196,13 @@ namespace PDMS.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("taxId")
+                    b.Property<string>("TaxId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("taxId")
+                    b.HasIndex("TaxId")
                         .IsUnique();
 
                     b.ToTable("Companies", "identity");
@@ -231,6 +231,7 @@ namespace PDMS.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -281,16 +282,16 @@ namespace PDMS.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("TaxId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("taxId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -302,7 +303,7 @@ namespace PDMS.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("taxId")
+                    b.HasIndex("TaxId")
                         .IsUnique();
 
                     b.ToTable("AspNetUsers", "identity");

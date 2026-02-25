@@ -42,7 +42,7 @@ namespace PDMS.Data
                     EmailConfirmed = true,
                     Name = "Admin Sistema",
                     Department = "Administração",
-                    taxId = "109999999",
+                    TaxId = "109999999",
                     PhoneNumber = "123456789",
                     DateOfAdmission = DateOnly.FromDateTime(DateTime.Now),
                     Status = EmployeeStatus.Active,
@@ -75,7 +75,7 @@ namespace PDMS.Data
             new Company
             {
                 Name = "LusiAves, SA",
-                taxId = "999888777",
+                TaxId = "999888777",
                 PhoneNumber = "210210210",
                 Email = "contacto@lusiaves.pt",
                 StreetAdress = "Rua Principal, 123",
@@ -87,7 +87,7 @@ namespace PDMS.Data
             new Company
             {
                 Name = "Talho do Zé Lda",
-                taxId = "111222333",
+                TaxId = "111222333",
                 PhoneNumber = "220220220",
                 Email = "ze@talho.pt",
                 StreetAdress = "Rua Secundária, 45",
@@ -103,7 +103,7 @@ namespace PDMS.Data
 
             if (context.HoldingCompanies.Any()) return;
 
-            var lusiAves = context.Companies.FirstOrDefault(e => e.taxId == "999888777");
+            var lusiAves = context.Companies.FirstOrDefault(e => e.TaxId == "999888777");
 
             if (lusiAves != null)
             {
