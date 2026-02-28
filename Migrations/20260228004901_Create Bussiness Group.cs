@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PDMS.Migrations
 {
     /// <inheritdoc />
-    public partial class TaxIDCorrected : Migration
+    public partial class CreateBussinessGroup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,25 +65,18 @@ namespace PDMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Companies",
+                name: "BusinessGroups",
                 schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TaxId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    StreetAdress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IndustryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShareCapital = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true)
+                    TaxId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Companies", x => x.Id);
+                    table.PrimaryKey("PK_BusinessGroups", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -263,24 +256,32 @@ namespace PDMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HoldingCompanies",
+                name: "Companies",
                 schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CompanyId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BusinessGroupId = table.Column<int>(type: "int", nullable: true),
+                    TaxId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StreetAdress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IndustryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShareCapital = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HoldingCompanies", x => x.Id);
+                    table.PrimaryKey("PK_Companies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HoldingCompanies_Companies_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_Companies_BusinessGroups_BusinessGroupId",
+                        column: x => x.BusinessGroupId,
                         principalSchema: "identity",
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "BusinessGroups",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -337,6 +338,12 @@ namespace PDMS.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Companies_BusinessGroupId",
+                schema: "identity",
+                table: "Companies",
+                column: "BusinessGroupId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Companies_TaxId",
                 schema: "identity",
                 table: "Companies",
@@ -349,12 +356,6 @@ namespace PDMS.Migrations
                 table: "Deliveries",
                 column: "RegisterNumber",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HoldingCompanies_CompanyId",
-                schema: "identity",
-                table: "HoldingCompanies",
-                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vans_LicensePlate",
@@ -388,11 +389,11 @@ namespace PDMS.Migrations
                 schema: "identity");
 
             migrationBuilder.DropTable(
-                name: "Deliveries",
+                name: "Companies",
                 schema: "identity");
 
             migrationBuilder.DropTable(
-                name: "HoldingCompanies",
+                name: "Deliveries",
                 schema: "identity");
 
             migrationBuilder.DropTable(
@@ -412,7 +413,7 @@ namespace PDMS.Migrations
                 schema: "identity");
 
             migrationBuilder.DropTable(
-                name: "Companies",
+                name: "BusinessGroups",
                 schema: "identity");
         }
     }

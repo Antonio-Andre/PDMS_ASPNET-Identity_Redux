@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PDMS.Models
 {
@@ -6,6 +7,11 @@ namespace PDMS.Models
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
+
+        public int? BusinessGroupId { get; set; } 
+
+        [ForeignKey("BusinessGroupId")]
+        public virtual BusinessGroup? BusinessGroup { get; set; }
 
         [RegularExpression(@"^\d{9}$", ErrorMessage = "taxId inválido.")]
         public string TaxId { get; set; } = string.Empty;

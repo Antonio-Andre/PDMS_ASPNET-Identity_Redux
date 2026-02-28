@@ -12,8 +12,8 @@ using PDMS.Data;
 namespace PDMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260225005543_TaxID Corrected")]
-    partial class TaxIDCorrected
+    [Migration("20260228004901_Create Bussiness Group")]
+    partial class CreateBussinessGroup
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,27 @@ namespace PDMS.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BusinessGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaxId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BusinessGroups", "identity");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
                 {
@@ -167,6 +188,9 @@ namespace PDMS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("BusinessGroupId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -204,6 +228,8 @@ namespace PDMS.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BusinessGroupId");
 
                     b.HasIndex("TaxId")
                         .IsUnique();
@@ -310,24 +336,6 @@ namespace PDMS.Migrations
                         .IsUnique();
 
                     b.ToTable("AspNetUsers", "identity");
-                });
-
-            modelBuilder.Entity("PDMS.Models.HoldingCompany", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("HoldingCompanies", "identity");
                 });
 
             modelBuilder.Entity("PDMS.Models.Shipment", b =>
@@ -496,15 +504,18 @@ namespace PDMS.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PDMS.Models.HoldingCompany", b =>
+            modelBuilder.Entity("PDMS.Models.Company", b =>
                 {
-                    b.HasOne("PDMS.Models.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("BusinessGroup", "BusinessGroup")
+                        .WithMany("Companies")
+                        .HasForeignKey("BusinessGroupId");
 
-                    b.Navigation("Company");
+                    b.Navigation("BusinessGroup");
+                });
+
+            modelBuilder.Entity("BusinessGroup", b =>
+                {
+                    b.Navigation("Companies");
                 });
 #pragma warning restore 612, 618
         }

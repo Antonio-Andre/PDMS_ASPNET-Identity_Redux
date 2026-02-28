@@ -68,51 +68,48 @@ namespace PDMS.Data
         }
         private static void SeedCompanies(ApplicationDbContext context)
         {
-            if (context.Companies.Any()) return;
+            if (context.BusinessGroups.Any()) return;
+
+            var grupoLusi = new BusinessGroup
+            {
+                Name = "Grupo LusiAves",
+                TaxId = "500111222" 
+            };
+
+            context.BusinessGroups.Add(grupoLusi);
+            context.SaveChanges(); 
 
             var companies = new Company[]
             {
-            new Company
-            {
-                Name = "LusiAves, SA",
-                TaxId = "999888777",
-                PhoneNumber = "210210210",
-                Email = "contacto@lusiaves.pt",
-                StreetAdress = "Rua Principal, 123",
-                PostalCode = "2500-000",
-                Location = "Caldas da Rainha",
-                IndustryCode = "10120",
-                ShareCapital = 500000.00m
-            },
-            new Company
-            {
-                Name = "Talho do Zé Lda",
-                TaxId = "111222333",
-                PhoneNumber = "220220220",
-                Email = "ze@talho.pt",
-                StreetAdress = "Rua Secundária, 45",
-                PostalCode = "4000-000",
-                Location = "Porto",
-                IndustryCode = "47220",
-                ShareCapital = 50000.00m
-            }
-
+        new Company
+        {
+            BusinessGroupId = grupoLusi.Id,
+            Name = "LusiAves, SA",
+            TaxId = "999888777",
+            PhoneNumber = "210210210",
+            Email = "contacto@lusiaves.pt",
+            StreetAdress = "Rua Principal, 123",
+            PostalCode = "2500-000",
+            Location = "Caldas da Rainha",
+            IndustryCode = "10120",
+            ShareCapital = 500000.00m
+        },
+        new Company
+        {
+            Name = "Talho do Zé Lda",
+            TaxId = "111222333",
+            PhoneNumber = "220220220",
+            Email = "ze@talho.pt",
+            StreetAdress = "Rua Secundária, 45",
+            PostalCode = "4000-000",
+            Location = "Porto",
+            IndustryCode = "47220",
+            ShareCapital = 50000.00m
+        }
             };
+
             context.Companies.AddRange(companies);
             context.SaveChanges();
-
-            if (context.HoldingCompanies.Any()) return;
-
-            var lusiAves = context.Companies.FirstOrDefault(e => e.TaxId == "999888777");
-
-            if (lusiAves != null)
-            {
-                context.HoldingCompanies.Add(new HoldingCompany
-                {
-                    CompanyId = lusiAves.Id
-                });
-                context.SaveChanges();
-            }
         }
 
         private static void SeedVans(ApplicationDbContext context)

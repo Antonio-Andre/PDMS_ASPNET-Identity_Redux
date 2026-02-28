@@ -17,7 +17,7 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
     public DbSet<Shipment> Deliveries { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Company> Companies { get; set; }
-    public DbSet<HoldingCompany> HoldingCompanies { get; set; }
+    public DbSet<BusinessGroup> BusinessGroups { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
