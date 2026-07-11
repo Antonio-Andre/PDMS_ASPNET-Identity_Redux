@@ -12,9 +12,11 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options){}
 
-    public DbSet<Stock> Stocks { get; set; }
+    public DbSet<Stock> Stock { get; set; }
     public DbSet<Van> Vans { get; set; }
     public DbSet<Shipment> Deliveries { get; set; }
+    public DbSet<ShipmentItem> ShipmentItems { get; set; }
+    public DbSet<ReturnedItem> ReturnedItems { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Company> Companies { get; set; }
     public DbSet<BusinessGroup> BusinessGroups { get; set; }
@@ -23,7 +25,6 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
     {
         base.OnModelCreating(builder);
 
-        // Unicidade de Matrícula
         builder.Entity<Van>()
             .HasIndex(c => c.LicensePlate).IsUnique();
         
@@ -33,16 +34,23 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
         builder.Entity<Employee>()
             .Property(e => e.Email)
             .IsRequired();
-        
-        builder.Entity<Company>()
-            .HasIndex(e => e.TaxId).IsUnique();
-        
-        builder.Entity<Company>()
-            .Property(c => c.ShareCapital)
-            .HasColumnType("decimal(18,2)");
 
-        builder.Entity<Shipment>()
-            .HasIndex(e => e.RegisterNumber).IsUnique();
+        builder.Entity<Company>(entity =>
+        {
+            entity.HasIndex(e => e.TaxId).IsUnique();
+            entity.Property(c => c.ShareCapital).HasColumnType("decimal(18,2)");
+        });
+
+        builder.Entity<Shipment>(entity =>
+        {
+            entity.HasIndex(s => s.RegisterNumber).IsUnique(); 
+        });
+
+        builder.Entity<ShipmentItem>()
+            .HasOne<Shipment>()         
+            .WithMany(s => s.Items)       
+            .HasForeignKey(i => i.ShipmentId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<Employee>(entity =>
         {

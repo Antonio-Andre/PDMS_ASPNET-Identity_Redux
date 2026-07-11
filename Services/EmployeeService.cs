@@ -36,14 +36,7 @@ namespace PDMS.Services
         {
             var employees = await _context.Employees.ToListAsync();
 
-            return employees.Select(e => new EmployeeResponseDTO(
-                e.Id,
-                e.Name,
-                e.Email!,
-                e.Department,
-                e.PhoneNumber,
-                e.EnableNotifications 
-            )).ToList();
+            return employees.Select(e => new EmployeeResponseDTO(e)).ToList();
         }
 
         public async Task<Employee?> GetEmployeeById(int id)

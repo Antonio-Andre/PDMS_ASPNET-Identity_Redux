@@ -2,7 +2,6 @@
 using PDMS.Data;
 using PDMS.Models;
 using PDMS.DTO;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace PDMS.Services
 {
@@ -15,46 +14,51 @@ namespace PDMS.Services
             _context = context;
         }
 
-        public async Task<List<Company>> GetAllCompanies()
+        public async Task<List<CompanyDTO>> GetAllCompanies()
         {
-            return await _context.Companies.ToListAsync();
+            var companies = await _context.Companies.ToListAsync();
+
+            return companies.Select(c => new CompanyDTO(c)).ToList();
         }
 
-        public async Task<Company?> GetCompanyById(int id)
+        public async Task<CompanyDTO?> GetCompanyByName(string name)
         {
-            return await _context.Companies.FindAsync(id);
+            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Name == name); ;
+            if (company == null) return null; 
+
+            return new CompanyDTO(company);            
         }
 
-        public async Task<Company> CreateCompanyAsync(CompanyDTO request)
+        public async Task<CompanyDTO> CreateCompanyAsync(CompanyDTO request)
         {
-            Company company = new Company
-            {
-                Name = request.Name,
-                TaxId = request.TaxId,
-                StreetAdress = request.StreetAdress,
-                PostalCode = request.PostalCode,
-                Location = request.Location,
-                Email = request.Email,
-                PhoneNumber = request.PhoneNumber,
-                IndustryCode = "PENDING",
-                ShareCapital = null,
-            };
+            Company company = request.ToEntity();
 
             _context.Companies.Add(company);
             await _context.SaveChangesAsync();
-            return company;
+
+
+            return new CompanyDTO(company);
         }
 
-        public async Task<bool> UpdateCompanyAsync(Company company)
+        public async Task<CompanyDTO?> UpdateCompanyAsync(string name, CompanyDTO request)
         {
-            _context.Companies.Update(company);
+            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Name == name); ;
+            if (company == null) return null;
+
+            company.BusinessGroupId = request.BusinessGroupId;
+            company.StreetAdress = request.StreetAdress;
+            company.PostalCode = request.PostalCode;
+            company.Location = request.Location;
+            company.Email = request.Email;
+            company.PhoneNumber = request.PhoneNumber;
             await _context.SaveChangesAsync();
-            return true;
+
+            return new CompanyDTO(company);
         }
 
-        public async Task<bool> DeleteCompany(int id)
+        public async Task<bool> DeleteCompany(string name)
         {
-            var company = await _context.Companies.FindAsync(id);
+            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Name == name);
             if (company == null) return false;
             _context.Companies.Remove(company);
             await _context.SaveChangesAsync();

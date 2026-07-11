@@ -16,9 +16,6 @@ namespace PDMS.Models
         [Range(typeof(decimal), "100.0", "350.0", ErrorMessage = "A carga máxima deve ser entre 1kg e 30000kg.")]
         public decimal MaxLoadKg { get; set; }
 
-        [Range(0.1, 200.0, ErrorMessage = "O volume deve ser entre 0.1m³ e 200m³.")]
-        public double MaxVolumeM3 { get; set; }
-
         public VanStatus Status { get; set; } = VanStatus.Available;
     }
 

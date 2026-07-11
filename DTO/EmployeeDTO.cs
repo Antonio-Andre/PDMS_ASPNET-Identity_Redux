@@ -40,7 +40,6 @@ namespace PDMS.DTO
     {
         public void UpdateEntity(Employee employee)
         {
-            employee.Name = this.Name;
             employee.PhoneNumber = this.PhoneNumber;
             employee.Department = this.Department;
             employee.EnableNotifications = this.EnableNotifications;

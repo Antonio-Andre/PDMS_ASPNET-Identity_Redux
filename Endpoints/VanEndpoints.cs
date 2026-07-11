@@ -26,19 +26,10 @@ namespace PDMS.Endpoints
 
         public static async Task<IResult> GetVanById(int id, [FromServices] VanService vanService)
         {
-            var van = await vanService.GetVanByIdAsync(id);
+            var response = await vanService.GetVanByIdAsync(id);
 
-            if (van is null)
-                return Results.NotFound(new { Message = $"Carrinha com ID {id} não encontrada." });
-
-            var response = new VanResponseDTO(
-                van.Id,
-                van.LicensePlate,
-                van.DataOfInspection,
-                van.MaxLoadKg,
-                van.MaxVolumeM3,
-                van.Status.ToString()
-            );
+            if (response is null)
+                return Results.NotFound(new { Message = $"Van ID {id} not found." });
 
             return Results.Ok(response);
         }
@@ -54,7 +45,7 @@ namespace PDMS.Endpoints
             var success = await vanService.UpdateVanAsync(id, request);
 
             if (!success)
-                return Results.NotFound(new { Message = "Carrinha não encontrada para atualização." });
+                return Results.NotFound(new { Message = "Can't Update, Van not found in the system." });
 
             return Results.NoContent();
         }
@@ -64,7 +55,7 @@ namespace PDMS.Endpoints
             var success = await vanService.DeleteVanAsync(id);
 
             if (!success)
-                return Results.NotFound(new { Message = "Carrinha não encontrada para eliminação." });
+                return Results.NotFound(new { Message = "Can't Delete, Van not found in the system." });
 
             return Results.NoContent();
         }

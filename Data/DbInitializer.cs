@@ -123,7 +123,6 @@ namespace PDMS.Data
                     LicensePlate = "AA-11-BB",
                     DataOfInspection = new DateOnly(2024, 12, 15),
                     MaxLoadKg = 1200.0m,
-                    MaxVolumeM3 = 8.5,
                     Status = VanStatus.Available
                 },
                 new Van
@@ -131,7 +130,6 @@ namespace PDMS.Data
                     LicensePlate = "CC-22-DD",
                     DataOfInspection = new DateOnly(2025, 05, 20),
                     MaxLoadKg = 3500.0m,
-                    MaxVolumeM3 = 15.0,
                     Status = VanStatus.Loading
                 },
                 new Van
@@ -139,7 +137,6 @@ namespace PDMS.Data
                     LicensePlate = "EE-33-FF",
                     DataOfInspection = new DateOnly(2024, 08, 10),
                     MaxLoadKg = 850.0m,
-                    MaxVolumeM3 = 5.2,
                     Status = VanStatus.BrokenOrMaintence
                 },
                 new Van
@@ -147,7 +144,6 @@ namespace PDMS.Data
                     LicensePlate = "GG-44-HH",
                     DataOfInspection = new DateOnly(2025, 01, 30),
                     MaxLoadKg = 2200.0m,
-                    MaxVolumeM3 = 12.0,
                     Status = VanStatus.Loading
                 },
                 new Van
@@ -155,7 +151,6 @@ namespace PDMS.Data
                     LicensePlate = "II-55-JJ",
                     DataOfInspection = new DateOnly(2024, 11, 05),
                     MaxLoadKg = 1500.0m,
-                    MaxVolumeM3 = 10.0,
                     Status = VanStatus.Available
                 }
             };

@@ -12,10 +12,10 @@ namespace PDMS.Endpoints
             var company = app.MapGroup("/api/companies");
 
             company.MapGet("/", GetAllCompanies);
-            company.MapGet("/{id}", GetCompanyById);
+            company.MapGet("/{name}", GetCompanyByName);
             company.MapPost("/", RegisterCompany);
-            company.MapPut("/{id}", UpdateCompanyById);
-            company.MapDelete("/{id}", DeleteCompany);
+            company.MapPut("/{name}", UpdateCompanyByName);
+            company.MapDelete("/{name}", DeleteCompany);
         }
 
         public static async Task<IResult> GetAllCompanies([FromServices] CompanyService companyService)
@@ -24,24 +24,16 @@ namespace PDMS.Endpoints
             return Results.Ok(companies);
         }
 
-        public static async Task<IResult> GetCompanyById([FromServices] CompanyService companyService, int id)
+        public static async Task<IResult> GetCompanyByName([FromServices] CompanyService companyService, string name)
         {
-            var company = await companyService.GetCompanyById(id);
+            var company = await companyService.GetCompanyByName(name);
 
             if (company is null)
             {
-                return Results.NotFound($"Company with ID {id} was not found.");
+                return Results.NotFound($"Company called {name} was not found.");
             }
 
-            return Results.Ok(new CompanyDTO(
-                company.Name,
-                company.TaxId,        
-                company.StreetAdress,
-                company.PostalCode,
-                company.Location,
-                company.Email,
-                company.PhoneNumber
-            ));
+            return Results.Ok(company);
         }
 
         public static async Task<IResult> RegisterCompany(CompanyDTO request, [FromServices] CompanyService companyService)
@@ -50,26 +42,18 @@ namespace PDMS.Endpoints
             return Results.Ok(result);
         }
 
-        public static async Task<IResult> UpdateCompanyById(int id, [FromBody] CompanyDTO request, [FromServices] CompanyService companyService)
+        public static async Task<IResult> UpdateCompanyByName(string name, [FromBody] CompanyDTO request, [FromServices] CompanyService companyService)
         {
-            var company = await companyService.GetCompanyById(id);
+            var response = await companyService.UpdateCompanyAsync(name, request);  
 
-            if (company is null) return Results.NotFound();
-            company.Name = request.Name;
+            if (response is null) return Results.NotFound($"Company called {name} was not found.");
 
-            company.StreetAdress = request.StreetAdress;
-            company.PostalCode = request.PostalCode;
-            company.Location = request.Location;
-            company.Email = request.Email;
-            company.PhoneNumber = request.PhoneNumber;
-
-            await companyService.UpdateCompanyAsync(company);
-            return Results.Ok(company);
+            return Results.Ok(response);
         }
 
-        public static async Task<IResult> DeleteCompany(int id, [FromBody] CompanyDTO request, [FromServices] CompanyService companyService)
+        public static async Task<IResult> DeleteCompany(string name, [FromServices] CompanyService companyService)
         {
-            var success = await companyService.DeleteCompany(id);
+            var success = await companyService.DeleteCompany(name);
             return success ? Results.Ok() : Results.NotFound();
         }
 

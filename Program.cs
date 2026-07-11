@@ -15,6 +15,14 @@ builder.Services.AddSwaggerGen(c =>
     c.DocumentFilter<SwaggerHideNativeRegisterFilter>();
 });
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactPolicy", policy =>
@@ -40,6 +48,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); //need to re-check this later
 
 builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<CompanyService>();
+builder.Services.AddScoped<VanService>();
+builder.Services.AddScoped<ShipmentService>();
+//builder.Services.AddScoped<ShipmentItemService>();
+builder.Services.AddScoped<StockService>();
 
 var app = builder.Build();
 
@@ -77,6 +90,10 @@ app.UseAuthorization();
 
 app.RegisterEmployeeEndpoints();
 app.RegisterCompanyEndpoints();
+app.RegisterVanEndpoints();
+app.RegisterShipmentEndpoints();
+app.RegisterStockEndpoints();
+
 
 app.MapIdentityApi<Employee>();
 

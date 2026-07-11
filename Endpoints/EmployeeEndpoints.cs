@@ -55,7 +55,7 @@ namespace PDMS.Endpoints
 
             if (!success)
             {
-                return Results.NotFound(new { message = $"Funcionário com ID {id} não encontrado." });
+                return Results.NotFound(new { message = $"No Employee with an ID of {id} was found" });
             }
 
             return Results.NoContent();
@@ -65,7 +65,7 @@ namespace PDMS.Endpoints
             var success = await employeeService.AdminUpdateEmployeeAsync(id, request);
 
             return success
-                ? Results.Ok(new { message = "Dados sensíveis atualizados pelo Administrador." })
+                ? Results.Ok(new { message = "Employye Data Changed" })
                 : Results.NotFound();
         }
 
@@ -75,7 +75,7 @@ namespace PDMS.Endpoints
             var success = await employeeService.DeleteEmployeeAsync(id);
 
             return success
-                ? Results.Ok(new { message = "Funcionário e conta removidos permanentemente." })
+                ? Results.Ok(new { message = "Employee and its respected account removed from the system" })
                 : Results.NotFound();
         }
 
