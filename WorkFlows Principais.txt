@@ -1,0 +1,360 @@
+Workflow - [1: Inbound]  -->  [2: Stock / Inventário]  -->  [3: Outbound]
+  (1.Comprar ao Fornecedor e entregar à LusiAves)        
+  (2.Controlar o Armazém)      
+  (3.Sair da LusiAves e Vender ao Talho do Zé(e.g.))
+  
+1. O Road Map dos 3 Workflows Essenciais:
+
+1.1 Workflow Inbound (Entrada de Mercadoria)
+O Cenário: O Armazem da Lusiaves precisa de produtos vindos dos fornecedores.
+
+A Jornada:
+
+O Gestor de Armazém cria um envio do tipo Inbound, escolhe o fornecedor (ex: Frutas do Oeste) 
+e lista o que vem lá dentro (ex: 50 kg de Tomate). O estado da encomenda nasce como Registered com o tipo de movimento "InBound".
+Após receber uma resposta do armazem o estado da encomenda passa a Loaded ou Cancelled.
+Quando a carrinha chega ao armazém, a mercadoria é pesada e conferida. O estado da encomenda passa para Delivered.
+
+Gatilho Automático: Ao passar a Delivered, o stock do armazém aumenta automaticamente com esses produtos.
+
+1.2. Workflow de Inventário (Gestão de Stock)
+O Cenário: O Produto é transformado de cru a processado ou empacotado em dosagens diferentes
+
+A Jornada:
+
+O sistema mostra uma lista simples de lotes (BatchNumber), o produto, a quantidade disponível e a data de validade (ExpiryDate).
+O gestor De Produçao manda fazer X, Y, Z produtos procesados.
+O Operário aós acabar a batch toda do produto X ou ao final do dia (nao teremos turnos no software mas seria o funcionário do ultimo turno) 
+regista que foram efetuados n processamentos do produto X ou se for o caso, que a demanda de processamento sobre o produto X foi terminada e 
+dará entao seguimento à Y. (O software nao terá um controlo de dias, simplesmente um log manual que só poderá concluir a tarefa de completar 
+os processamento quando a produçao dos produtos X,Y,Z delegada pelo gestor de operação terminar.
+
+1.3. Workflow Outbound (Saída / Distribuição)
+O Cenário: O cliente/empresa(B2B) final fez uma encomenda e ela é entregue pela distribuidora LusiAves.
+
+A Jornada:
+
+O Admin cria um envio do tipo Outbound, escolhe o cliente (ex: Talho do Zé Lda) e adiciona os itens (ex: 20 kg de Frango). O estado nasce como Pending.
+
+O Admin escolhe o motorista e a carrinha.
+
+Gatilho Automático: Ao passar para InTransit (ou ao ser preparado), o stock do armazém diminui automaticamente para garantir que não vendes o mesmo frango duas vezes.
+
+O motorista entrega no destino e o estado passa a Delivered.
+
+2. Averiguação das Classes / Entidades Necessárias
+O Admin de sistemas nao representa uma pessoa fisica nem um conjunto. É apenas um administrador de sistemas como permissões para tudo. Para fins de bugtester par ao programador.
+
+A MockDB atual (ficheiro JSON que é usado par aevitar migrations no C#
+durante a fase de desenvolvimento uma vez que o Backend de C# ainda não está pronto)
+
+Eis a MockDB atual:
+{
+  "employees": [
+    {
+      "Id": 1,
+      "Name": "Admin Sistema",
+      "Email": "admin@gdpa.pt",
+      "Initials": "AS",
+      "Department": "Administração",
+      "JobTitle": "Admin",
+      "Status": "Active"
+    },
+    {
+      "Id": 2,
+      "Name": "Maria Santos",
+      "Email": "maria.santos@gdpa.pt",
+      "Initials": "MS",
+      "Department": "Logística",
+      "JobTitle": "DeliveryDriver",
+      "Status": "Active"
+    },
+    {
+      "Id": 3,
+      "Name": "João Silva",
+      "Email": "joao.silva@gdpa.pt",
+      "Initials": "JS",
+      "Department": "Operações",
+      "JobTitle": "Operator",
+      "Status": "Active"
+    }
+  ],
+  "companies": [
+    {
+      "Id": 1,
+      "Name": "LusiAves, SA",
+      "TaxId": "999888777",
+      "StreetAdress": "Zona Industrial, Lote 12",
+      "PostalCode": "2500-123",
+      "Location": "Caldas da Rainha",
+      "Email": "geral@lusiaves.pt",
+      "PhoneNumber": "+351 262 000 000",
+      "ShareCapital": 500000
+    },
+    {
+      "Id": 2,
+      "Name": "Talho do Zé Lda",
+      "TaxId": "111222333",
+      "StreetAdress": "Rua Central, 45",
+      "PostalCode": "4000-001",
+      "Location": "Porto",
+      "Email": "contacto@talhoze.pt",
+      "PhoneNumber": "+351 220 000 000",
+      "ShareCapital": 50000
+    },
+    {
+      "Id": 3,
+      "Name": "Peixaria Maré Viva",
+      "TaxId": "444555666",
+      "StreetAdress": "Avenida do Mar, 10",
+      "PostalCode": "2520-456",
+      "Location": "Peniche",
+      "Email": "info@mareviva.pt",
+      "PhoneNumber": "+351 262 111 222",
+      "ShareCapital": 25000
+    },
+    {
+      "Id": 4,
+      "Name": "Logística Rápida",
+      "TaxId": "777888999",
+      "StreetAdress": "Plataforma Logística Norte",
+      "PostalCode": "1000-789",
+      "Location": "Lisboa",
+      "Email": "apoio@lograpida.com",
+      "PhoneNumber": "+351 210 999 888",
+      "ShareCapital": 1000000
+    },
+    {
+      "Id": 5,
+      "Name": "Frutas do Oeste",
+      "TaxId": "222333444",
+      "StreetAdress": "Estrada Nacional 8, Km 45",
+      "PostalCode": "2560-001",
+      "Location": "Torres Vedras",
+      "Email": "vendas@frutasoeste.pt",
+      "PhoneNumber": "+351 261 333 444",
+      "ShareCapital": 150000
+    }
+  ],
+  "vans": [
+    {
+      "Id": 1,
+      "LicensePlate": "AA-11-BB",
+      "DataOfInspection": "2024-12-15",
+      "MaxLoadKg": 1200,
+      "MaxVolumeM3": 8.5,
+      "Status": "Available"
+    },
+    {
+      "Id": 2,
+      "LicensePlate": "CC-22-DD",
+      "DataOfInspection": "2025-05-20",
+      "MaxLoadKg": 3500,
+      "MaxVolumeM3": 15,
+      "Status": "Loading"
+    },
+    {
+      "Id": 3,
+      "LicensePlate": "EE-33-FF",
+      "DataOfInspection": "2024-08-10",
+      "MaxLoadKg": 850,
+      "MaxVolumeM3": 5.2,
+      "Status": "BrokenOrMaintence"
+    },
+    {
+      "Id": 4,
+      "LicensePlate": "GG-44-HH",
+      "DataOfInspection": "2025-01-30",
+      "MaxLoadKg": 2200,
+      "MaxVolumeM3": 12,
+      "Status": "Loading"
+    },
+    {
+      "Id": 5,
+      "LicensePlate": "II-55-JJ",
+      "DataOfInspection": "2024-11-05",
+      "MaxLoadKg": 1500,
+      "MaxVolumeM3": 10,
+      "Status": "Available"
+    }
+  ],
+  "stock": [
+    {
+      "Id": 1,
+      "BatchNumber": "FR-001",
+      "Product": "RoastedChicken",
+      "Quantity": 100,
+      "Unit": "Pack",
+      "Source": "LusiAves",
+      "ExpiryDate": "2024-06-01"
+    },
+    {
+      "Id": 2,
+      "BatchNumber": "AR-99",
+      "Product": "DuckRice",
+      "Quantity": 45,
+      "Unit": "Pack",
+      "Source": "Cozinha Central",
+      "ExpiryDate": "2024-05-25"
+    }
+  ],
+  "shipments": [
+    {
+      "Id": 1,
+      "RegisterNumber": "SHIP-001",
+      "Movement": "Inbound",
+      "Status": "Delivered",
+      "Items": [
+        {
+          "Id": 101,
+          "Product": "RoastedChicken_Unit",
+          "Quantity": 20,
+          "ItemWeightKg": 1.2
+        },
+        {
+          "Id": 102,
+          "Product": "ChickenMeat_Box_5kg",
+          "Quantity": 10,
+          "ItemWeightKg": 5.0
+        }
+      ],
+      "RegisterData": "2024-03-10T08:00:00Z",
+      "SLAExpiration": "2024-03-12T18:00:00Z",
+      "DateOfDeliveryOrReturn": "2024-03-11T14:30:00Z",
+      "TotalShipmentWeightKg": 74.0,
+      "DriverId": 1,
+      "VanId": 1,
+      "Observations": "Morning delivery"
+    },
+    {
+      "Id": 2,
+      "RegisterNumber": "SHIP-002",
+      "Movement": "Inbound",
+      "Status": "InTransit",
+      "Items": [
+        {
+          "Id": 103,
+          "Product": "DuckRice_Indiv_P10",
+          "Quantity": 15,
+          "ItemWeightKg": 4.5
+        }
+      ],
+      "RegisterData": "2024-03-11T09:00:00Z",
+      "SLAExpiration": "2024-03-13T18:00:00Z",
+      "DateOfDeliveryOrReturn": null,
+      "TotalShipmentWeightKg": 67.5,
+      "DriverId": 3,
+      "VanId": 2,
+      "Observations": "Handle with care"
+    },
+    {
+      "Id": 3,
+      "RegisterNumber": "SHIP-003",
+      "Movement": "Outbound",
+      "Status": "InTransit",
+      "Items": [
+        {
+          "Id": 104,
+          "Product": "ChickenEggs_M_Grade_30",
+          "Quantity": 50,
+          "ItemWeightKg": 1.8
+        },
+        {
+          "Id": 105,
+          "Product": "TurkeyMeat_Box_10kg",
+          "Quantity": 5,
+          "ItemWeightKg": 10.0
+        },
+        {
+          "Id": 106,
+          "Product": "ChickenStock_750ml_P4",
+          "Quantity": 10,
+          "ItemWeightKg": 3.2
+        }
+      ],
+      "RegisterData": "2024-03-11T10:30:00Z",
+      "SLAExpiration": "2024-03-12T20:00:00Z",
+      "DateOfDeliveryOrReturn": null,
+      "TotalShipmentWeightKg": 180.0,
+      "DriverId": 2,
+      "VanId": 3,
+      "Observations": "Direct to Buyer A"
+    },
+    {
+      "Id": 4,
+      "RegisterNumber": "SHIP-004",
+      "Movement": "Outbound",
+      "Status": "Pending",
+      "Items": [
+        {
+          "Id": 105,
+          "Product": "QuailEggs_Pack_12",
+          "Quantity": 50,
+          "ItemWeightKg": 0.25
+        }
+      ],
+      "RegisterData": "2024-03-12T07:45:00Z",
+      "SLAExpiration": "2024-03-14T12:00:00Z",
+      "DateOfDeliveryOrReturn": null,
+      "TotalShipmentWeightKg": 12.5,
+      "DriverId": 1,
+      "VanId": 1,
+      "Observations": "High demand items"
+    },
+    {
+      "Id": 5,
+      "RegisterNumber": "SHIP-005",
+      "Movement": "Outbound",
+      "Status": "Delivered",
+      "Items": [
+        {
+          "Id": 106,
+          "Product": "ChickenStroganoff_400g",
+          "Quantity": 40,
+          "ItemWeightKg": 0.4
+        }
+      ],
+      "RegisterData": "2024-03-09T15:00:00Z",
+      "SLAExpiration": "2024-03-10T15:00:00Z",
+      "DateOfDeliveryOrReturn": "2024-03-10T10:00:00Z",
+      "TotalShipmentWeightKg": 16.0,
+      "DriverId": 3,
+      "VanId": 3,
+      "Observations": "Completed on time"
+    }
+  ]
+}
+
+
+Retirado do C# em que o MockDB está a ser espelhada:
+namespace PDMS.Models
+{
+    public enum TransferenceDirection { Inbound, Outbound }
+    public enum VanStatus { Available, Loading, Transporting, Returning, Unloading, BrokenOrMaintence }
+    public enum DeliveryStatus { Registered, Loaded, InTransit, Delivered, FailedDelivery, Cancelled }
+    public enum EmployeeStatus { Active, Holydays, DayOfff, SickLeave, Absent }
+    public enum ProductType
+    {
+        //Meats
+        RoastedChicken_Unit,
+        ChickenMeat_Box_5kg,
+        TurkeyMeat_Box_10kg,
+        DuckMeat_Box_5kg,
+
+        //Porcessed Products
+        ShreddedCookedDuck_Pack_1kg,
+        DuckRice_Indiv_P10,
+        ChickenStroganoff_400g,
+        TurkeyStroganoff_400g,
+        PoultryBreast_Sliced_1kg,
+        PoultryBreast_Sliced_200g,
+
+        //Eggs & (liquid)Stocks
+        ChickenStock_200ml_P6,
+        ChickenStock_750ml_P4,
+        ChickenEggs_M_Tray_30,
+        QuailEggs_Pack_12,
+        ChickenEggCarton_P12
+    }
+    public enum JobTitle { Admin, DeliveryDriver, Manager, Operator };
+}

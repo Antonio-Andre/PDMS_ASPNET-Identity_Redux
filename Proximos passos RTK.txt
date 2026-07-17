@@ -1,0 +1,146 @@
+1. Criar a Navbar e Rotas
+Atualmente, o teu App.tsx está a renderizar tudo num único ecrã, o que se tornará confuso à medida que adicionares funcionalidades.
+
+Instalar o react-router-dom.
+
+Criar uma Navbar fixa no topo para navegar entre:
+
+/dashboard (Resumo com os novos Cards).
+
+/companies (A Tabela de Gestão que planeámos).
+
+/vans e /employees.
+
+2. Transformar a Lista em Tabela Editável
+Como já tens o objeto auth no MockDb, vamos implementar a lógica de permissões real:
+
+Modo Leitura: Todos os utilizadores veem os dados.
+
+Modo Edição: Se currentUser.role === 'Admin', a tabela mostra botões de "Editar" e "Eliminar".
+
+Mapeamento: Corrigir definitivamente os campos para que taxId, email e location apareçam sem os traços vazios.
+
+3. Implementar o authSlice.ts
+Este é o passo "sénior". Precisas de um Slice no Redux que:
+
+Carregue o utilizador do MockDb no arranque.
+
+Permita "trocar de utilizador" (ex: mudar de Admin para Driver) para testares se a interface bloqueia ou permite ações conforme a Role.
+
+4. Criar os "Cards" de Visualização
+Para a página inicial (Dashboard), em vez de uma tabela densa, vamos criar Cards visuais para as 5 empresas. Cada Card mostrará o nome, localização e um indicador de "Status" ou "Frota Ativa".
+
+
+
+---
+    <div style={{ padding: "20px" }}>
+      <h1>🚐 PDMS - Gestão de Frota</h1>
+      <hr />
+      <div>
+        <h3>Lista de Funcionários</h3>
+        {employeeList.length === 0 ? (
+          <p>Nenhum funcionário encontrado no sistema.</p>
+        ) : (
+          <ul>
+            {employeeList.map((emp) => (
+              <li key={emp.id} style={{ marginBottom: "10px" }}>
+                <strong>{emp.name}</strong> - {emp.jobTitle}
+                <span
+                  style={{
+                    marginLeft: "10px",
+                    fontSize: "0.8em",
+                    padding: "2px 5px",
+                    backgroundColor:
+                      emp.status === "Active" ? "#d4edda" : "#f8d7da",
+                  }}
+                >
+                  {emp.status}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <div>
+        <h3>Vans' List</h3>
+        {vansList.length === 0 ? (
+          <p>Nenhuma van encontrada no sistema.</p>
+        ) : (
+          <ul>
+            {vansList.map((van) => (
+              <li key={van.id} style={{ marginBottom: "10px" }}>
+                <strong>{van.licensePlate}</strong> - {van.maxLoadKg}kg /{" "}
+                {van.maxVolumeM3}m³ - Inspecionada em {van.dataOfInspection} -
+                <span
+                  style={{
+                    marginLeft: "10px",
+                    fontSize: "0.8em",
+                    padding: "2px 5px",
+                    backgroundColor:
+                      van.status === "Available" ? "#d4edda" : "#e9e3ab",
+                  }}
+                >
+                  {van.status}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <div>
+        <h3>Companies' List</h3>
+        {companyList.length === 0 ? (
+          <p>Nenhuma empresa encontrada no sistema.</p>
+        ) : (
+          <ul>
+            {companyList.map((company) => (
+              <li key={company.id} style={{ marginBottom: "10px" }}>
+                <strong>{company.name}</strong> - {company.streetAdress}{" "}
+                {company.postalCode}, {company.location} - {company.email} -{" "}
+                {company.phoneNumber}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+	
+	
+	---
+	function App() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const {
+    list: employeeList,
+    loading: employeeLoading,
+    error: employeeError,
+  } = useSelector((state: RootState) => state.employees);
+
+  const {
+    list: vansList,
+    loading: vansLoading,
+    error: vansError,
+  } = useSelector((state: RootState) => state.vans);
+
+  const {
+    list: companyList,
+    loading: companyLoading,
+    error: companyError,
+  } = useSelector((state: RootState) => state.companies);
+
+  useEffect(() => {
+    dispatch(fetchEmployees());
+    dispatch(fetchVans());
+    dispatch(fetchCompanies());
+  }, [dispatch]);
+
+  if (employeeLoading) return <h2>A carregar funcionários do PDMS...</h2>;
+  if (employeeError)
+    return <h2 style={{ color: "red" }}>Erro: {employeeError}</h2>;
+  if (vansLoading) return <h2>A carregar vans do PDMS...</h2>;
+  if (vansError) return <h2 style={{ color: "red" }}>Erro: {vansError}</h2>;
+  if (companyLoading) return <h2>A carregar empresas do PDMS...</h2>;
+  if (companyError)
+    return <h2 style={{ color: "red" }}>Erro: {companyError}</h2>;
+
+  return (

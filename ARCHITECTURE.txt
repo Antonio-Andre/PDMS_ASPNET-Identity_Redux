@@ -1,0 +1,29 @@
+# Architectural Design Decisions
+
+This document outlines the patterns and technical choices implemented to ensure domain isolation and data integrity across the .NET and React/RTK boundaries.
+
+## 📐 Backend Architecture (.NET & EF Core)
+
+### 1. Data Mapper Pattern
+To prevent infrastructure and database schemas from polluting business rules:
+* **Persistence Models:** Anemic classes mapped directly to database tables via EF Core.
+* **Domain Entities:** Rich models containing business rules, invariants, and state transition logic.
+* **Mappers:** Explicit conversion layers that translate persistence models into domain objects (and vice-versa) during Repository I/O.
+
+### 2. Transaction Boundaries (ACID)
+The conversion from `Raw Product` to `Transformed Product` represents a strict business invariant. 
+* We leverage the EF Core `DbContext` as a native **Unit of Work**.
+* Both stock deduction and creation are batched into a single transaction context, ensuring that any persistence failure triggers an immediate database-level rollback.
+
+### 3. State Invariant Protection
+Vehicle states are not manipulated via arbitrary string or enum updates. State safety is enforced within the domain layer, which rejects invalid transitions (e.g., transitioning from `IDLE` directly to `DELIVERED`) before hitting the persistence layer.
+
+## 💻 Frontend Architecture (React & Redux Toolkit)
+
+### 1. Centralized State & Predictable Mutations
+Because warehouse operations involve rapid actions (such as physical barcode scanning), UI state management requires high predictability:
+* **RTK Slices:** Used to capture and handle server data deterministically.
+* **Immer Integration:** Enforces immutable state updates across rapid operational workflows.
+
+### 2. Decoupled UI State
+The frontend relies strictly on the API data contracts (DTOs) and maintains no local business logic calculations, acting purely as an operational mirror of the backend's Finite State Machine.

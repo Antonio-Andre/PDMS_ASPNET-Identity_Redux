@@ -1,0 +1,75 @@
+1. O Road Map dos 3 Workflows Essenciais
+[Workflow 1: Inbound]  -->  [Stock / Inventário]  -->  [Workflow 2: Outbound]
+  (Comprar à LusiAves)        (Controlar o Armazém)      (Vender ao Talho do Zé)
+1.1. Workflow Inbound (Entrada de Mercadoria)
+O Cenário: Precisas de abastecer o teu armazém com produtos vindos dos fornecedores.
+
+A Jornada:
+
+O Admin cria um envio do tipo Inbound, escolhe o fornecedor (ex: LusiAves, SA) e lista o que vem lá dentro (ex: 50 kg de Frango). O estado nasce como Pending.
+
+O Admin atribui uma Van disponível (ex: AA-11-BB) e um Motorista (ex: Maria Santos).
+
+A Maria vai recolher a mercadoria e o estado passa para InTransit.
+
+Quando a carrinha chega ao armazém, a mercadoria é pesada e conferida. O estado passa para Delivered.
+
+Gatilho Automático: Ao passar a Delivered, o stock do armazém aumenta automaticamente com esses produtos.
+
+1.2. Workflow de Inventário (Gestão de Stock)
+O Cenário: O coração do teu armazém. Tudo o que está guardado à espera de sair.
+
+A Jornada:
+
+O sistema mostra uma lista simples de lotes (BatchNumber), o produto, a quantidade disponível e a data de validade (ExpiryDate).
+
+Se o stock de um produto estiver a zeros, a UI deve avisar (ou impedir que seja adicionado a um envio de saída).
+
+1.3. Workflow Outbound (Saída / Distribuição)
+O Cenário: O cliente final fez uma encomenda e tu tens de ir entregar.
+
+A Jornada:
+
+O Admin cria um envio do tipo Outbound, escolhe o cliente (ex: Talho do Zé Lda) e adiciona os itens (ex: 20 kg de Frango). O estado nasce como Pending.
+
+O Admin escolhe o motorista e a carrinha.
+
+Gatilho Automático: Ao passar para InTransit (ou ao ser preparado), o stock do armazém diminui automaticamente para garantir que não vendes o mesmo frango duas vezes.
+
+O motorista entrega no destino e o estado passa a Delivered.
+
+2. Averiguação das Classes / Entidades Necessárias
+Olhando para o teu JSON atual, as tuas classes já estão muito perto disto, mas precisamos de pequenos ajustes para o fluxo funcionar. No teu C# (e consequentemente no teu TypeScript/Mock DB), precisas destas propriedades chave:
+
+Classe Shipment (O Envio)
+Id (int)
+
+RegisterNumber (string, ex: "SHIP-001")
+
+Movement (string/enum: "Inbound" ou "Outbound") -> Diz-nos se entra ou sai.
+
+Status (string/enum: "Pending", "InTransit", "Delivered", "Canceled")
+
+CompanyId (int) -> Chave estrangeira para sabermos de quem é (LusiAves) ou para quem vai (Talho do Zé).
+
+DriverId (int) -> Quem vai conduzir.
+
+VanId (int) -> Que carrinha vai usar.
+
+Items (List de ShipmentItem)
+
+TotalShipmentWeightKg (decimal)
+
+Classe Stock (O Lote no Armazém)
+Id (int)
+
+BatchNumber (string, ex: "LT-2026-001")
+
+Product (string)
+
+Quantity (decimal/int)
+
+ExpiryDate (string/DateTime)
+
+3. Próximo Passo: Atualizar a tua Mock DB (JSON)
+Para podermos ligar a lógica no Redux no passo seguinte, precisamos que os teus dados mockados reflitam exatamente este modelo, especialmente associando os shipments às companies certas através de um ID.
