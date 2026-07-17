@@ -1,0 +1,33 @@
+@hostname = http://localhost
+@port = 5193
+@url = {{hostname}}:{{port}}
+
+### Registo de um novo Funcionario1
+POST {{url}}/register
+Content-Type: application/json
+
+{
+  "name": "Milan J.",
+  "email": "milan@test.com",
+  "password": "Test123!",
+  "initials": "MJ",
+  "enableNotifications": true,
+  "department": "Logistics",
+  "taxId": "123456789",
+  "phoneNumber": "912345678"
+}
+
+### Registo de um novo Funcionario2
+POST {{url}}/register
+Content-Type: application/json
+
+{
+  "name": "Osvaldo da Silva",
+  "email": "osvasilva@test.com",
+  "password": "Test456!",
+  "initials": "OS",
+  "enableNotifications": true,
+  "department": "Sales",
+  "taxId": "287564321",
+  "phoneNumber": "918273465"
+}
