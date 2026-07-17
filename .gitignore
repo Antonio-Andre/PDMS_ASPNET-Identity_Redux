@@ -1,0 +1,14 @@
+# React / Node
+**/node_modules/
+**/dist/
+.env*.local
+
+# .NET / C#
+**/bin/
+**/obj/
+**/.vs/
+*.user
+
+# Docs
+*.txt
+*.docx

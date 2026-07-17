@@ -1,0 +1,281 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "name": "Admin Sistema",
+      "email": "admin@gdpa.pt",
+      "initials": "AS",
+      "department": "Administração",
+      "jobTitle": "Admin",
+      "status": "Active",
+      "enableNotifications": true,
+      "passwordHash": "123"
+    },
+    {
+      "id": 2,
+      "name": "Maria Santos",
+      "email": "maria.santos@gdpa.pt",
+      "initials": "MS",
+      "department": "Logística",
+      "jobTitle": "DeliveryDriver",
+      "status": "Active",
+      "enableNotifications": true,
+      "passwordHash": "123"
+    },
+    {
+      "id": 3,
+      "name": "João Silva",
+      "email": "joao.silva@gdpa.pt",
+      "initials": "JS",
+      "department": "Operações",
+      "jobTitle": "Operator",
+      "status": "Active",
+      "enableNotifications": true,
+      "passwordHash": "123"
+    }
+  ],
+  "companies": [
+    {
+      "id": 1,
+      "name": "LusiAves, SA",
+      "taxId": "999888777",
+      "streetAdress": "Zona Industrial, Lote 12",
+      "postalCode": "2500-123",
+      "location": "Caldas da Rainha",
+      "email": "geral@lusiaves.pt",
+      "phoneNumber": "+351 262 000 000",
+      "shareCapital": 500000
+    },
+    {
+      "id": 2,
+      "name": "Talho do Zé Lda",
+      "taxId": "111222333",
+      "streetAdress": "Rua Central, 45",
+      "postalCode": "4000-001",
+      "location": "Porto",
+      "email": "contacto@talhoze.pt",
+      "phoneNumber": "+351 220 000 000",
+      "shareCapital": 50000
+    },
+    {
+      "id": 3,
+      "name": "Peixaria Maré Viva",
+      "taxId": "444555666",
+      "streetAdress": "Avenida do Mar, 10",
+      "postalCode": "2520-456",
+      "location": "Peniche",
+      "email": "info@mareviva.pt",
+      "phoneNumber": "+351 262 111 222",
+      "shareCapital": 25000
+    },
+    {
+      "id": 4,
+      "name": "Logística Rápida",
+      "taxId": "777888999",
+      "streetAdress": "Plataforma Logística Norte",
+      "postalCode": "1000-789",
+      "location": "Lisboa",
+      "email": "apoio@lograpida.com",
+      "phoneNumber": "+351 210 999 888",
+      "shareCapital": 1000000
+    },
+    {
+      "id": 5,
+      "name": "Frutas do Oeste",
+      "taxId": "222333444",
+      "streetAdress": "Estrada Nacional 8, Km 45",
+      "postalCode": "2560-001",
+      "location": "Torres Vedras",
+      "email": "vendas@frutasoeste.pt",
+      "phoneNumber": "+351 261 333 444",
+      "shareCapital": 150000
+    }
+  ],
+  "vans": [
+    {
+      "id": 1,
+      "licensePlate": "AA-11-BB",
+      "dataOfInspection": "2024-12-15",
+      "maxLoadKg": 1200,
+      "maxVolumeM3": 8.5,
+      "status": "Available"
+    },
+    {
+      "id": 2,
+      "licensePlate": "CC-22-DD",
+      "dataOfInspection": "2025-05-20",
+      "maxLoadKg": 3500,
+      "maxVolumeM3": 15,
+      "status": "Loading"
+    },
+    {
+      "id": 3,
+      "licensePlate": "EE-33-FF",
+      "dataOfInspection": "2024-08-10",
+      "maxLoadKg": 850,
+      "maxVolumeM3": 5.2,
+      "status": "BrokenOrMaintence"
+    },
+    {
+      "id": 4,
+      "licensePlate": "GG-44-HH",
+      "dataOfInspection": "2025-01-30",
+      "maxLoadKg": 2200,
+      "maxVolumeM3": 12,
+      "status": "Loading"
+    },
+    {
+      "id": 5,
+      "licensePlate": "II-55-JJ",
+      "dataOfInspection": "2024-11-05",
+      "maxLoadKg": 1500,
+      "maxVolumeM3": 10,
+      "status": "Available"
+    }
+  ],
+  "stock": [
+    {
+      "id": 1,
+      "batchNumber": "FR-001",
+      "product": "RoastedChicken",
+      "quantity": 100,
+      "unit": "Pack",
+      "source": "LusiAves",
+      "expiryDate": "2024-06-01"
+    },
+    {
+      "id": 2,
+      "batchNumber": "AR-99",
+      "product": "DuckRice",
+      "quantity": 45,
+      "unit": "Pack",
+      "source": "Cozinha Central",
+      "expiryDate": "2024-05-25"
+    }
+  ],
+  "shipments": [
+    {
+      "id": 1,
+      "registerNumber": "SHIP-001",
+      "movement": "Inbound",
+      "status": "Delivered",
+      "items": [
+        {
+          "id": 101,
+          "product": "RoastedChicken_Unit",
+          "quantity": 20,
+          "itemWeightKg": 1.2
+        },
+        {
+          "id": 102,
+          "product": "ChickenMeat_Box_5kg",
+          "quantity": 10,
+          "itemWeightKg": 5.0
+        }
+      ],
+      "RegisterData": "2024-03-10T08:00:00Z",
+      "SLAExpiration": "2024-03-12T18:00:00Z",
+      "DateOfDeliveryOrReturn": "2024-03-11T14:30:00Z",
+      "TotalShipmentWeightKg": 74.0,
+      "DriverId": 1,
+      "VanId": 1,
+      "Observations": "Morning delivery"
+    },
+    {
+      "id": 2,
+      "registerNumber": "SHIP-002",
+      "movement": "Inbound",
+      "status": "InTransit",
+      "items": [
+        {
+          "id": 103,
+          "product": "DuckRice_Indiv_P10",
+          "quantity": 15,
+          "itemWeightKg": 4.5
+        }
+      ],
+      "RegisterData": "2024-03-11T09:00:00Z",
+      "SLAExpiration": "2024-03-13T18:00:00Z",
+      "DateOfDeliveryOrReturn": null,
+      "TotalShipmentWeightKg": 67.5,
+      "DriverId": 3,
+      "VanId": 2,
+      "Observations": "Handle with care"
+    },
+    {
+      "id": 3,
+      "registerNumber": "SHIP-003",
+      "movement": "Outbound",
+      "status": "InTransit",
+      "items": [
+        {
+          "id": 104,
+          "product": "ChickenEggs_M_Grade_30",
+          "quantity": 50,
+          "itemWeightKg": 1.8
+        },
+        {
+          "id": 105,
+          "product": "TurkeyMeat_Box_10kg",
+          "quantity": 5,
+          "itemWeightKg": 10.0
+        },
+        {
+          "id": 106,
+          "product": "ChickenStock_750ml_P4",
+          "quantity": 10,
+          "itemWeightKg": 3.2
+        }
+      ],
+      "RegisterData": "2024-03-11T10:30:00Z",
+      "SLAExpiration": "2024-03-12T20:00:00Z",
+      "DateOfDeliveryOrReturn": null,
+      "TotalShipmentWeightKg": 180.0,
+      "DriverId": 2,
+      "VanId": 3,
+      "Observations": "Direct to Buyer A"
+    },
+    {
+      "id": 4,
+      "registerNumber": "SHIP-004",
+      "movement": "Outbound",
+      "status": "Pending",
+      "items": [
+        {
+          "id": 105,
+          "product": "QuailEggs_Pack_12",
+          "quantity": 50,
+          "itemWeightKg": 0.25
+        }
+      ],
+      "RegisterData": "2024-03-12T07:45:00Z",
+      "SLAExpiration": "2024-03-14T12:00:00Z",
+      "DateOfDeliveryOrReturn": null,
+      "TotalShipmentWeightKg": 12.5,
+      "DriverId": 1,
+      "VanId": 1,
+      "Observations": "High demand items"
+    },
+    {
+      "id": 5,
+      "registerNumber": "SHIP-005",
+      "movement": "Outbound",
+      "status": "Delivered",
+      "items": [
+        {
+          "id": 106,
+          "product": "ChickenStroganoff_400g",
+          "quantity": 40,
+          "itemWeightKg": 0.4
+        }
+      ],
+      "RegisterData": "2024-03-09T15:00:00Z",
+      "SLAExpiration": "2024-03-10T15:00:00Z",
+      "DateOfDeliveryOrReturn": "2024-03-10T10:00:00Z",
+      "TotalShipmentWeightKg": 16.0,
+      "DriverId": 3,
+      "VanId": 3,
+      "Observations": "Completed on time"
+    }
+  ]
+}

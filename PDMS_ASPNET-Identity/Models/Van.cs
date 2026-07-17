@@ -1,0 +1,22 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PDMS.Models
+{
+    public class Van
+    {
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "A matrícula é obrigatória.")]
+        [RegularExpression(@"^[A-Z]{2}-[0-9]{2}-[A-Z]{2}$", ErrorMessage = "Formato de matrícula inválido.")]
+        public string LicensePlate { get; set; } = string.Empty; 
+
+        [Required(ErrorMessage = "A data da inspeção é obrigatória.")]
+        public DateOnly DataOfInspection { get; set; }
+
+        [Range(typeof(decimal), "100.0", "350.0", ErrorMessage = "A carga máxima deve ser entre 1kg e 30000kg.")]
+        public decimal MaxLoadKg { get; set; }
+
+        public VanStatus Status { get; set; } = VanStatus.Available;
+    }
+
+}
