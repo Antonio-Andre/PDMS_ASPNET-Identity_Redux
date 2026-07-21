@@ -1,0 +1,51 @@
+1. Visão do Produto e Problema de Negócio (O "Why")
+Em vez de começares logo com "Este é um projeto em React e C#", começas pelo problema real:
+
+"O PDMS é um sistema B2B concebido para resolver o rastreio de lote e a gestão de perecíveis na indústria alimentar. Permite a monitorização em tempo real desde a receção de matéria-prima até ao transporte por frota própria."
+
+2. Escolhas de Arquitetura e Decisões Técnicas (ADR - Architecture Decision Records)
+Esta é a secção que destrói a concorrência nas entrevistas. Cria uma secção onde justificas o porquê de cada tecnologia:
+
+C# / .NET 9: Escolhido pela tipagem forte, performance no processamento do motor de regras de negócio e facilidade de integração empresarial.
+
+Redux Toolkit (RTK): Adotado para criar uma Single Source of Truth no Frontend, otimizando o estado da autenticação e prevenindo chamadas à API desnecessárias na listagem de stocks.
+
+Paginação no Backend (Skip/Take): Explicar por que não paginaste no React (redução do payload de rede, menor consumo de memória no cliente, query otimizada no banco de dados).
+
+Containerização (Docker): Isolamento do ambiente de SGBD para garantir reprodutibilidade total (Developer Experience pronta a usar).
+
+3. Diagrama do Fluxo de Dados e Arquitetura
+Usa uma ferramenta gratuita como o Mermaid.js (que renderiza diagramas nativamente dentro do Markdown do GitHub) para desenhar:
+
+Arquitetura de Unidades: React (UI/RTK) ➔ API REST C# (Controllers ➔ Services ➔ EF Core) ➔ PostgreSQL/SQL Server (Docker).
+
+Fluxo de Dados: Como um Lote entra no Stock e é transformado num Registo de Produção.
+
+4. Estrutura e Especificação de API (OpenAPI / Swagger)
+Como definiste rigorosamente os DTOs para cada domínio (Stocks, Empresas, Frota, RH), a tua API está desenhada segundo o padrão RESTful.
+
+Garante que o Swagger gera uma documentação limpa ou exporta a coleção do Postman para a pasta /docs.
+
+O Próximo Passo: O Segundo Projeto (Da Ideia ao Código)
+O teu plano de fazer um segundo projeto começando no cliente (Requirements Engineering) é brilhante. É exatamente assim que os Tech Leads e Product Engineers trabalham.
+
+Quando acabares este MVP e fores arrancar esse projeto, o fluxo completo de Engenharia de Software será:
+
+1. Entrevista / Briefing com Cliente (Fictício ou Real)
+   └─► 2. Especificação de Requisitos (User Stories & Acceptance Criteria)
+        └─► 3. Casos de Uso (Use Cases) e Diagramas UML
+             └─► 4. Modelo de Dados (DER / Entidades)
+                  └─► 5. Desenho das Telas (Wireframes / Figma)
+                       └─► 6. Desenvolvimento do Código (C# / React)
+					   
+
+O impacto de ter isto no teu portfólio:
+Quando um recrutador ou Engineering Manager olhar para o teu GitHub e vir:
+
+Projeto 1 (PDMS): Um MVP tecnicamente impecável, limpo, paginado, com DTOs seguros, containerizado e bem estruturado.
+
+Projeto 2: A jornada completa desde o levantamento de requisitos de um cliente real/hipotético até ao produto final.
+
+Eles deixam de olhar para ti como "mais um aluno de informática que sabe fazer uns for loops e uns useEffects" e passam a olhar para ti como um Engenheiro de Software Júnior/Mid pronto a produzir valor no primeiro dia de trabalho.
+
+Concentra-te agora em fechar as últimas rotas e o frontend deste MVP. Estás no caminho certo!

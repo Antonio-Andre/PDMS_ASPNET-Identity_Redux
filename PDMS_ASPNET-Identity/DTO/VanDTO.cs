@@ -12,14 +12,20 @@ namespace PDMS.DTO
     );
 
     public record CreateVanDTO(
-        [Required][RegularExpression(@"^[A-Z]{2}-[0-9]{2}-[A-Z]{2}$")] string LicensePlate,
-        [Required] DateOnly DataOfInspection,
-        [Range(100.0, 350.0)] decimal MaxLoadKg
+        [Required]
+        [RegularExpression(@"^[A-Z]{2}-[0-9]{2}-[A-Z]{2}$")]
+        string LicensePlate,
+
+        [Required] 
+        DateOnly DataOfInspection,
+
+        [Required]
+        [Range(100.0, 350.0, ErrorMessage = "A carga máxima deve estar entre 100kg e 350kg.")] 
+        decimal MaxLoadKg
     );
 
     public record UpdateVanDTO(
         DateOnly DataOfInspection,
-        decimal MaxLoadKg,
         VanStatus Status
     );
 }

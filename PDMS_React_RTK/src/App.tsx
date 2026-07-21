@@ -88,7 +88,13 @@ function App() {
               />
               <Route
                 path="/vans"
-                element={<VansView vans={vansList} isLoading={vansLoading} />}
+                element={
+                  <VansView
+                    vans={vansList}
+                    isLoading={vansLoading}
+                    onAssign={(/*regNumber, vanId*/) => {}}
+                  />
+                }
               />
               <Route
                 path="/employees"

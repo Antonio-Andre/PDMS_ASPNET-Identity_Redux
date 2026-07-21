@@ -1,5 +1,5 @@
 import React from "react";
-import type { Van, Shipment } from "../types";
+import type { Van } from "../types";
 
 // --- Estilos ---
 const cardStyle: React.CSSProperties = {
