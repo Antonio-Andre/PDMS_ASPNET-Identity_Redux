@@ -2,8 +2,8 @@
 @port = 5193
 @url = {{hostname}}:{{port}}
 
-### Registo de um novo Funcionario1
-POST {{url}}/register
+### Registo de um novo Employee1
+POST {{url}}/api/employees
 Content-Type: application/json
 
 {
@@ -17,8 +17,8 @@ Content-Type: application/json
   "phoneNumber": "912345678"
 }
 
-### Registo de um novo Funcionario2
-POST {{url}}/register
+### Registo de um novo Employee2
+POST {{url}}/api/employees
 Content-Type: application/json
 
 {

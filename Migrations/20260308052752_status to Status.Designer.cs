@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PDMS.Data;
 
@@ -11,9 +12,11 @@ using PDMS.Data;
 namespace PDMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260308052752_status to Status")]
+    partial class statustoStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -335,38 +338,6 @@ namespace PDMS.Migrations
                     b.ToTable("AspNetUsers", "identity");
                 });
 
-            modelBuilder.Entity("PDMS.Models.ReturnedItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BatchNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("QuantityReturned")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("RejectionReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ReturnedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ShipmentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShipmentId");
-
-                    b.ToTable("ReturnedItems", "identity");
-                });
-
             modelBuilder.Entity("PDMS.Models.Shipment", b =>
                 {
                     b.Property<int>("Id")
@@ -438,14 +409,7 @@ namespace PDMS.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("QuantityDelivered")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("ShipmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -582,15 +546,6 @@ namespace PDMS.Migrations
                     b.Navigation("BusinessGroup");
                 });
 
-            modelBuilder.Entity("PDMS.Models.ReturnedItem", b =>
-                {
-                    b.HasOne("PDMS.Models.Shipment", null)
-                        .WithMany("ReturnedItems")
-                        .HasForeignKey("ShipmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("PDMS.Models.ShipmentItem", b =>
                 {
                     b.HasOne("PDMS.Models.Shipment", null)
@@ -608,8 +563,6 @@ namespace PDMS.Migrations
             modelBuilder.Entity("PDMS.Models.Shipment", b =>
                 {
                     b.Navigation("Items");
-
-                    b.Navigation("ReturnedItems");
                 });
 #pragma warning restore 612, 618
         }

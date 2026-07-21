@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
-using test_Identity_from_Scratch.Models;
+using PDMS.Models;
 
-namespace test_Identity_from_Scratch.Data;
+namespace PDMS.Data;
 
 
 public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int>, int>
@@ -12,27 +12,45 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options){}
 
-    public DbSet<Stock> Stocks { get; set; }
+    public DbSet<Stock> Stock { get; set; }
     public DbSet<Van> Vans { get; set; }
-    public DbSet<Delivery> Deliveries { get; set; }
+    public DbSet<Shipment> Deliveries { get; set; }
+    public DbSet<ShipmentItem> ShipmentItems { get; set; }
+    public DbSet<ReturnedItem> ReturnedItems { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Company> Companies { get; set; }
-    public DbSet<HoldingCompany> HoldingCompanies { get; set; }
+    public DbSet<BusinessGroup> BusinessGroups { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
-        // Unicidade de Matrícula
         builder.Entity<Van>()
             .HasIndex(c => c.LicensePlate).IsUnique();
+        
         builder.Entity<Employee>()
-            .HasIndex(f => f.taxId).IsUnique();
-        builder.Entity<Company>()
-            .HasIndex(e => e.taxId).IsUnique();
+            .HasIndex(f => f.TaxId).IsUnique();
+        
+        builder.Entity<Employee>()
+            .Property(e => e.Email)
+            .IsRequired();
 
-        builder.Entity<Delivery>()
-            .HasIndex(e => e.RegisterNumber).IsUnique();
+        builder.Entity<Company>(entity =>
+        {
+            entity.HasIndex(e => e.TaxId).IsUnique();
+            entity.Property(c => c.ShareCapital).HasColumnType("decimal(18,2)");
+        });
+
+        builder.Entity<Shipment>(entity =>
+        {
+            entity.HasIndex(s => s.RegisterNumber).IsUnique(); 
+        });
+
+        builder.Entity<ShipmentItem>()
+            .HasOne<Shipment>()         
+            .WithMany(s => s.Items)       
+            .HasForeignKey(i => i.ShipmentId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<Employee>(entity =>
         {
@@ -43,7 +61,7 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
 
         foreach (var property in builder.Model.GetEntityTypes()
         .SelectMany(t => t.GetProperties())
-        .Where(p => p.ClrType == typeof(decimal)))
+        .Where(p => p.ClrType == typeof(decimal) || p.ClrType == typeof(decimal?)))
         {
             property.SetPrecision(18);
             property.SetScale(2);

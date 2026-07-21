@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace test_Identity_from_Scratch.Migrations
+namespace PDMS.Migrations
 {
     /// <inheritdoc />
-    public partial class RenameTaxIdAndDepartment : Migration
+    public partial class CreateBussinessGroup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,12 +41,12 @@ namespace test_Identity_from_Scratch.Migrations
                     EnableNotifications = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     Initials = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
                     Department = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    taxId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TaxId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DateOfAdmission = table.Column<DateOnly>(type: "date", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -65,25 +65,18 @@ namespace test_Identity_from_Scratch.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Companies",
+                name: "BusinessGroups",
                 schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    taxId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    StreetAdress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IndustryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShareCapital = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false)
+                    TaxId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Companies", x => x.Id);
+                    table.PrimaryKey("PK_BusinessGroups", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -96,11 +89,11 @@ namespace test_Identity_from_Scratch.Migrations
                     RegisterNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     RegisterData = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WeightKg = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    movement = table.Column<int>(type: "int", nullable: false),
+                    Movement = table.Column<int>(type: "int", nullable: false),
                     Item = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     status = table.Column<int>(type: "int", nullable: false),
-                    DataEntregaOuDevolucao = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Observacoes = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    DateOfDeliveryOrReturn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Observations = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -263,24 +256,32 @@ namespace test_Identity_from_Scratch.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HoldingCompanies",
+                name: "Companies",
                 schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CompanyId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BusinessGroupId = table.Column<int>(type: "int", nullable: true),
+                    TaxId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StreetAdress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IndustryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShareCapital = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HoldingCompanies", x => x.Id);
+                    table.PrimaryKey("PK_Companies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HoldingCompanies_Companies_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_Companies_BusinessGroups_BusinessGroupId",
+                        column: x => x.BusinessGroupId,
                         principalSchema: "identity",
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "BusinessGroups",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -322,10 +323,10 @@ namespace test_Identity_from_Scratch.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_taxId",
+                name: "IX_AspNetUsers_TaxId",
                 schema: "identity",
                 table: "AspNetUsers",
-                column: "taxId",
+                column: "TaxId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -337,10 +338,16 @@ namespace test_Identity_from_Scratch.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Companies_taxId",
+                name: "IX_Companies_BusinessGroupId",
                 schema: "identity",
                 table: "Companies",
-                column: "taxId",
+                column: "BusinessGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Companies_TaxId",
+                schema: "identity",
+                table: "Companies",
+                column: "TaxId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -349,12 +356,6 @@ namespace test_Identity_from_Scratch.Migrations
                 table: "Deliveries",
                 column: "RegisterNumber",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HoldingCompanies_CompanyId",
-                schema: "identity",
-                table: "HoldingCompanies",
-                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vans_LicensePlate",
@@ -388,11 +389,11 @@ namespace test_Identity_from_Scratch.Migrations
                 schema: "identity");
 
             migrationBuilder.DropTable(
-                name: "Deliveries",
+                name: "Companies",
                 schema: "identity");
 
             migrationBuilder.DropTable(
-                name: "HoldingCompanies",
+                name: "Deliveries",
                 schema: "identity");
 
             migrationBuilder.DropTable(
@@ -412,7 +413,7 @@ namespace test_Identity_from_Scratch.Migrations
                 schema: "identity");
 
             migrationBuilder.DropTable(
-                name: "Companies",
+                name: "BusinessGroups",
                 schema: "identity");
         }
     }

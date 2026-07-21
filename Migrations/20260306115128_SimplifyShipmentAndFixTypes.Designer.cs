@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using test_Identity_from_Scratch.Data;
+using PDMS.Data;
 
 #nullable disable
 
-namespace test_Identity_from_Scratch.Migrations
+namespace PDMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260220174448_RenameTaxIdAndDepartment")]
-    partial class RenameTaxIdAndDepartment
+    [Migration("20260306115128_SimplifyShipmentAndFixTypes")]
+    partial class SimplifyShipmentAndFixTypes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,27 @@ namespace test_Identity_from_Scratch.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BusinessGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaxId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BusinessGroups", "identity");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
                 {
@@ -159,13 +180,16 @@ namespace test_Identity_from_Scratch.Migrations
                     b.ToTable("AspNetUserTokens", "identity");
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.Company", b =>
+            modelBuilder.Entity("PDMS.Models.Company", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BusinessGroupId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -191,7 +215,7 @@ namespace test_Identity_from_Scratch.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("ShareCapital")
+                    b.Property<decimal?>("ShareCapital")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
@@ -199,64 +223,21 @@ namespace test_Identity_from_Scratch.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("taxId")
+                    b.Property<string>("TaxId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("taxId")
+                    b.HasIndex("BusinessGroupId");
+
+                    b.HasIndex("TaxId")
                         .IsUnique();
 
                     b.ToTable("Companies", "identity");
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.Delivery", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("DataEntregaOuDevolucao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Item")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Observacoes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RegisterData")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RegisterNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("WeightKg")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("movement")
-                        .HasColumnType("int");
-
-                    b.Property<int>("status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RegisterNumber")
-                        .IsUnique();
-
-                    b.ToTable("Deliveries", "identity");
-                });
-
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.Employee", b =>
+            modelBuilder.Entity("PDMS.Models.Employee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -279,6 +260,7 @@ namespace test_Identity_from_Scratch.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -329,16 +311,16 @@ namespace test_Identity_from_Scratch.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("TaxId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("taxId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -350,13 +332,13 @@ namespace test_Identity_from_Scratch.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("taxId")
+                    b.HasIndex("TaxId")
                         .IsUnique();
 
                     b.ToTable("AspNetUsers", "identity");
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.HoldingCompany", b =>
+            modelBuilder.Entity("PDMS.Models.Shipment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -364,17 +346,80 @@ namespace test_Identity_from_Scratch.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CompanyId")
+                    b.Property<DateTime?>("DateOfDeliveryOrReturn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DriverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Movement")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Observations")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegisterData")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RegisterNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("SLAExpiration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TotalShipmentWeightKg")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("VanId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("RegisterNumber")
+                        .IsUnique();
 
-                    b.ToTable("HoldingCompanies", "identity");
+                    b.ToTable("Deliveries", "identity");
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.Stock", b =>
+            modelBuilder.Entity("PDMS.Models.ShipmentItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BatchNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("ItemWeightKg")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Product")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShipmentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShipmentId");
+
+                    b.ToTable("ShipmentItems", "identity");
+                });
+
+            modelBuilder.Entity("PDMS.Models.Stock", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -411,7 +456,7 @@ namespace test_Identity_from_Scratch.Migrations
                     b.ToTable("Stocks", "identity");
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.Van", b =>
+            modelBuilder.Entity("PDMS.Models.Van", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -455,7 +500,7 @@ namespace test_Identity_from_Scratch.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("test_Identity_from_Scratch.Models.Employee", null)
+                    b.HasOne("PDMS.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -464,7 +509,7 @@ namespace test_Identity_from_Scratch.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("test_Identity_from_Scratch.Models.Employee", null)
+                    b.HasOne("PDMS.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -479,7 +524,7 @@ namespace test_Identity_from_Scratch.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("test_Identity_from_Scratch.Models.Employee", null)
+                    b.HasOne("PDMS.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -488,22 +533,39 @@ namespace test_Identity_from_Scratch.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("test_Identity_from_Scratch.Models.Employee", null)
+                    b.HasOne("PDMS.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("test_Identity_from_Scratch.Models.HoldingCompany", b =>
+            modelBuilder.Entity("PDMS.Models.Company", b =>
                 {
-                    b.HasOne("test_Identity_from_Scratch.Models.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
+                    b.HasOne("BusinessGroup", "BusinessGroup")
+                        .WithMany("Companies")
+                        .HasForeignKey("BusinessGroupId");
+
+                    b.Navigation("BusinessGroup");
+                });
+
+            modelBuilder.Entity("PDMS.Models.ShipmentItem", b =>
+                {
+                    b.HasOne("PDMS.Models.Shipment", null)
+                        .WithMany("Items")
+                        .HasForeignKey("ShipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.Navigation("Company");
+            modelBuilder.Entity("BusinessGroup", b =>
+                {
+                    b.Navigation("Companies");
+                });
+
+            modelBuilder.Entity("PDMS.Models.Shipment", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

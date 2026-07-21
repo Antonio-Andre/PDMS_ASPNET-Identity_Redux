@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity; // Adicionar este namespace
+using PDMS.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace test_Identity_from_Scratch.Models
+namespace PDMS.Models
 {
     // Herdando de IdentityUser<int> para usar IDs inteiros
     public class Employee : IdentityUser<int>
@@ -22,7 +23,7 @@ namespace test_Identity_from_Scratch.Models
 
         [Required]
         [RegularExpression(@"^\d{9}$", ErrorMessage = "taxId must have exactly 9 dígits.")]
-        public string taxId { get; set; } = string.Empty;
+        public string TaxId { get; set; } = string.Empty;
 
         public DateOnly DateOfAdmission { get; set; }
 
@@ -31,3 +32,4 @@ namespace test_Identity_from_Scratch.Models
         public EmployeeStatus Status { get; set; } = EmployeeStatus.Active;
     }
 }
+

@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using System.Security.Claims;
-using test_Identity_from_Scratch.Data;
-using test_Identity_from_Scratch.Features;
-using test_Identity_from_Scratch.Models;
+using PDMS.Data;
+using PDMS.Models;
+using PDMS.Services;
+using PDMS.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,14 @@ builder.Services.AddSwaggerGen(c =>
     c.DocumentFilter<SwaggerHideNativeRegisterFilter>();
 });
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactPolicy", policy =>
@@ -21,7 +30,7 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:3000") // Onde o teu React vai morar
               .AllowAnyHeader()                     
               .AllowAnyMethod()                    
-              .AllowCredentials();                  // OBRIGATÓRIO para os Cookies funcionarem!
+              .AllowCredentials();                  
     });
 });
 
@@ -37,6 +46,13 @@ builder.Services.AddIdentityCore<Employee>()
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); //need to re-check this later
+
+builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<CompanyService>();
+builder.Services.AddScoped<VanService>();
+builder.Services.AddScoped<ShipmentService>();
+//builder.Services.AddScoped<ShipmentItemService>();
+builder.Services.AddScoped<StockService>();
 
 var app = builder.Build();
 
@@ -72,7 +88,13 @@ app.UseCors("ReactPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
-RegisterUser.MapEndpoint(app);
+app.RegisterEmployeeEndpoints();
+app.RegisterCompanyEndpoints();
+app.RegisterVanEndpoints();
+app.RegisterShipmentEndpoints();
+app.RegisterStockEndpoints();
+
+
 app.MapIdentityApi<Employee>();
 
 app.Run();

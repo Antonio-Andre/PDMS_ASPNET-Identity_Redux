@@ -1,10 +1,10 @@
-﻿using test_Identity_from_Scratch.Models;
+﻿using PDMS.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 
 
-namespace test_Identity_from_Scratch.Data
+namespace PDMS.Data
 {
     public static class DbInitializer
     {
@@ -42,7 +42,7 @@ namespace test_Identity_from_Scratch.Data
                     EmailConfirmed = true,
                     Name = "Admin Sistema",
                     Department = "Administração",
-                    taxId = "109999999",
+                    TaxId = "109999999",
                     PhoneNumber = "123456789",
                     DateOfAdmission = DateOnly.FromDateTime(DateTime.Now),
                     Status = EmployeeStatus.Active,
@@ -68,51 +68,48 @@ namespace test_Identity_from_Scratch.Data
         }
         private static void SeedCompanies(ApplicationDbContext context)
         {
-            if (context.Companies.Any()) return;
+            if (context.BusinessGroups.Any()) return;
+
+            var grupoLusi = new BusinessGroup
+            {
+                Name = "Grupo LusiAves",
+                TaxId = "500111222" 
+            };
+
+            context.BusinessGroups.Add(grupoLusi);
+            context.SaveChanges(); 
 
             var companies = new Company[]
             {
-            new Company
-            {
-                Name = "LusiAves, SA",
-                taxId = "999888777",
-                PhoneNumber = "210210210",
-                Email = "contacto@lusiaves.pt",
-                StreetAdress = "Rua Principal, 123",
-                PostalCode = "2500-000",
-                Location = "Caldas da Rainha",
-                IndustryCode = "10120",
-                ShareCapital = 500000.00m
-            },
-            new Company
-            {
-                Name = "Talho do Zé Lda",
-                taxId = "111222333",
-                PhoneNumber = "220220220",
-                Email = "ze@talho.pt",
-                StreetAdress = "Rua Secundária, 45",
-                PostalCode = "4000-000",
-                Location = "Porto",
-                IndustryCode = "47220",
-                ShareCapital = 50000.00m
-            }
-
+        new Company
+        {
+            BusinessGroupId = grupoLusi.Id,
+            Name = "LusiAves, SA",
+            TaxId = "999888777",
+            PhoneNumber = "210210210",
+            Email = "contacto@lusiaves.pt",
+            StreetAdress = "Rua Principal, 123",
+            PostalCode = "2500-000",
+            Location = "Caldas da Rainha",
+            IndustryCode = "10120",
+            ShareCapital = 500000.00m
+        },
+        new Company
+        {
+            Name = "Talho do Zé Lda",
+            TaxId = "111222333",
+            PhoneNumber = "220220220",
+            Email = "ze@talho.pt",
+            StreetAdress = "Rua Secundária, 45",
+            PostalCode = "4000-000",
+            Location = "Porto",
+            IndustryCode = "47220",
+            ShareCapital = 50000.00m
+        }
             };
+
             context.Companies.AddRange(companies);
             context.SaveChanges();
-
-            if (context.HoldingCompanies.Any()) return;
-
-            var lusiAves = context.Companies.FirstOrDefault(e => e.taxId == "999888777");
-
-            if (lusiAves != null)
-            {
-                context.HoldingCompanies.Add(new HoldingCompany
-                {
-                    CompanyId = lusiAves.Id
-                });
-                context.SaveChanges();
-            }
         }
 
         private static void SeedVans(ApplicationDbContext context)
@@ -126,7 +123,6 @@ namespace test_Identity_from_Scratch.Data
                     LicensePlate = "AA-11-BB",
                     DataOfInspection = new DateOnly(2024, 12, 15),
                     MaxLoadKg = 1200.0m,
-                    MaxVolumeM3 = 8.5,
                     Status = VanStatus.Available
                 },
                 new Van
@@ -134,7 +130,6 @@ namespace test_Identity_from_Scratch.Data
                     LicensePlate = "CC-22-DD",
                     DataOfInspection = new DateOnly(2025, 05, 20),
                     MaxLoadKg = 3500.0m,
-                    MaxVolumeM3 = 15.0,
                     Status = VanStatus.Loading
                 },
                 new Van
@@ -142,7 +137,6 @@ namespace test_Identity_from_Scratch.Data
                     LicensePlate = "EE-33-FF",
                     DataOfInspection = new DateOnly(2024, 08, 10),
                     MaxLoadKg = 850.0m,
-                    MaxVolumeM3 = 5.2,
                     Status = VanStatus.BrokenOrMaintence
                 },
                 new Van
@@ -150,7 +144,6 @@ namespace test_Identity_from_Scratch.Data
                     LicensePlate = "GG-44-HH",
                     DataOfInspection = new DateOnly(2025, 01, 30),
                     MaxLoadKg = 2200.0m,
-                    MaxVolumeM3 = 12.0,
                     Status = VanStatus.Loading
                 },
                 new Van
@@ -158,7 +151,6 @@ namespace test_Identity_from_Scratch.Data
                     LicensePlate = "II-55-JJ",
                     DataOfInspection = new DateOnly(2024, 11, 05),
                     MaxLoadKg = 1500.0m,
-                    MaxVolumeM3 = 10.0,
                     Status = VanStatus.Available
                 }
             };
