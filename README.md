@@ -1,2 +1,2 @@
-# PDMS_ASPNET-Identity_Redux
+# PDMS_ASPNET-Identity_RKT (Redux Tool Kit)
 Poultry Distribution Management System (PDMS)
