@@ -1,50 +1,32 @@
-# Internal OMS/WMS & Fleet State Orchestrator
+# PDMS - Platform Data Management System
 
-An internal back-office system focused on physical warehouse management, atomic SKU transformation (Kitting), and minimalist fleet logistics. Engineered with a **.NET API (EF Core)** backend and a **React (Redux Toolkit)** frontend.
+Full-stack back-office application designed for physical warehouse management, stock tracking, and fleet operations.
 
-This software contains no public-facing storefronts, e-commerce layers, shipping rate calculators, or geospatial routing engines.
+## Tech Stack
 
-## 🚀 Quick Start
+- Backend: C# / .NET 8, ASP.NET Core Web API, Entity Framework Core
+- Frontend: React, Redux Toolkit (RTK)
+- Database: SQL Server / EF Core Migrations
 
-### Prerequisites
-* .NET SDK (v8.0+)
-* Node.js (v20+)
-* Docker (for local database instance)
+## Project Structure
 
-### Backend Setup (.NET)
-```bash
-cd backend/WmsAPI
-docker-compose up -d
-dotnet ef database update
-dotnet run
-```
+- PDMS_ASPNET-Identity/: REST API backend handling business logic, identity/auth, and data persistence.
+- PDMS_React_RTK/: React frontend UI integrated with Redux Toolkit for state management.
 
-### Frontend Setup (React + RTK)
-```bash
-cd frontend
-npm install
-npm run dev
-```
+## How to Run
 
-### Running Tests
-```bash
-cd backend/WmsAPI.Tests
-dotnet test
-```
+1. Backend Setup (.NET)
+   cd PDMS_ASPNET-Identity
+   dotnet ef database update
+   dotnet run
 
-## ⚙️ Fleet Finite State Machine (FSM)
+2. Frontend Setup (React)
+   cd PDMS_React_RTK
+   npm install
+   npm run start
 
-The operational state of vehicles and cargo manifests is managed through strict, deterministic state transitions:
+## Repository Branches
 
-```mermaid
-graph LR
-    IDLE([IDLE]) --> LOADING[LOADING]
-    LOADING --> LOADED[LOADED]
-    LOADING --> IDLE
-    LOADED --> OUT_FOR_DELIVERY[OUT_FOR_DELIVERY]
-    OUT_FOR_DELIVERY --> DELIVERED[DELIVERED]
-    DELIVERED --> RETURNING[RETURNING]
-    RETURNING --> IDLE
-```
-
-*For a detailed look into the architectural patterns, design decisions, and EF Core/RTK implementations, see [ARCHITECTURE.md](./ARCHITECTURE.md).*
+- main: Stable full-stack application.
+- staging_branch: Integration branch for ongoing full-stack development.
+- independent_MockFrontend: Standalone frontend demo running strictly on local mock data.
