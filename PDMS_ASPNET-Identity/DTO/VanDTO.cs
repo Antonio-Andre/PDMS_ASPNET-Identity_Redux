@@ -1,31 +1,35 @@
-﻿using PDMS.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using PDMS.Models;
 
 namespace PDMS.DTO
 {
     public record VanResponseDTO(
         int Id,
         string LicensePlate,
-        DateOnly DataOfInspection,
+        DateOnly InspectionDate,
         decimal MaxLoadKg,
+        decimal? CurrentLoadKg,
         string Status
     );
 
     public record CreateVanDTO(
-        [Required]
-        [RegularExpression(@"^[A-Z]{2}-[0-9]{2}-[A-Z]{2}$")]
+        [Required(ErrorMessage = "License plate is required.")]
+        [RegularExpression(@"^[A-Z]{2}-[0-9]{2}-[A-Z]{2}$", ErrorMessage = "Invalid license plate format.")]
         string LicensePlate,
 
-        [Required] 
-        DateOnly DataOfInspection,
+        [Required(ErrorMessage = "Inspection date is required.")]
+        DateOnly InspectionDate,
 
-        [Required]
-        [Range(100.0, 350.0, ErrorMessage = "A carga máxima deve estar entre 100kg e 350kg.")] 
-        decimal MaxLoadKg
+        [Required(ErrorMessage = "Max load is required.")]
+        [Range(100.0, 350.0, ErrorMessage = "Max load must be between 100kg and 350kg.")]
+        decimal MaxLoadKg,
+
+        decimal? CurrentLoadKg = null
     );
 
     public record UpdateVanDTO(
-        DateOnly DataOfInspection,
-        VanStatus Status
+        DateOnly InspectionDate,
+        VanStatus Status,
+        decimal? CurrentLoadKg
     );
 }

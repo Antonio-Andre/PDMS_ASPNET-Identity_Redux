@@ -12,8 +12,8 @@ using PDMS.Data;
 namespace PDMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260306133818_ChangeTable_Stocks_to_Stock")]
-    partial class ChangeTable_Stocks_to_Stock
+    [Migration("20260808162807_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -248,12 +248,12 @@ namespace PDMS.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<DateOnly>("AdmissionDate")
+                        .HasColumnType("date");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateOnly>("DateOfAdmission")
-                        .HasColumnType("date");
 
                     b.Property<string>("Department")
                         .IsRequired()
@@ -338,6 +338,41 @@ namespace PDMS.Migrations
                     b.ToTable("AspNetUsers", "identity");
                 });
 
+            modelBuilder.Entity("PDMS.Models.ReturnedItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BatchNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("QuantityReturned")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("RejectionReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReturnedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ShipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShipmentItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShipmentId");
+
+                    b.ToTable("ReturnedItems", "identity");
+                });
+
             modelBuilder.Entity("PDMS.Models.Shipment", b =>
                 {
                     b.Property<int>("Id")
@@ -369,14 +404,14 @@ namespace PDMS.Migrations
                     b.Property<DateTime>("SLAExpiration")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("TotalShipmentWeightKg")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("VanId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -409,7 +444,14 @@ namespace PDMS.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("QuantityDelivered")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("ShipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -464,7 +506,11 @@ namespace PDMS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateOnly>("DataOfInspection")
+                    b.Property<decimal?>("CurrentLoadKg")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateOnly>("InspectionDate")
                         .HasColumnType("date");
 
                     b.Property<string>("LicensePlate")
@@ -546,6 +592,15 @@ namespace PDMS.Migrations
                     b.Navigation("BusinessGroup");
                 });
 
+            modelBuilder.Entity("PDMS.Models.ReturnedItem", b =>
+                {
+                    b.HasOne("PDMS.Models.Shipment", null)
+                        .WithMany("ReturnedItems")
+                        .HasForeignKey("ShipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PDMS.Models.ShipmentItem", b =>
                 {
                     b.HasOne("PDMS.Models.Shipment", null)
@@ -563,6 +618,8 @@ namespace PDMS.Migrations
             modelBuilder.Entity("PDMS.Models.Shipment", b =>
                 {
                     b.Navigation("Items");
+
+                    b.Navigation("ReturnedItems");
                 });
 #pragma warning restore 612, 618
         }

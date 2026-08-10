@@ -1,7 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import type { Shipment } from "../../types";
+import * as ShipmentApi from "../../apiMock/shipmentMockApi";
 
 interface ShipmentState {
   list: Shipment[];
@@ -18,9 +21,28 @@ const initialState: ShipmentState = {
 export const fetchShipments = createAsyncThunk(
   "shipments/fetchShipments",
   async () => {
-    const response = await fetch("http://localhost:3069/shipments");
-    if (!response.ok) throw new Error("Failed to load...");
-    return (await response.json()) as Shipment[];
+    return await ShipmentApi.getShipments();
+  },
+);
+
+export const approveInboundShipment = createAsyncThunk(
+  "shipments/approveInboundShipment",
+  async (shipment: Shipment) => {
+    return await ShipmentApi.saveInboundShipment(shipment);
+  },
+);
+
+export const approveOutboundShipment = createAsyncThunk(
+  "shipments/approveOutboundShipment",
+  async (shipment: Shipment) => {
+    return await ShipmentApi.saveOutboundShipment(shipment);
+  },
+);
+
+export const approveReturnShipment = createAsyncThunk(
+  "shipments/approveReturnShipment",
+  async (shipment: Shipment) => {
+    return await ShipmentApi.saveReturnShipment(shipment);
   },
 );
 
@@ -32,25 +54,48 @@ const shipmentSlice = createSlice({
     builder
       .addCase(fetchShipments.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(
         fetchShipments.fulfilled,
         (state, action: PayloadAction<Shipment[]>) => {
           state.loading = false;
-          state.list = action.payload.map((shipment: Shipment) => ({
-            ...shipment,
-            totalWeightKg: (shipment.items ?? []).reduce(
-              (acc: number, Item) =>
-                acc + (Item.itemWeightKg ?? 0) * Item.quantity,
-              0,
-            ),
-          }));
+          state.list = action.payload;
         },
       )
       .addCase(fetchShipments.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Shipments failed to load!";
-      });
+        state.error = action.error.message || "Failed to load shipments";
+      })
+      .addCase(
+        approveInboundShipment.fulfilled,
+        (state, action: PayloadAction<Shipment>) => {
+          const index = state.list.findIndex((s) => s.id === action.payload.id);
+          if (index !== -1) {
+            state.list[index] = action.payload;
+          }
+        },
+      )
+      .addCase(
+        approveOutboundShipment.fulfilled,
+        (state, action: PayloadAction<Shipment>) => {
+          const index = state.list.findIndex((s) => s.id === action.payload.id);
+          if (index !== -1) {
+            state.list[index] = action.payload;
+          }
+        },
+      )
+      .addCase(
+        approveReturnShipment.fulfilled,
+        (state, action: PayloadAction<Shipment>) => {
+          const index = state.list.findIndex((s) => s.id === action.payload.id);
+          if (index !== -1) {
+            state.list[index] = action.payload;
+          } else {
+            state.list.push(action.payload);
+          }
+        },
+      );
   },
 });
 

@@ -35,8 +35,8 @@ export const ShipmentsView = ({ shipments, isLoading }: Props) => {
 
     if (sortColumn === "Weight") {
       return sortDirection === "asc"
-        ? a.TotalShipmentWeightKg - b.TotalShipmentWeightKg
-        : b.TotalShipmentWeightKg - a.TotalShipmentWeightKg;
+        ? a.totalShipmentWeightKg - b.totalShipmentWeightKg
+        : b.totalShipmentWeightKg - a.totalShipmentWeightKg;
     }
 
     return 0;
@@ -194,7 +194,7 @@ export const ShipmentsView = ({ shipments, isLoading }: Props) => {
                 <td style={cellStyle}>
                   <strong>{s.movement}</strong>
                 </td>
-                <td style={cellStyle}>{s.TotalShipmentWeightKg} kg</td>
+                <td style={cellStyle}>{s.totalShipmentWeightKg} kg</td>
                 <td style={cellStyle}>
                   <button
                     onClick={() => navigate(`/shipment/${s.id}`)}

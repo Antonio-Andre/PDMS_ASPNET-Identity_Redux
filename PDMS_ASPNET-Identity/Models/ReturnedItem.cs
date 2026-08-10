@@ -3,6 +3,8 @@
     public class ReturnedItem
     {
         public int Id { get; set; }
+
+        public int ShipmentItemId { get; set; }
         public string BatchNumber { get; set; } = string.Empty;
         public decimal QuantityReturned { get; set; }
         public string? RejectionReason { get; set; }

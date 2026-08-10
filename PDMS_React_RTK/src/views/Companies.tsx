@@ -7,8 +7,7 @@ interface Props {
 }
 
 export const CompaniesView = ({ companies, isLoading }: Props) => {
-  //const userRole = "Admin";
-  const userRole = " ";
+  const userRole = "Admin";
   const navigate = useNavigate();
 
   if (isLoading) return <h2>A carregar empresas do PDMS...</h2>;

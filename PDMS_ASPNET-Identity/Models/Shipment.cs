@@ -19,7 +19,7 @@ namespace PDMS.Models
         public decimal TotalShipmentWeightKg { get; set; }
 
         [Required]
-        public DateTime RegisterData { get; set; } = DateTime.Now;
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
 
         public DateTime SLAExpiration { get; set; } = DateTime.Now.AddHours(72); //SLAExpiration = Deadline
         public DateTime? DateOfDeliveryOrReturn { get; set; }
@@ -27,9 +27,11 @@ namespace PDMS.Models
         public int? VanId { get; set; }        
         public string Observations { get; set; } = string.Empty;
 
-        public decimal? DeliveryLatitude;
-        public decimal? DeliveryLongitude;
-        public string? DestinationAddress;
+
+        //LATER GPS API INTEGRATION
+        //public decimal? DeliveryLatitude;
+        //public decimal? DeliveryLongitude;
+        //public string? DestinationAddress;
 
     }
 }
