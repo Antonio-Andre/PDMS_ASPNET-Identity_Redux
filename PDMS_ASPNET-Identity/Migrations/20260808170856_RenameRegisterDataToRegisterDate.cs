@@ -5,26 +5,26 @@
 namespace PDMS.Migrations
 {
     /// <inheritdoc />
-    public partial class statustoStatus : Migration
+    public partial class RenameRegisterDataToRegisterDate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "status",
+                name: "RegisterData",
                 schema: "identity",
                 table: "Deliveries",
-                newName: "Status");
+                newName: "RegisterDate");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "Status",
+                name: "RegisterDate",
                 schema: "identity",
                 table: "Deliveries",
-                newName: "status");
+                newName: "RegisterData");
         }
     }
 }

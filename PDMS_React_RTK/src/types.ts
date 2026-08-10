@@ -1,15 +1,7 @@
-export type VanStatus =
-  | "Available"
-  | "Loading"
-  | "Transporting"
-  | "Returning"
-  | "Unloading"
-  | "BrokenOrMaintence";
-
 export type EmployeeStatus =
   | "Active"
   | "Holydays"
-  | "DayOfff"
+  | "DayOff"
   | "SickLeave"
   | "Absent";
 
@@ -27,6 +19,14 @@ export interface Employee {
   passwordHash: string;
 }
 
+export type VanStatus =
+  | "Available"
+  | "Loading"
+  | "Transporting"
+  | "Returning"
+  | "Unloading"
+  | "BrokenOrMaintence";
+
 export interface Van {
   id: number;
   licensePlate: string;
@@ -40,6 +40,7 @@ export interface Company {
   id: number;
   name: string;
   taxId: string;
+  businessGroupId?: number | null;
   streetAdress: string;
   postalCode: string;
   location: string;
@@ -73,11 +74,11 @@ export interface StockBatch {
   id: number;
   batchNumber: string;
   product: ProductType;
-  OriginalQuantity: number;
-  CurrentQuantity: number;
+  originalQuantity: number;
+  currentQuantity: number;
   unit: "Pack" | "Box" | "Tray" | "Carton";
   source: string;
-  EntryDate: string;
+  entryDate: string;
   expiryDate: string;
 }
 
@@ -95,7 +96,7 @@ export interface ShipmentItem {
   quantity: number;
   QuantityDelivered: number;
   status: DeliveryStatus;
-  ShipmentId: number;
+  shipmentId: number;
   itemWeightKg?: number;
 }
 export interface Shipment {
@@ -104,12 +105,12 @@ export interface Shipment {
   movement: "Inbound" | "Outbound";
   items: ShipmentItem[];
   quantity: number;
-  TotalShipmentWeightKg: number;
+  totalShipmentWeightKg: number;
   status: DeliveryStatus;
-  RegisterData: string;
-  SLAExpiration: string;
-  DateOfDeliveryOrReturn?: string | null;
-  DriverId?: number | null;
-  VanId?: number | null;
-  Observations: string;
+  registerData: string;
+  slaExpiration: string;
+  dateOfDeliveryOrReturn?: string | null;
+  driverId?: number | null;
+  vanId?: number | null;
+  observations: string;
 }

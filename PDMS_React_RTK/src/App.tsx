@@ -9,7 +9,7 @@ import { fetchEmployees } from "./store/features/employeeSlice";
 import { fetchVans } from "./store/features/vanSlice";
 import { fetchCompanies } from "./store/features/companySlice";
 import { fetchShipments } from "./store/features/shipmentSlice";
-import { Navbar } from "./components/Navbar";
+import { fetchAllStock } from "./store/features/stockSlice";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { HomePage } from "./views/HomePage.tsx";
 import { CompaniesView } from "./views/Companies.tsx";
@@ -47,11 +47,18 @@ function App() {
     error: shipmentError,
   } = useSelector((state: RootState) => state.shipments);
 
+  const {
+    list: stockBatchList,
+    loading: stockBatchLoading,
+    error: stockBatchError,
+  } = useSelector((state: RootState) => state.stockBatches);
+
   useEffect(() => {
     dispatch(fetchEmployees());
     dispatch(fetchVans());
     dispatch(fetchCompanies());
     dispatch(fetchShipments());
+    dispatch(fetchAllStock());
   }, [dispatch]);
 
   if (employeeError)
@@ -61,6 +68,8 @@ function App() {
     return <h2 style={{ color: "red" }}>Erro: {companyError}</h2>;
   if (shipmentError)
     return <h2 style={{ color: "red" }}>Erro: {shipmentError}</h2>;
+  if (stockBatchError)
+    return <h2 style={{ color: "red" }}>Erro: {stockBatchError}</h2>;
 
   return (
     <div style={{ marginTop: "80px" }}>
@@ -72,7 +81,15 @@ function App() {
           <Route path="/login" element={<LoginView />} />
           <Route element={<ProtectedRoute />}>
             <Route element={<ProtectedLayout />}>
-              <Route path="/home" element={<HomePage />} />
+              <Route
+                path="/home"
+                element={
+                  <HomePage
+                    batches={stockBatchList}
+                    isLoading={stockBatchLoading}
+                  />
+                }
+              />
               <Route
                 path="/company/edit/:id"
                 element={<EditCompanyInfo companies={companyList} />}

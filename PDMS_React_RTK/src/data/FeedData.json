@@ -138,18 +138,22 @@
       "id": 1,
       "batchNumber": "FR-001",
       "product": "RoastedChicken",
-      "quantity": 100,
+      "originalQuantity": 100,
+      "currentQuantity": 100,
       "unit": "Pack",
       "source": "LusiAves",
+      "entryDate": "2024-05-15",
       "expiryDate": "2024-06-01"
     },
     {
       "id": 2,
       "batchNumber": "AR-99",
       "product": "DuckRice",
-      "quantity": 45,
+      "originalQuantity": 45,
+      "currentQuantity": 45,
       "unit": "Pack",
       "source": "Cozinha Central",
+      "entryDate": "2024-05-10",
       "expiryDate": "2024-05-25"
     }
   ],

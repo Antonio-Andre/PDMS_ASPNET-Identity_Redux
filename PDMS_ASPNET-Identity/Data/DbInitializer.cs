@@ -44,7 +44,7 @@ namespace PDMS.Data
                     Department = "Administração",
                     TaxId = "109999999",
                     PhoneNumber = "123456789",
-                    DateOfAdmission = DateOnly.FromDateTime(DateTime.Now),
+                    AdmissionDate = DateOnly.FromDateTime(DateTime.Now),
                     Status = EmployeeStatus.Active,
                 };
 
@@ -88,7 +88,7 @@ namespace PDMS.Data
             TaxId = "999888777",
             PhoneNumber = "210210210",
             Email = "contacto@lusiaves.pt",
-            StreetAdress = "Rua Principal, 123",
+            StreetAdress = "Rua Principal, 23",
             PostalCode = "2500-000",
             Location = "Caldas da Rainha",
             IndustryCode = "10120",
@@ -121,35 +121,35 @@ namespace PDMS.Data
                 new Van
                 {
                     LicensePlate = "AA-11-BB",
-                    DataOfInspection = new DateOnly(2024, 12, 15),
+                    InspectionDate = new DateOnly(2024, 12, 15),
                     MaxLoadKg = 1200.0m,
                     Status = VanStatus.Available
                 },
                 new Van
                 {
                     LicensePlate = "CC-22-DD",
-                    DataOfInspection = new DateOnly(2025, 05, 20),
+                    InspectionDate = new DateOnly(2025, 05, 20),
                     MaxLoadKg = 3500.0m,
                     Status = VanStatus.Loading
                 },
                 new Van
                 {
                     LicensePlate = "EE-33-FF",
-                    DataOfInspection = new DateOnly(2024, 08, 10),
+                    InspectionDate = new DateOnly(2024, 08, 10),
                     MaxLoadKg = 850.0m,
                     Status = VanStatus.BrokenOrMaintence
                 },
                 new Van
                 {
                     LicensePlate = "GG-44-HH",
-                    DataOfInspection = new DateOnly(2025, 01, 30),
+                    InspectionDate = new DateOnly(2025, 01, 30),
                     MaxLoadKg = 2200.0m,
                     Status = VanStatus.Loading
                 },
                 new Van
                 {
                     LicensePlate = "II-55-JJ",
-                    DataOfInspection = new DateOnly(2024, 11, 05),
+                    InspectionDate = new DateOnly(2024, 11, 05),
                     MaxLoadKg = 1500.0m,
                     Status = VanStatus.Available
                 }

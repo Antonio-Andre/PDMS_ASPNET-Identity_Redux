@@ -31,7 +31,7 @@ namespace PDMS.DTO
             Department = string.IsNullOrWhiteSpace(this.Department) ? "Unassigned" : this.Department,
             PhoneNumber = this.PhoneNumber,
             EnableNotifications = true,
-            DateOfAdmission = DateOnly.FromDateTime(DateTime.Now),
+            AdmissionDate = DateOnly.FromDateTime(DateTime.Now),
             Status = EmployeeStatus.Active
         };
     }

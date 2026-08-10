@@ -12,7 +12,7 @@ namespace PDMS.Endpoints
             var company = app.MapGroup("/api/companies");
 
             company.MapGet("/", GetAllCompanies);
-            company.MapGet("/{name}", GetCompanyByName);
+            company.MapGet("/{name}", GetCompanyById);
             company.MapPost("/", RegisterCompany);
             company.MapPut("/{name}", UpdateCompanyByName);
             company.MapDelete("/{name}", DeleteCompany);
@@ -24,13 +24,13 @@ namespace PDMS.Endpoints
             return Results.Ok(companies);
         }
 
-        public static async Task<IResult> GetCompanyByName([FromServices] CompanyService companyService, string name)
+        public static async Task<IResult> GetCompanyById([FromServices] CompanyService companyService, int CompanyId)
         {
-            var company = await companyService.GetCompanyByName(name);
+            var company = await companyService.GetCompanyById(CompanyId);
 
             if (company is null)
             {
-                return Results.NotFound($"Company called {name} was not found.");
+                return Results.NotFound(new { message = $"Company with ID {CompanyId} was not found." });
             }
 
             return Results.Ok(company);
@@ -42,18 +42,18 @@ namespace PDMS.Endpoints
             return Results.Ok(result);
         }
 
-        public static async Task<IResult> UpdateCompanyByName(string name, [FromBody] CompanyDTO request, [FromServices] CompanyService companyService)
+        public static async Task<IResult> UpdateCompanyByName(int CompanyId, [FromBody] CompanyDTO request, [FromServices] CompanyService companyService)
         {
-            var response = await companyService.UpdateCompanyAsync(name, request);  
+            var response = await companyService.UpdateCompanyAsync(CompanyId, request);  
 
-            if (response is null) return Results.NotFound($"Company called {name} was not found.");
+            if (response is null) return Results.NotFound(new { message = $"Company with ID {CompanyId} was not found." });
 
             return Results.Ok(response);
         }
 
-        public static async Task<IResult> DeleteCompany(string name, [FromServices] CompanyService companyService)
+        public static async Task<IResult> DeleteCompany(int CompanyId, [FromServices] CompanyService companyService)
         {
-            var success = await companyService.DeleteCompany(name);
+            var success = await companyService.DeleteCompany(CompanyId);
             return success ? Results.Ok() : Results.NotFound();
         }
 

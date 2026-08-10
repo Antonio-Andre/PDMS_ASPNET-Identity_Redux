@@ -1,7 +1,6 @@
 import React from "react";
 import type { Van } from "../types";
 
-// --- Estilos ---
 const cardStyle: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
@@ -120,7 +119,6 @@ export const VansView = ({
   );
 };
 
-// --- Helper Render ---
 const renderVanItem = (van: Van) => (
   <div key={van.id} style={cardStyle}>
     <span style={{ marginRight: "15px", fontSize: "1.5em" }}>🚚</span>

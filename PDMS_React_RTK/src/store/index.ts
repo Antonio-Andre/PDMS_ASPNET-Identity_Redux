@@ -3,6 +3,8 @@ import employeeReducer from "./features/employeeSlice";
 import vanReducer from "./features/vanSlice";
 import companyReducer from "./features/companySlice";
 import shipmentReducer from "./features/shipmentSlice";
+import stockBatchReducer from "./features/stockSlice";
+import authReducer from "./features/authSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ export const store = configureStore({
     vans: vanReducer,
     companies: companyReducer,
     shipments: shipmentReducer,
+    stockBatches: stockBatchReducer,
+    auth: authReducer,
   },
 });
 

@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:3000") // Onde o teu React vai morar
+        policy.WithOrigins("http://localhost:5173") //Frontend uri:port
               .AllowAnyHeader()                     
               .AllowAnyMethod()                    
               .AllowCredentials();                  

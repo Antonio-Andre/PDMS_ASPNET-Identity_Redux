@@ -1,17 +1,17 @@
-import React from "react";
-import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useUser } from "../../context/useUser";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import type { AppDispatch } from "../../store";
+import { selectCurrentUser, logout } from "../../store/features/authSlice";
 
 export const NavbarAuthenticated = () => {
   const [showLogout, setShowLogout] = useState(false);
-  const navigate = useNavigate();
-  const { user, logout } = useUser();
+
+  const user = useSelector(selectCurrentUser);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleLogout = () => {
-    logout();
-    localStorage.removeItem("userEmail");
-    navigate("/login");
+    dispatch(logout());
   };
 
   if (!user) {
@@ -25,6 +25,7 @@ export const NavbarAuthenticated = () => {
       </nav>
     );
   }
+
   return (
     <nav style={styles.navContainer}>
       <div style={{ fontWeight: "bold", fontSize: "1.2rem" }}>

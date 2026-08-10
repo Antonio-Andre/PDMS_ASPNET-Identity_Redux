@@ -1,9 +1,14 @@
 import { useNavigate } from "react-router-dom";
+import type { StockBatch } from "../types";
 
-export const HomePage = () => {
+interface Props {
+  batches: StockBatch[];
+  isLoading: boolean;
+}
+
+export const HomePage = ({ batches, isLoading }: Props) => {
   const navigate = useNavigate();
 
-  // Lista de secções para gerar os cartões de acesso rápido
   const navigationCards = [
     {
       title: "Remessas & Encomendas",
@@ -39,111 +44,206 @@ export const HomePage = () => {
   ];
 
   return (
-    <div
-      style={{
-        maxWidth: "1200px",
-        margin: "0 auto",
-        padding: "40px 20px",
-        fontFamily: "system-ui, -apple-system, sans-serif",
-      }}
-    >
+    <>
       <div
         style={{
-          textAlign: "center",
-          padding: "60px 20px",
-          backgroundColor: "#1e293b", // Azul escuro slate super moderno
-          borderRadius: "16px",
-          color: "#fff",
-          marginBottom: "40px",
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: "40px 20px",
+          fontFamily: "system-ui, -apple-system, sans-serif",
         }}
       >
-        <h1
+        <div
           style={{
-            fontSize: "2.5rem",
-            margin: "0 0 15px 0",
-            fontWeight: "700",
+            textAlign: "center",
+            padding: "60px 20px",
+            backgroundColor: "#1e293b", // Azul escuro slate super moderno
+            borderRadius: "16px",
+            color: "#fff",
+            marginBottom: "40px",
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
           }}
         >
-          Olá, Bem-vindo à Empresa XPTO
-        </h1>
-        <p
-          style={{
-            fontSize: "1.2rem",
-            color: "#94a3b8",
-            maxWidth: "600px",
-            margin: "0 auto",
-            lineHeight: "1.6",
-          }}
-        >
-          Portal Interno de Gestão e Distribuição (PDMS). Selecione uma das
-          áreas operacionais abaixo para começar.
-        </p>
-      </div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: "24px",
-        }}
-      >
-        {navigationCards.map((card, index) => (
-          <div
-            key={index}
-            onClick={() => navigate(card.path)}
+          <h1
             style={{
-              backgroundColor: "#fff",
-              border: "1px solid #e2e8f0",
-              borderRadius: "12px",
-              padding: "24px",
-              cursor: "pointer",
-              transition: "transform 0.2s, box-shadow 0.2s",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.02)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-5px)";
-              e.currentTarget.style.boxShadow =
-                "0 10px 15px -3px rgba(0, 0, 0, 0.05)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.02)";
+              fontSize: "2.5rem",
+              margin: "0 0 15px 0",
+              fontWeight: "700",
             }}
           >
+            Olá, Bem-vindo à Empresa XPTO
+          </h1>
+          <p
+            style={{
+              fontSize: "1.2rem",
+              color: "#94a3b8",
+              maxWidth: "600px",
+              margin: "0 auto",
+              lineHeight: "1.6",
+            }}
+          >
+            Portal Interno de Gestão e Distribuição (PDMS). Selecione uma das
+            áreas operacionais abaixo para começar.
+          </p>
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "24px",
+          }}
+        >
+          {navigationCards.map((card, index) => (
             <div
+              key={index}
+              onClick={() => navigate(card.path)}
               style={{
-                fontSize: "2rem",
-                marginBottom: "16px",
-                display: "inline-block",
-                padding: "8px",
-                backgroundColor: `${card.color}15`, // Cor com 15% de opacidade
-                borderRadius: "8px",
+                backgroundColor: "#fff",
+                border: "1px solid #e2e8f0",
+                borderRadius: "12px",
+                padding: "24px",
+                cursor: "pointer",
+                transition: "transform 0.2s, box-shadow 0.2s",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.02)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-5px)";
+                e.currentTarget.style.boxShadow =
+                  "0 10px 15px -3px rgba(0, 0, 0, 0.05)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.02)";
               }}
             >
-              {card.icon}
+              <div
+                style={{
+                  fontSize: "2rem",
+                  marginBottom: "16px",
+                  display: "inline-block",
+                  padding: "8px",
+                  backgroundColor: `${card.color}15`, // Cor com 15% de opacidade
+                  borderRadius: "8px",
+                }}
+              >
+                {card.icon}
+              </div>
+              <h3
+                style={{
+                  margin: "0 0 8px 0",
+                  color: "#0f172a",
+                  fontSize: "1.25rem",
+                }}
+              >
+                {card.title}
+              </h3>
+              <p
+                style={{
+                  margin: 0,
+                  color: "#64748b",
+                  fontSize: "0.95rem",
+                  lineHeight: "1.5",
+                }}
+              >
+                {card.description}
+              </p>
             </div>
-            <h3
-              style={{
-                margin: "0 0 8px 0",
-                color: "#0f172a",
-                fontSize: "1.25rem",
-              }}
-            >
-              {card.title}
-            </h3>
-            <p
-              style={{
-                margin: 0,
-                color: "#64748b",
-                fontSize: "0.95rem",
-                lineHeight: "1.5",
-              }}
-            >
-              {card.description}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+      <div
+        style={{
+          backgroundColor: "#fff",
+          border: "1px solid #e2e8f0",
+          borderRadius: "16px",
+          padding: "24px",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.02)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "20px",
+          }}
+        >
+          <h2 style={{ margin: 0, color: "#0f172a", fontSize: "1.5rem" }}>
+            📦 Registo de Stock (MockDB)
+          </h2>
+        </div>
+
+        <div style={{ overflowX: "auto" }}>
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              textAlign: "left",
+              fontSize: "0.95rem",
+            }}
+          >
+            <thead>
+              <tr
+                style={{ borderBottom: "2px solid #e2e8f0", color: "#475569" }}
+              >
+                <th style={{ padding: "12px 16px" }}>Batch Number</th>
+                <th style={{ padding: "12px 16px" }}>Product</th>
+                <th style={{ padding: "12px 16px" }}>Current Quantity</th>
+                <th style={{ padding: "12px 16px" }}>Source</th>
+                <th style={{ padding: "12px 16px" }}>Validade</th>
+              </tr>
+            </thead>
+            <tbody>
+              {batches && batches.length > 0 ? (
+                batches.map((sb: StockBatch) => (
+                  <tr key={sb.id} style={{ borderBottom: "1px solid #f1f5f9" }}>
+                    <td
+                      style={{
+                        padding: "14px 16px",
+                        color: "#0f172a",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {sb.batchNumber}
+                    </td>
+                    <td style={{ padding: "14px 16px", color: "#0f172a" }}>
+                      {sb.product}
+                    </td>
+                    <td
+                      style={{
+                        padding: "14px 16px",
+                        color: "#0f172a",
+                        fontWeight: "600",
+                      }}
+                    >
+                      {sb.currentQuantity} {sb.unit}
+                    </td>
+                    <td style={{ padding: "14px 16px", color: "#64748b" }}>
+                      {sb.source}
+                    </td>
+                    <td style={{ padding: "14px 16px", color: "#64748b" }}>
+                      {sb.expiryDate}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={5}
+                    style={{
+                      padding: "20px",
+                      textAlign: "center",
+                      color: "#64748b",
+                    }}
+                  >
+                    N/A{" "}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
   );
 };

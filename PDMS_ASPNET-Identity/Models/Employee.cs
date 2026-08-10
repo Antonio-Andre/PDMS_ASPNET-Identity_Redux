@@ -25,7 +25,7 @@ namespace PDMS.Models
         [RegularExpression(@"^\d{9}$", ErrorMessage = "taxId must have exactly 9 dígits.")]
         public string TaxId { get; set; } = string.Empty;
 
-        public DateOnly DateOfAdmission { get; set; }
+        public DateOnly AdmissionDate { get; set; }
 
 
         [JsonConverter(typeof(JsonStringEnumConverter))]

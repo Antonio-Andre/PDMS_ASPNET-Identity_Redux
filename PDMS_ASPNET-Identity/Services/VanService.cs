@@ -3,70 +3,79 @@ using PDMS.Data;
 using PDMS.DTO;
 using PDMS.Models;
 
-public class VanService
+namespace PDMS.Services
 {
-    private readonly ApplicationDbContext _context;
-    public VanService(ApplicationDbContext context) => _context = context;
-    public async Task<List<VanResponseDTO>> GetAllVansAsync()
+    public class VanService
     {
-        var vans = await _context.Vans.ToListAsync();
+        private readonly ApplicationDbContext _context;
+        public VanService(ApplicationDbContext context) => _context = context;
 
-        return vans.Select(v => new VanResponseDTO(
-            v.Id,
-            v.LicensePlate,
-            v.DataOfInspection,
-            v.MaxLoadKg,
-            v.Status.ToString()
-        )).ToList();
-    }
-
-    public async Task<VanResponseDTO?> GetVanByIdAsync(int id)
-    {
-        var v = await _context.Vans.FindAsync(id);
-        if (v == null) return null;
-        return new VanResponseDTO(
-            v.Id,
-            v.LicensePlate,
-            v.DataOfInspection,
-            v.MaxLoadKg,
-            v.Status.ToString()
-        );
-    }
-
-    public async Task<Van> CreateVanAsync(CreateVanDTO request)
-    {
-        var van = new Van
+        public async Task<List<VanResponseDTO>> GetAllVansAsync()
         {
-            LicensePlate = request.LicensePlate,
-            DataOfInspection = request.DataOfInspection,
-            MaxLoadKg = request.MaxLoadKg,
-            Status = VanStatus.Available 
-        };
+            var vans = await _context.Vans.ToListAsync();
 
-        _context.Vans.Add(van);
-        await _context.SaveChangesAsync();
-        return van;
-    }
+            return vans.Select(v => new VanResponseDTO(
+                v.Id,
+                v.LicensePlate,
+                v.InspectionDate,
+                v.MaxLoadKg,
+                v.CurrentLoadKg,
+                v.Status.ToString()
+            )).ToList();
+        }
 
-    public async Task<bool> UpdateVanAsync(int id, UpdateVanDTO request)
-    {
-        var van = await _context.Vans.FindAsync(id);
-        if (van == null) return false;
+        public async Task<VanResponseDTO?> GetVanByIdAsync(int id)
+        {
+            var van = await _context.Vans.FindAsync(id);
+            if (van == null) return null;
 
-        van.DataOfInspection = request.DataOfInspection;
-        van.MaxLoadKg = request.MaxLoadKg;
-        van.Status = request.Status;
+            return new VanResponseDTO(
+                van.Id,
+                van.LicensePlate,
+                van.InspectionDate,
+                van.MaxLoadKg,
+                van.CurrentLoadKg,
+                van.Status.ToString()
+            );
+        }
 
-        await _context.SaveChangesAsync();
-        return true;
-    }
-    public async Task<bool> DeleteVanAsync(int id)
-    {
-        var van = await _context.Vans.FindAsync(id);
-        if (van == null) return false;
+        public async Task<Van> CreateVanAsync(CreateVanDTO request)
+        {
+            var van = new Van
+            {
+                LicensePlate = request.LicensePlate,
+                InspectionDate = request.InspectionDate,
+                MaxLoadKg = request.MaxLoadKg,
+                CurrentLoadKg = request.CurrentLoadKg,
+                Status = VanStatus.Available
+            };
 
-        _context.Vans.Remove(van);
-        await _context.SaveChangesAsync();
-        return true;
+            _context.Vans.Add(van);
+            await _context.SaveChangesAsync();
+            return van;
+        }
+
+        public async Task<bool> UpdateVanAsync(int id, UpdateVanDTO request)
+        {
+            var van = await _context.Vans.FindAsync(id);
+            if (van == null) return false;
+
+            van.InspectionDate = request.InspectionDate;
+            van.Status = request.Status;
+            van.CurrentLoadKg = request.CurrentLoadKg;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteVanAsync(int id)
+        {
+            var van = await _context.Vans.FindAsync(id);
+            if (van == null) return false;
+
+            _context.Vans.Remove(van);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

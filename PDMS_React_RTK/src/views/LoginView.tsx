@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import type { RootState } from "../store";
+// 1. Substituímos o useUser pelo useDispatch do Redux
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState, AppDispatch } from "../store";
+import { login } from "../store/features/authSlice";
 import { TextInput } from "../components/TextInput";
-import { useUser } from "../context/useUser";
 import { Navbar } from "../components/Navbar";
 
 export const LoginView = () => {
@@ -12,10 +13,11 @@ export const LoginView = () => {
   const [error, setError] = useState("");
 
   const employees = useSelector((state: RootState) => state.employees.list);
-  const { login } = useUser();
+
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.SubmitEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
     setError("");
@@ -24,9 +26,8 @@ export const LoginView = () => {
       const user = employees.find((emp) => emp.email === email);
 
       if (user && user.passwordHash === password) {
-        //validar data através do BackEnd num furturo!!!!
-        login(user);
-        localStorage.setItem("userEmail", email);
+        dispatch(login({ user }));
+
         navigate("/home");
       } else {
         setError("Email ou password incorretos.");
@@ -66,7 +67,6 @@ export const LoginView = () => {
   );
 };
 
-// CSS inline simples para não perderes tempo com ficheiros de estilo agora
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
     display: "flex",
