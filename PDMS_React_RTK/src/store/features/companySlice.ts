@@ -2,7 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Company } from "../../types";
-import * as FEapi from "../../api/companyApi";
+import * as MockApi from "../../apiMock/companyMockApi";
+import {
+  type DeleteCompanyPayload,
+  type CreateCompanyPayload,
+  type UpdateCompanyPayload,
+} from "../../apiMock/companyMockApi";
 
 interface CompanyState {
   list: Company[];
@@ -16,18 +21,32 @@ const initialState: CompanyState = {
   error: null,
 };
 
-// companySlice.tsx
 export const fetchCompanies = createAsyncThunk(
   "companies/fetchCompanies",
   async () => {
-    return await FEapi.getCompanies();
+    return await MockApi.getCompanies();
+  },
+);
+
+export const createCompany = createAsyncThunk(
+  "companies/createCompany",
+  async (payload: CreateCompanyPayload) => {
+    return await MockApi.createCompany(payload);
   },
 );
 
 export const updateCompany = createAsyncThunk(
   "companies/updateCompany",
-  async (company: Company) => {
-    return await FEapi.saveCompany(company);
+  async ({ id, payload }: { id: number; payload: UpdateCompanyPayload }) => {
+    return await MockApi.updateCompany(id, payload);
+  },
+);
+
+export const deleteCompany = createAsyncThunk(
+  "companies/deleteCompany",
+  async (id: number) => {
+    await MockApi.deleteCompany(id);
+    return id;
   },
 );
 
@@ -39,6 +58,7 @@ const companySlice = createSlice({
     builder
       .addCase(fetchCompanies.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(
         fetchCompanies.fulfilled,
@@ -51,11 +71,29 @@ const companySlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Companies failed to load!";
       })
+      .addCase(createCompany.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        createCompany.fulfilled,
+        (state, action: PayloadAction<Company>) => {
+          state.loading = false;
+          state.list.push(action.payload);
+        },
+      )
+      .addCase(createCompany.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Companies failed to load!";
+      })
+      .addCase(updateCompany.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(
         updateCompany.fulfilled,
         (state, action: PayloadAction<Company>) => {
           state.loading = false;
-          // Encontra o índice da empresa que foi atualizada e substitui-a
           const index = state.list.findIndex((c) => c.id === action.payload.id);
           if (index !== -1) {
             state.list[index] = action.payload;
@@ -64,7 +102,22 @@ const companySlice = createSlice({
       )
       .addCase(updateCompany.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Falha ao atualizar a empresa!";
+        state.error = action.error.message || "Companies failed to update!";
+      })
+      .addCase(deleteCompany.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        deleteCompany.fulfilled,
+        (state, action: PayloadAction<number>) => {
+          state.loading = false;
+          state.list = state.list.filter((c) => c.id !== action.payload);
+        },
+      )
+      .addCase(deleteCompany.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Company failed to delete!";
       });
   },
 });

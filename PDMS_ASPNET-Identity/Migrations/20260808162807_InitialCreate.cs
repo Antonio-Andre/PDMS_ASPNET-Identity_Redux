@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PDMS.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateBussinessGroup : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -42,7 +42,7 @@ namespace PDMS.Migrations
                     Initials = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
                     Department = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TaxId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DateOfAdmission = table.Column<DateOnly>(type: "date", nullable: false),
+                    AdmissionDate = table.Column<DateOnly>(type: "date", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -87,12 +87,14 @@ namespace PDMS.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RegisterNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RegisterData = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    WeightKg = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Movement = table.Column<int>(type: "int", nullable: false),
-                    Item = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    status = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    TotalShipmentWeightKg = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    RegisterData = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SLAExpiration = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateOfDeliveryOrReturn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DriverId = table.Column<int>(type: "int", nullable: true),
+                    VanId = table.Column<int>(type: "int", nullable: true),
                     Observations = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -101,7 +103,7 @@ namespace PDMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Stocks",
+                name: "Stock",
                 schema: "identity",
                 columns: table => new
                 {
@@ -117,7 +119,7 @@ namespace PDMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stocks", x => x.Id);
+                    table.PrimaryKey("PK_Stock", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -128,9 +130,9 @@ namespace PDMS.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LicensePlate = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DataOfInspection = table.Column<DateOnly>(type: "date", nullable: false),
+                    InspectionDate = table.Column<DateOnly>(type: "date", nullable: false),
                     MaxLoadKg = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    MaxVolumeM3 = table.Column<double>(type: "float", nullable: false),
+                    CurrentLoadKg = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -284,6 +286,59 @@ namespace PDMS.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ReturnedItems",
+                schema: "identity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShipmentItemId = table.Column<int>(type: "int", nullable: false),
+                    BatchNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    QuantityReturned = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    RejectionReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReturnedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ShipmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReturnedItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReturnedItems_Deliveries_ShipmentId",
+                        column: x => x.ShipmentId,
+                        principalSchema: "identity",
+                        principalTable: "Deliveries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShipmentItems",
+                schema: "identity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BatchNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Product = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    QuantityDelivered = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ShipmentId = table.Column<int>(type: "int", nullable: false),
+                    ItemWeightKg = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShipmentItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShipmentItems_Deliveries_ShipmentId",
+                        column: x => x.ShipmentId,
+                        principalSchema: "identity",
+                        principalTable: "Deliveries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 schema: "identity",
@@ -358,6 +413,18 @@ namespace PDMS.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ReturnedItems_ShipmentId",
+                schema: "identity",
+                table: "ReturnedItems",
+                column: "ShipmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShipmentItems_ShipmentId",
+                schema: "identity",
+                table: "ShipmentItems",
+                column: "ShipmentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Vans_LicensePlate",
                 schema: "identity",
                 table: "Vans",
@@ -393,11 +460,15 @@ namespace PDMS.Migrations
                 schema: "identity");
 
             migrationBuilder.DropTable(
-                name: "Deliveries",
+                name: "ReturnedItems",
                 schema: "identity");
 
             migrationBuilder.DropTable(
-                name: "Stocks",
+                name: "ShipmentItems",
+                schema: "identity");
+
+            migrationBuilder.DropTable(
+                name: "Stock",
                 schema: "identity");
 
             migrationBuilder.DropTable(
@@ -414,6 +485,10 @@ namespace PDMS.Migrations
 
             migrationBuilder.DropTable(
                 name: "BusinessGroups",
+                schema: "identity");
+
+            migrationBuilder.DropTable(
+                name: "Deliveries",
                 schema: "identity");
         }
     }

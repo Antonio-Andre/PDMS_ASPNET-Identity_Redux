@@ -67,7 +67,7 @@ export const ShipmentCard = ({ shipment }: { shipment: Shipment }) => {
         >
           <span style={{ fontSize: "1.1rem" }}>⚖️</span>
           <span style={{ fontWeight: "bold", color: "#495057" }}>
-            {shipment.TotalShipmentWeightKg} kg
+            {shipment.totalShipmentWeightKg} kg
           </span>
         </div>
       </div>

@@ -5,7 +5,7 @@ using PDMS.Services;
 
 namespace PDMS.Endpoints
 {
-    public static class EmployeesEnpoints
+    public static class EmployeesEndpoints
     {
         public static void RegisterEmployeeEndpoints(this WebApplication app)
         {
@@ -17,7 +17,6 @@ namespace PDMS.Endpoints
             employees.MapPut("/{id}", UpdateEmployeeById);
             employees.MapDelete("/{id}", DeleteEmploye)
                 .RequireAuthorization(policy => policy.RequireRole("Admin"));
-
             employees.MapPut("/{id}/admin-update", AdminUpdateEmployee)
              .RequireAuthorization(policy => policy.RequireRole("Admin"));
         }
@@ -65,7 +64,7 @@ namespace PDMS.Endpoints
             var success = await employeeService.AdminUpdateEmployeeAsync(id, request);
 
             return success
-                ? Results.Ok(new { message = "Employye Data Changed" })
+                ? Results.Ok(new { message = "Employee Data Changed" })
                 : Results.NotFound();
         }
 

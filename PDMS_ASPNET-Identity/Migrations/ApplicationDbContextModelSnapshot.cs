@@ -245,12 +245,12 @@ namespace PDMS.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<DateOnly>("AdmissionDate")
+                        .HasColumnType("date");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateOnly>("DateOfAdmission")
-                        .HasColumnType("date");
 
                     b.Property<string>("Department")
                         .IsRequired()
@@ -360,6 +360,9 @@ namespace PDMS.Migrations
                     b.Property<int>("ShipmentId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ShipmentItemId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ShipmentId");
@@ -388,7 +391,7 @@ namespace PDMS.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RegisterData")
+                    b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RegisterNumber")
@@ -500,7 +503,11 @@ namespace PDMS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateOnly>("DataOfInspection")
+                    b.Property<decimal?>("CurrentLoadKg")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateOnly>("InspectionDate")
                         .HasColumnType("date");
 
                     b.Property<string>("LicensePlate")

@@ -21,9 +21,9 @@ namespace PDMS.Services
             return companies.Select(c => new CompanyDTO(c)).ToList();
         }
 
-        public async Task<CompanyDTO?> GetCompanyByName(string name)
+        public async Task<CompanyDTO?> GetCompanyById(int CompanyId)
         {
-            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Name == name); ;
+            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Id == CompanyId); ;
             if (company == null) return null; 
 
             return new CompanyDTO(company);            
@@ -40,9 +40,9 @@ namespace PDMS.Services
             return new CompanyDTO(company);
         }
 
-        public async Task<CompanyDTO?> UpdateCompanyAsync(string name, CompanyDTO request)
+        public async Task<CompanyDTO?> UpdateCompanyAsync(int CompanyId, CompanyDTO request)
         {
-            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Name == name); ;
+            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Id == CompanyId); ;
             if (company == null) return null;
 
             company.BusinessGroupId = request.BusinessGroupId;
@@ -56,9 +56,9 @@ namespace PDMS.Services
             return new CompanyDTO(company);
         }
 
-        public async Task<bool> DeleteCompany(string name)
+        public async Task<bool> DeleteCompany(int CompanyId)
         {
-            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Name == name);
+            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Id == CompanyId);
             if (company == null) return false;
             _context.Companies.Remove(company);
             await _context.SaveChangesAsync();

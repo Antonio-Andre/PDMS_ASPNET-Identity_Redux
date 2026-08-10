@@ -28,6 +28,8 @@ public record CompanyDTO
         IndustryCode = "PENDING",
         ShareCapital = null,
     };
+
+
     public CompanyDTO(Company c)
         :
         this(
@@ -42,5 +44,15 @@ public record CompanyDTO
             c.PhoneNumber
         ) { }
 
+
 }
+public record UpdateCompanyDTO
+(
+    int? BusinessGroupId,
+    string StreetAdress,
+    string PostalCode,
+    string Location,
+    string Email,
+    string PhoneNumber
+);
 

@@ -1,10 +1,14 @@
 export async function handleResponse(response: Response) {
-  if (response.ok) return response.json();
+  if (response.ok) {
+    const text = await response.text();
+    return text ? JSON.parse(text) : {};
+  }
+
   if (response.status === 400) {
     const error = await response.text();
-    throw new Error(error);
+    throw new Error(error || "Invalid Request (400).");
   }
-  throw new Error("Network response was not ok.");
+  throw new Error("API communication error(Status: ${response.status})");
 }
 
 export function handleError(error: Error) {
