@@ -1,18 +1,19 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
-using System.Security.Claims;
+using PDMS;
 using PDMS.Data;
+using PDMS.Endpoints;
 using PDMS.Models;
 using PDMS.Services;
-using PDMS.Endpoints;
+using Scalar.AspNetCore;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddOpenApi(options =>
 {
-    c.DocumentFilter<SwaggerHideNativeRegisterFilter>();
+    options.AddDocumentTransformer<SwaggerHideNativeRegisterFilter>();
 });
 
 builder.Services.AddControllers()
@@ -61,8 +62,8 @@ var app = builder.Build();
 // Do this in a helper function later, avoid polluting the main program file, only for development purposes
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.MapScalarApiReference();
 
     using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
