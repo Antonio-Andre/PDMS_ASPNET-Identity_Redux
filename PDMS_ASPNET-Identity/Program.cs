@@ -28,7 +28,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") //Frontend uri:port
+        policy.WithOrigins("http://localhost:5173", "http://localhost:3000") //Frontend uri:port + docker:port
               .AllowAnyHeader()                     
               .AllowAnyMethod()                    
               .AllowCredentials();                  
@@ -46,7 +46,7 @@ builder.Services.AddIdentityCore<Employee>()
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); //need to re-check this later
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<CompanyService>();
@@ -64,12 +64,15 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
+}
 
-    using var scope = app.Services.CreateScope();
+using (var scope = app.Services.CreateScope())
+{
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     dbContext.Database.Migrate();
     await DbInitializer.Initialize(scope.ServiceProvider);
 }
+
 
 app.MapGet("users/me", async (ClaimsPrincipal claims, ApplicationDbContext context) => {
     string? userId = claims.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;

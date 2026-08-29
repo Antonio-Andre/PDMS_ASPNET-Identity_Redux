@@ -18,13 +18,13 @@ namespace PDMS.Endpoints
             vans.MapDelete("/{id:int}", DeleteVan).RequireAuthorization(policy => policy.RequireRole("Admin"));
         }
 
-        public static async Task<IResult> GetAllVans([FromServices] VanService vanService)
+        public static async Task<IResult> GetAllVans(VanService vanService)
         {
             var vans = await vanService.GetAllVansAsync();
             return Results.Ok(vans);
         }
 
-        public static async Task<IResult> GetVanById(int id, [FromServices] VanService vanService)
+        public static async Task<IResult> GetVanById(int id, VanService vanService)
         {
             var response = await vanService.GetVanByIdAsync(id);
 
@@ -34,13 +34,13 @@ namespace PDMS.Endpoints
             return Results.Ok(response);
         }
 
-        public static async Task<IResult> CreateVan(CreateVanDTO request, [FromServices] VanService vanService)
+        public static async Task<IResult> CreateVan(CreateVanDTO request, VanService vanService)
         {
             var newVan = await vanService.CreateVanAsync(request);
             return Results.Created($"/api/vans/{newVan.Id}", newVan);
         }
 
-        public static async Task<IResult> UpdateVan(int id, UpdateVanDTO request, [FromServices] VanService vanService)
+        public static async Task<IResult> UpdateVan(int id, UpdateVanDTO request, VanService vanService)
         {
             var success = await vanService.UpdateVanAsync(id, request);
 
@@ -50,7 +50,7 @@ namespace PDMS.Endpoints
             return Results.NoContent();
         }
 
-        public static async Task<IResult> DeleteVan(int id, [FromServices] VanService vanService)
+        public static async Task<IResult> DeleteVan(int id, VanService vanService)
         {
             var success = await vanService.DeleteVanAsync(id);
 
