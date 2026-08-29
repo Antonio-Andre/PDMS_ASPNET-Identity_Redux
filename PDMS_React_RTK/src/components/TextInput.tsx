@@ -7,6 +7,7 @@ interface TextInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: "text" | "number" | "email" | "password";
   error?: string;
+  disabled?: boolean;
 }
 
 export const TextInput = ({
@@ -16,6 +17,7 @@ export const TextInput = ({
   onChange,
   type = "text",
   error,
+  disabled = false,
 }: TextInputProps) => (
   <div style={{ marginBottom: "15px" }}>
     <label
@@ -28,12 +30,14 @@ export const TextInput = ({
       name={name}
       value={value}
       onChange={onChange}
+      disabled={disabled}
       style={{
         width: "100%",
         padding: "8px",
         borderRadius: "4px",
         border: error ? "1px solid red" : "1px solid #ccc",
         boxSizing: "border-box",
+        backgroundColor: disabled ? "#eee" : undefined,
       }}
     />
     {error && (

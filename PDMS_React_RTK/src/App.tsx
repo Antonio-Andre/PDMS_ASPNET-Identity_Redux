@@ -91,8 +91,22 @@ function App() {
                 }
               />
               <Route
+                path="/company/new"
+                element={
+                  <EditCompanyInfo
+                    companies={companyList}
+                    isLoading={companyLoading}
+                  />
+                }
+              />
+              <Route
                 path="/company/edit/:id"
-                element={<EditCompanyInfo companies={companyList} />}
+                element={
+                  <EditCompanyInfo
+                    companies={companyList}
+                    isLoading={companyLoading}
+                  />
+                }
               />
               <Route
                 path="/companies"

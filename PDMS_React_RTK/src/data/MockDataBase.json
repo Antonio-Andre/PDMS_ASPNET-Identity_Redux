@@ -174,13 +174,13 @@
           "id": 102,
           "product": "ChickenMeat_Box_5kg",
           "quantity": 10,
-          "itemWeightKg": 5.0
+          "itemWeightKg": 5
         }
       ],
       "RegisterData": "2024-03-10T08:00:00Z",
       "SLAExpiration": "2024-03-12T18:00:00Z",
       "DateOfDeliveryOrReturn": "2024-03-11T14:30:00Z",
-      "TotalShipmentWeightKg": 74.0,
+      "TotalShipmentWeightKg": 74,
       "DriverId": 1,
       "VanId": 1,
       "Observations": "Morning delivery"
@@ -222,7 +222,7 @@
           "id": 105,
           "product": "TurkeyMeat_Box_10kg",
           "quantity": 5,
-          "itemWeightKg": 10.0
+          "itemWeightKg": 10
         },
         {
           "id": 106,
@@ -234,7 +234,7 @@
       "RegisterData": "2024-03-11T10:30:00Z",
       "SLAExpiration": "2024-03-12T20:00:00Z",
       "DateOfDeliveryOrReturn": null,
-      "TotalShipmentWeightKg": 180.0,
+      "TotalShipmentWeightKg": 180,
       "DriverId": 2,
       "VanId": 3,
       "Observations": "Direct to Buyer A"
@@ -276,7 +276,7 @@
       "RegisterData": "2024-03-09T15:00:00Z",
       "SLAExpiration": "2024-03-10T15:00:00Z",
       "DateOfDeliveryOrReturn": "2024-03-10T10:00:00Z",
-      "TotalShipmentWeightKg": 16.0,
+      "TotalShipmentWeightKg": 16,
       "DriverId": 3,
       "VanId": 3,
       "Observations": "Completed on time"

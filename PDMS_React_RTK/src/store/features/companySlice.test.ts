@@ -6,11 +6,11 @@ import companyReducer, {
   deleteCompany,
 } from "./companySlice";
 
-import type { Company } from "../../types";
 import type {
+  Company,
   CreateCompanyPayload,
   UpdateCompanyPayload,
-} from "../../apiMock/companyMockApi";
+} from "../../types";
 
 vi.mock("../../apiMock/companyMockApi");
 
@@ -31,7 +31,6 @@ describe("companySlice", () => {
     location: "Lisboa",
     email: "test@company.com",
     phoneNumber: "912345678",
-    shareCapital: 5000,
   };
 
   it("should return the initial state by default", () => {
@@ -112,16 +111,13 @@ describe("companySlice", () => {
       };
 
       const updatePayload: UpdateCompanyPayload = {
-        name: "Updated Company",
-        taxId: "123456789",
         businessGroupId: null,
         streetAdress: "Rua Principal 123",
         postalCode: "1000-001",
         location: "Lisboa",
         email: "test@company.com",
         phoneNumber: "912345678",
-        shareCapital: 5000,
-      } as UpdateCompanyPayload;
+      };
 
       const arg = { id: 1, payload: updatePayload };
 
