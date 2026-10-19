@@ -1,24 +1,23 @@
-# PDMS - Platform Data Management System
+#Internal Distribution & Inventory Management System 
 
-Full-stack back-office application designed for physical warehouse management, stock tracking, and fleet operations.
+An internal back-office system focused on physical warehouse management, atomic SKU transformation (Kitting), and minimalist fleet logistics. Engineered with a **.NET API (EF Core)** backend and a **React (Redux Toolkit)** frontend.
 
-## Tech Stack
+This software contains no public-facing storefronts, e-commerce layers, shipping rate calculators, or geospatial routing engines.
 
-- Backend: C# / .NET 8, ASP.NET Core Web API, Entity Framework Core
-- Frontend: React, Redux Toolkit (RTK)
-- Database: SQL Server / EF Core Migrations
+## 🚀 Quick Start
 
-## Project Structure
+### Prerequisites
+* .NET SDK (v8.0+)
+* Node.js (v20+)
+* Docker (for local database instance)
 
-- PDMS_ASPNET-Identity/: REST API backend handling business logic, identity/auth, and data persistence.
-- PDMS_React_RTK/: React frontend UI integrated with Redux Toolkit for state management.
-
-## How to Run
-
-1. Backend Setup (.NET)
-   cd PDMS_ASPNET-Identity
-   dotnet ef database update
-   dotnet run
+### Backend Setup (.NET)
+```bash
+cd backend/WmsAPI
+docker-compose up -d
+dotnet ef database update
+dotnet run
+```
 
 2. Frontend Setup (React)
    cd PDMS_React_RTK

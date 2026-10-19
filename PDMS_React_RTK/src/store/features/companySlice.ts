@@ -1,13 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Company } from "../../types";
+import type {
+  Company,
+  CreateCompanyPayload,
+  UpdateCompanyPayload,
+} from "../../types";
 import * as MockApi from "../../apiMock/companyMockApi";
-import {
-  type DeleteCompanyPayload,
-  type CreateCompanyPayload,
-  type UpdateCompanyPayload,
-} from "../../apiMock/companyMockApi";
 
 interface CompanyState {
   list: Company[];

@@ -19,6 +19,7 @@ import { ShipmentsView } from "./views/Shipments.tsx";
 import { SingleShipmentItemList } from "./views/SingleShipmentItemList.tsx";
 import { EditCompanyInfo } from "./views/EditCompanyInfo.tsx";
 import { LoginView } from "./views/LoginView.tsx";
+import { UnderConstructionView } from "./views/UnderConstructionForm.tsx";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -91,8 +92,22 @@ function App() {
                 }
               />
               <Route
+                path="/company/new"
+                element={
+                  <EditCompanyInfo
+                    companies={companyList}
+                    isLoading={companyLoading}
+                  />
+                }
+              />
+              <Route
                 path="/company/edit/:id"
-                element={<EditCompanyInfo companies={companyList} />}
+                element={
+                  <EditCompanyInfo
+                    companies={companyList}
+                    isLoading={companyLoading}
+                  />
+                }
               />
               <Route
                 path="/companies"
@@ -114,14 +129,30 @@ function App() {
                 }
               />
               <Route
+                path="/van/new"
+                element={<UnderConstructionView resourceName="Van" />}
+              />
+              <Route
                 path="/employees"
                 element={
                   <EmployeesView
                     employees={employeeList}
                     isLoading={employeeLoading}
+                    onTerminateEmployee={(id) =>
+                      console.log("Terminate employee:", id)
+                    }
                   />
                 }
               />
+              <Route
+                path="/employee/new"
+                element={<UnderConstructionView resourceName="Employee" />}
+              />
+              <Route
+                path="/shipment/:id"
+                element={<SingleShipmentItemList shipments={shipmentList} />}
+              />
+
               <Route
                 path="/shipment/:id"
                 element={<SingleShipmentItemList shipments={shipmentList} />}
