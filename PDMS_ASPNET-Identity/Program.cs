@@ -59,12 +59,8 @@ var app = builder.Build();
 
 
 
-// Do this in a helper function later, avoid polluting the main program file, only for development purposes
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.MapScalarApiReference();
-}
+app.MapOpenApi();
+app.MapScalarApiReference();
 
 using (var scope = app.Services.CreateScope())
 {
