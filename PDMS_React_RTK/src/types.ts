@@ -46,8 +46,18 @@ export interface Company {
   location: string;
   email: string;
   phoneNumber: string;
-  shareCapital: number;
 }
+
+export type CreateCompanyPayload = Omit<Company, "id">;
+
+export type UpdateCompanyPayload = {
+  businessGroupId?: number | null;
+  streetAdress: string;
+  postalCode: string;
+  location: string;
+  email: string;
+  phoneNumber: string;
+};
 
 export type ProductType =
   //Meat

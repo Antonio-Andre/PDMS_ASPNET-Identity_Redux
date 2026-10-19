@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "server": "json-server --watch ./src/data/MockDataBase.json --port 3069",
-    "seed:db": "node tools/createMockDb.js",
-    "start": "npm run seed:db && run-p dev server",
-    "reset:db": "node tools/createMockDb.js"
+    "start:dev": "vite",
+    "start:api": "json-server --watch ./src/data/MockDataBase.json --port 3069",
+    "prestart:api": "node tools/createMockDb.js",
+    "dev": "run-p start:dev start:api",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",

@@ -1,18 +1,13 @@
 import { handleResponse, handleError } from "./apiUtils";
-import type { Company } from "../types";
+import type {
+  Company,
+  CreateCompanyPayload,
+  UpdateCompanyPayload,
+} from "../types";
 
 const baseUrl = `${import.meta.env.VITE_MOCKAPI_URL}/companies`;
 
-export type CreateCompanyPayload = Omit<Company, "id">;
-
-export interface UpdateCompanyPayload {
-  businessGroupId?: number | null;
-  streetAdress: string;
-  postalCode: string;
-  location: string;
-  email: string;
-  phoneNumber: string;
-}
+export type { CreateCompanyPayload, UpdateCompanyPayload };
 
 export async function getCompanies(): Promise<Company[]> {
   return fetch(baseUrl).then(handleResponse).catch(handleError);

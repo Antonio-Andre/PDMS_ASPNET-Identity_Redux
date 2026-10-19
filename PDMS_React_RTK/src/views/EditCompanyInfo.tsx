@@ -1,61 +1,143 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../store";
-import { updateCompany } from "../store/features/companySlice";
+import { createCompany, updateCompany } from "../store/features/companySlice";
 import { useParams, useNavigate } from "react-router-dom";
-import type { Company } from "../types";
-import { TextInput } from "../components/TextInput"; // Ajusta o caminho para onde guardaste o TextInput
+import type {
+  Company,
+  CreateCompanyPayload,
+  UpdateCompanyPayload,
+} from "../types";
+import { TextInput } from "../components/TextInput";
 
 interface EditCompanyProps {
   companies: Company[];
+  isLoading?: boolean;
 }
 
-export const EditCompanyInfo = ({ companies }: EditCompanyProps) => {
+type CompanyFormState = {
+  name: string;
+  taxId: string;
+  businessGroupId: string;
+  streetAdress: string;
+  postalCode: string;
+  location: string;
+  email: string;
+  phoneNumber: string;
+};
+
+const emptyForm: CompanyFormState = {
+  name: "",
+  taxId: "",
+  businessGroupId: "",
+  streetAdress: "",
+  postalCode: "",
+  location: "",
+  email: "",
+  phoneNumber: "",
+};
+
+function toFormState(company?: Company): CompanyFormState {
+  if (!company) return emptyForm;
+  return {
+    name: company.name,
+    taxId: company.taxId,
+    businessGroupId:
+      company.businessGroupId === null || company.businessGroupId === undefined
+        ? ""
+        : String(company.businessGroupId),
+    streetAdress: company.streetAdress,
+    postalCode: company.postalCode,
+    location: company.location,
+    email: company.email,
+    phoneNumber: company.phoneNumber,
+  };
+}
+
+function parseBusinessGroupId(value: string): number | null {
+  if (value.trim() === "") return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+export const EditCompanyInfo = ({
+  companies,
+  isLoading = false,
+}: EditCompanyProps) => {
   const { id } = useParams<{ id: string }>();
+  const isCreate = !id;
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const originalCompany = companies.find((c) => String(c.id) === id);
+  const originalCompany = isCreate
+    ? undefined
+    : companies.find((c) => String(c.id) === id);
 
-  const [company, setCompany] = useState<Company>(() => {
-    return (
-      originalCompany || {
-        id: 0,
-        name: "",
-        taxId: "",
-        streetAdress: "",
-        postalCode: "",
-        location: "",
-        email: "",
-        phoneNumber: "",
-        shareCapital: 0,
-      }
-    );
-  });
+  const [form, setForm] = useState<CompanyFormState>(() =>
+    toFormState(originalCompany),
+  );
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (originalCompany) {
+      setForm(toFormState(originalCompany));
+    }
+  }, [originalCompany]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCompany((prev) => ({
+    setForm((prev) => ({
       ...prev,
-      [name]: name === "shareCapital" ? Number(value) : value,
+      [name]: value,
     }));
   };
 
   const handleSave = async () => {
-    console.log("Objeto a enviar para a API:", company);
-    console.log("Tipo do id:", typeof company.id);
+    const businessGroupId = parseBusinessGroupId(form.businessGroupId);
+
     try {
-      await dispatch(updateCompany(company));
-      alert("Guardado com sucesso!");
+      setSaving(true);
+      if (isCreate) {
+        const payload: CreateCompanyPayload = {
+          name: form.name,
+          taxId: form.taxId,
+          businessGroupId,
+          streetAdress: form.streetAdress,
+          postalCode: form.postalCode,
+          location: form.location,
+          email: form.email,
+          phoneNumber: form.phoneNumber,
+        };
+        await dispatch(createCompany(payload)).unwrap();
+        alert("Empresa criada com sucesso!");
+      } else if (originalCompany) {
+        const payload: UpdateCompanyPayload = {
+          businessGroupId,
+          streetAdress: form.streetAdress,
+          postalCode: form.postalCode,
+          location: form.location,
+          email: form.email,
+          phoneNumber: form.phoneNumber,
+        };
+        await dispatch(
+          updateCompany({ id: originalCompany.id, payload }),
+        ).unwrap();
+        alert("Guardado com sucesso!");
+      }
+      navigate("/companies");
     } catch (err) {
-      console.error("Erro na atualização:", err);
+      console.error("Erro ao guardar empresa:", err);
       alert("Falha ao guardar: " + err);
     } finally {
-      navigate("/companies");
+      setSaving(false);
     }
   };
 
-  if (!originalCompany) {
+  if (!isCreate && isLoading && !originalCompany) {
+    return <h2>A carregar empresas do PDMS...</h2>;
+  }
+
+  if (!isCreate && !originalCompany) {
     return (
       <div style={{ padding: "20px", textAlign: "center" }}>
         <h3>Empresa "{id}" não encontrada.</h3>
@@ -76,7 +158,7 @@ export const EditCompanyInfo = ({ companies }: EditCompanyProps) => {
           marginBottom: "20px",
         }}
       >
-        <h2>Editar Empresa</h2>
+        <h2>{isCreate ? "Nova Empresa" : "Editar Empresa"}</h2>
         <button onClick={() => navigate("/companies")}>Voltar</button>
       </div>
 
@@ -91,54 +173,59 @@ export const EditCompanyInfo = ({ companies }: EditCompanyProps) => {
         <TextInput
           name="name"
           label="Nome da Empresa"
-          value={company.name}
+          value={form.name}
           onChange={handleChange}
+          disabled={!isCreate}
         />
         <TextInput
           name="taxId"
           label="NIF"
-          value={company.taxId}
+          value={form.taxId}
           onChange={handleChange}
+          disabled={!isCreate}
+        />
+        <TextInput
+          name="businessGroupId"
+          label="ID do Grupo Empresarial"
+          value={form.businessGroupId}
+          onChange={handleChange}
+          type="number"
         />
         <TextInput
           name="streetAdress"
           label="Morada"
-          value={company.streetAdress}
+          value={form.streetAdress}
           onChange={handleChange}
         />
         <TextInput
           name="postalCode"
           label="Código Postal"
-          value={company.postalCode}
+          value={form.postalCode}
           onChange={handleChange}
         />
         <TextInput
           name="location"
           label="Localidade"
-          value={company.location}
+          value={form.location}
           onChange={handleChange}
         />
         <TextInput
           name="email"
           label="email"
-          value={company.email}
+          value={form.email}
           onChange={handleChange}
+          type="email"
         />
         <TextInput
           name="phoneNumber"
           label="Telefone"
-          value={company.phoneNumber}
-          onChange={handleChange}
-        />
-        <TextInput
-          name="shareCapital"
-          label="Capital Social"
-          value={company.shareCapital}
+          value={form.phoneNumber}
           onChange={handleChange}
         />
 
         <button
           onClick={handleSave}
+          disabled={saving}
           style={{
             marginTop: "15px",
             padding: "10px 20px",
@@ -148,7 +235,11 @@ export const EditCompanyInfo = ({ companies }: EditCompanyProps) => {
             borderRadius: "4px",
           }}
         >
-          Guardar Alterações
+          {saving
+            ? "A guardar..."
+            : isCreate
+              ? "Criar Empresa"
+              : "Guardar Alterações"}
         </button>
       </div>
     </div>

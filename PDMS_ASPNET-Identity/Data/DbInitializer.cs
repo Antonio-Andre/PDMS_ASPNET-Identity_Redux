@@ -13,9 +13,9 @@ namespace PDMS.Data
             using var context = new ApplicationDbContext(
                 serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>());
 
-            context.Database.EnsureCreated();
+            
+            await context.Database.MigrateAsync();
 
-            // CORREÇÃO: RoleManager usa IdentityRole<int>, não Employee
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<Employee>>();
 
