@@ -5,19 +5,34 @@ import { useNavigate } from "react-router-dom";
 interface Props {
   shipments: Shipment[];
   isLoading: boolean;
+  onConfirmDelivery?: (id: string | number) => void;
 }
 
 type SortColumn = "movement" | "Weight" | null;
 type SortDirection = "asc" | "desc";
 
-export const ShipmentsView = ({ shipments, isLoading }: Props) => {
+export const ShipmentsView = ({
+  shipments,
+  isLoading,
+  onConfirmDelivery,
+}: Props) => {
   const navigate = useNavigate();
   const [statusFilter, setStatusFilter] = useState<string>("All");
   const [sortColumn, setSortColumn] = useState<SortColumn>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+  const [confirmingDeliveryId, setConfirmingDeliveryId] = useState<
+    string | number | null
+  >(null);
 
   if (isLoading) return <h2>A carregar dados de remessas do PDMS...</h2>;
   if (shipments.length === 0) return <h2>Nenhuma remessa encontrada.</h2>;
+
+  const handleConfirmAction = (id: string | number) => {
+    if (onConfirmDelivery) {
+      onConfirmDelivery(id);
+    }
+    setConfirmingDeliveryId(null);
+  };
 
   const filteredShipments = shipments.filter((s) => {
     const matchesStatus = statusFilter === "All" || s.status === statusFilter;
@@ -25,7 +40,7 @@ export const ShipmentsView = ({ shipments, isLoading }: Props) => {
   });
 
   const sortedShipments = [...filteredShipments].sort((a, b) => {
-    if (!sortColumn) return 0; // Sem ordenação ativa
+    if (!sortColumn) return 0;
 
     if (sortColumn === "movement") {
       return sortDirection === "asc"
@@ -56,7 +71,7 @@ export const ShipmentsView = ({ shipments, isLoading }: Props) => {
       return <span style={{ marginLeft: "5px", color: "#ccc" }}>⇅</span>;
     if (column === "Weight") {
       return sortDirection === "asc" ? (
-        <span style={{ marginLeft: "5px", fontWeight: "bold" }}>⬇ ⌸</span> // Menor no topo, maior no fundo
+        <span style={{ marginLeft: "5px", fontWeight: "bold" }}>⬇ ⌸</span>
       ) : (
         <span style={{ marginLeft: "5px", fontWeight: "bold" }}>⬆ ⌸</span>
       );
@@ -84,10 +99,13 @@ export const ShipmentsView = ({ shipments, isLoading }: Props) => {
   const cellStyle: React.CSSProperties = {
     padding: "12px",
     borderBottom: "1px solid #eee",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "20px", width: "100%", boxSizing: "border-box" }}>
       <h2>Shipment Flow Dashboard</h2>
 
       <div
@@ -151,27 +169,45 @@ export const ShipmentsView = ({ shipments, isLoading }: Props) => {
         </span>
       </div>
 
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          tableLayout: "fixed",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
         <thead>
           <tr style={{ backgroundColor: "#f9f9f9" }}>
-            <th style={tableHeaderStyle}>ID</th>
-            <th style={tableHeaderStyle}>status</th>
+            <th style={{ ...tableHeaderStyle, width: "18%" }}>ID</th>
+            <th style={{ ...tableHeaderStyle, width: "18%" }}>status</th>
 
             <th
-              style={headerClickableStyle}
+              style={{ ...headerClickableStyle, width: "22%" }}
               onClick={() => handleSort("movement")}
             >
               movement Type {renderSortIcon("movement")}
             </th>
 
             <th
-              style={headerClickableStyle}
+              style={{ ...headerClickableStyle, width: "18%" }}
               onClick={() => handleSort("Weight")}
             >
               Weight (kg) {renderSortIcon("Weight")}
             </th>
 
-            <th style={tableHeaderStyle}>Details</th>
+            <th style={{ ...tableHeaderStyle, width: "12%" }}>Details</th>
+            <th
+              style={{
+                ...tableHeaderStyle,
+                width: "180px", // Espaço suficiente sem folga gigante
+                textAlign: "left",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -198,18 +234,74 @@ export const ShipmentsView = ({ shipments, isLoading }: Props) => {
                 <td style={cellStyle}>
                   <button
                     onClick={() => navigate(`/shipment/${s.id}`)}
-                    //onClick={() => navigate("/shipment/" + s.id)}
-                    style={{ cursor: "pointer", padding: "5px 10px" }}
+                    style={viewButtonStyle}
                   >
                     View List
                   </button>
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #eee",
+                    textAlign: "left",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                      gap: "8px",
+                    }}
+                  >
+                    {confirmingDeliveryId === s.id ? (
+                      <span
+                        style={{
+                          display: "inline-flex",
+                          gap: "6px",
+                          marginRight: "2px",
+                        }}
+                      >
+                        <button
+                          onClick={() => handleConfirmAction(s.id)}
+                          title="Confirmar Entrega"
+                          style={{
+                            ...actionButtonStyle,
+                            backgroundColor: "#e6ffe6",
+                            borderColor: "#28a745",
+                          }}
+                        >
+                          ✔️
+                        </button>
+                        <button
+                          onClick={() => setConfirmingDeliveryId(null)}
+                          title="Cancelar"
+                          style={{
+                            ...actionButtonStyle,
+                            backgroundColor: "#ffe6e6",
+                            borderColor: "#dc3545",
+                          }}
+                        >
+                          ❌
+                        </button>
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => setConfirmingDeliveryId(s.id)}
+                        style={confirmDeliveryButtonStyle}
+                      >
+                        Confirm Delivery
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))
           ) : (
             <tr>
               <td
-                colSpan={5}
+                colSpan={6}
                 style={{
                   ...cellStyle,
                   textAlign: "center",
@@ -225,4 +317,33 @@ export const ShipmentsView = ({ shipments, isLoading }: Props) => {
       </table>
     </div>
   );
+};
+
+// Estilos dos Botões
+const viewButtonStyle: React.CSSProperties = {
+  cursor: "pointer",
+  padding: "5px 10px",
+  backgroundColor: "transparent",
+  border: "1px solid #007bff",
+  color: "#007bff",
+  borderRadius: "4px",
+};
+
+const confirmDeliveryButtonStyle: React.CSSProperties = {
+  cursor: "pointer",
+  padding: "5px 10px",
+  backgroundColor: "#28a745",
+  color: "#fff",
+  border: "none",
+  borderRadius: "4px",
+  fontWeight: "500",
+};
+
+const actionButtonStyle: React.CSSProperties = {
+  background: "#f8f9fa",
+  border: "1px solid #ccc",
+  borderRadius: "4px",
+  cursor: "pointer",
+  fontSize: "14px",
+  padding: "4px 8px",
 };

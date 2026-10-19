@@ -1,4 +1,4 @@
-# Internal OMS/WMS & Fleet State Orchestrator
+#Internal Distribution & Inventory Management System 
 
 An internal back-office system focused on physical warehouse management, atomic SKU transformation (Kitting), and minimalist fleet logistics. Engineered with a **.NET API (EF Core)** backend and a **React (Redux Toolkit)** frontend.
 

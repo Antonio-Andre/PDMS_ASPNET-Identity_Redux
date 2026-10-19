@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { Van } from "../types";
 
 const cardStyle: React.CSSProperties = {
@@ -13,7 +14,6 @@ const cardStyle: React.CSSProperties = {
 };
 
 const badgeStyle = (status: string): React.CSSProperties => ({
-  marginLeft: "auto",
   fontSize: "0.8em",
   padding: "5px 12px",
   borderRadius: "20px",
@@ -26,26 +26,125 @@ const badgeStyle = (status: string): React.CSSProperties => ({
         : "#d1d1d1",
 });
 
+interface VansViewProps {
+  vans: Van[];
+  isLoading: boolean;
+  onAssign: (regNumber: string, vanId: number) => void;
+  onBuyVan?: () => void;
+  onSellVan?: (id: number) => void;
+}
+
 export const VansView = ({
   vans,
   isLoading,
   onAssign,
-}: {
-  vans: Van[];
-  isLoading: boolean;
-  onAssign: (regNumber: string, vanId: number) => void;
-}) => {
-  const [regNumber, setRegNumber] = React.useState("");
-  const [selectedVanId, setSelectedVanId] = React.useState("");
+  onBuyVan,
+  onSellVan,
+}: VansViewProps) => {
+  const navigate = useNavigate();
+  const [regNumber, setRegNumber] = useState("");
+  const [selectedVanId, setSelectedVanId] = useState("");
+  const [sellingVanId, setSellingVanId] = useState<number | null>(null);
 
   const availableVans = vans.filter((v) => v.status === "Available");
   const unavailableVans = vans.filter((v) => v.status !== "Available");
 
+  const handleConfirmSell = (id: number) => {
+    if (onSellVan) {
+      onSellVan(id);
+    }
+    setSellingVanId(null);
+  };
+
+  const handleBuyClick = () => {
+    if (onBuyVan) {
+      onBuyVan();
+    } else {
+      navigate("/van/new");
+    }
+  };
+
+  const renderVanItem = (van: Van) => (
+    <div key={van.id} style={cardStyle}>
+      <span style={{ marginRight: "15px", fontSize: "1.5em" }}>🚚</span>
+      <div>
+        <strong style={{ fontSize: "1.1em", display: "block" }}>
+          {van.licensePlate}
+        </strong>
+        <span style={{ fontSize: "0.9em", color: "#666" }}>
+          {van.maxLoadKg}kg • Inspected on {van.dataOfInspection}
+        </span>
+      </div>
+
+      <div
+        style={{
+          marginLeft: "auto",
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+        }}
+      >
+        <span style={badgeStyle(van.status)}>{van.status}</span>
+
+        {/* Container ancorado à esquerda para alinhar as bordas esquerdas do "Sell" e do "✔️" */}
+        <div
+          style={{
+            minWidth: "90px",
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
+          {sellingVanId === van.id ? (
+            <span
+              style={{
+                display: "inline-flex",
+                gap: "6px",
+              }}
+            >
+              <button
+                onClick={() => handleConfirmSell(van.id)}
+                title="Confirm Sale"
+                style={confirmButtonStyle}
+              >
+                ✔️
+              </button>
+              <button
+                onClick={() => setSellingVanId(null)}
+                title="Cancel"
+                style={cancelButtonStyle}
+              >
+                ❌
+              </button>
+            </span>
+          ) : (
+            <button
+              onClick={() => setSellingVanId(van.id)}
+              style={sellButtonStyle}
+            >
+              Sell
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div style={{ maxWidth: "900px", margin: "0 auto", padding: "20px" }}>
-      <h2 style={{ textAlign: "center", marginBottom: "30px" }}>
-        Gestão de Frota (Vans)
-      </h2>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "30px",
+        }}
+      >
+        <h2 style={{ margin: 0 }}>Fleet Management (Vans)</h2>
+        <button onClick={handleBuyClick} style={buyButtonStyle}>
+          + Buy Van
+        </button>
+      </div>
 
       <div
         style={{
@@ -63,7 +162,7 @@ export const VansView = ({
         <input
           value={regNumber}
           onChange={(e) => setRegNumber(e.target.value)}
-          placeholder="Código de encomenda..."
+          placeholder="Order code..."
           style={{
             padding: "10px",
             borderRadius: "6px",
@@ -81,7 +180,7 @@ export const VansView = ({
             border: "1px solid #ccc",
           }}
         >
-          <option value="">Selecione uma carrinha...</option>
+          <option value="">Select a van...</option>
           {availableVans.map((v) => (
             <option key={v.id} value={v.id}>
               {v.licensePlate} ({v.maxLoadKg}kg)
@@ -100,18 +199,18 @@ export const VansView = ({
             cursor: "pointer",
           }}
         >
-          Atribuir
+          Assign
         </button>
       </div>
 
       {isLoading ? (
-        <p style={{ textAlign: "center" }}>A carregar dados...</p>
+        <p style={{ textAlign: "center" }}>Loading data...</p>
       ) : (
         <>
-          <h3>Disponíveis</h3>
+          <h3>Available Vans</h3>
           {availableVans.map(renderVanItem)}
 
-          <h3 style={{ marginTop: "40px" }}>Indisponíveis / Manutenção</h3>
+          <h3 style={{ marginTop: "40px" }}>Unavailable / Maintenance</h3>
           {unavailableVans.map(renderVanItem)}
         </>
       )}
@@ -119,17 +218,40 @@ export const VansView = ({
   );
 };
 
-const renderVanItem = (van: Van) => (
-  <div key={van.id} style={cardStyle}>
-    <span style={{ marginRight: "15px", fontSize: "1.5em" }}>🚚</span>
-    <div>
-      <strong style={{ fontSize: "1.1em", display: "block" }}>
-        {van.licensePlate}
-      </strong>
-      <span style={{ fontSize: "0.9em", color: "#666" }}>
-        {van.maxLoadKg}kg • Inspecionada em {van.dataOfInspection}
-      </span>
-    </div>
-    <span style={badgeStyle(van.status)}>{van.status}</span>
-  </div>
-);
+// Estilos dos Botões
+const buyButtonStyle: React.CSSProperties = {
+  padding: "10px 20px",
+  backgroundColor: "#007bff",
+  color: "#fff",
+  border: "none",
+  borderRadius: "6px",
+  fontWeight: "bold",
+  cursor: "pointer",
+};
+
+const sellButtonStyle: React.CSSProperties = {
+  padding: "5px 14px",
+  backgroundColor: "transparent",
+  border: "1px solid #dc3545",
+  color: "#dc3545",
+  borderRadius: "6px",
+  cursor: "pointer",
+  fontSize: "0.85em",
+  fontWeight: 600,
+};
+
+const confirmButtonStyle: React.CSSProperties = {
+  padding: "4px 8px",
+  backgroundColor: "#e6ffe6",
+  border: "1px solid #28a745",
+  borderRadius: "4px",
+  cursor: "pointer",
+};
+
+const cancelButtonStyle: React.CSSProperties = {
+  padding: "4px 8px",
+  backgroundColor: "#ffe6e6",
+  border: "1px solid #dc3545",
+  borderRadius: "4px",
+  cursor: "pointer",
+};
