@@ -58,8 +58,6 @@ builder.Services.AddScoped<StockService>();
 var app = builder.Build();
 
 
-options.AddDocument("v1", "/openapi/v1.json");
-
 app.MapOpenApi();
 app.MapScalarApiReference((options =>
 {

@@ -5,6 +5,17 @@ import type {
   UpdateCompanyPayload,
 } from "../types";
 
+export type CreateCompanyPayload = Omit<Company, "id">;
+
+export type UpdateCompanyPayload = {
+  businessGroupId?: number | null;
+  streetAdress: string;
+  postalCode: string;
+  location: string;
+  email: string;
+  phoneNumber: string;
+};
+
 const baseUrl = `${import.meta.env.VITE_MOCKAPI_URL}/companies`;
 
 export type { CreateCompanyPayload, UpdateCompanyPayload };

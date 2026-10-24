@@ -19,6 +19,19 @@ export interface Employee {
   passwordHash: string;
 }
 
+export type CreateEmployeePayload = Omit<Employee, "id">;
+
+export interface UpdateEmployeePayload {
+  name?: string;
+  email?: string;
+  initials?: string;
+  department?: string;
+  jobTitle?: Employee["jobTitle"];
+  status?: Employee["status"];
+  enableNotifications?: boolean;
+  passwordHash?: string;
+}
+
 export type VanStatus =
   | "Available"
   | "Loading"

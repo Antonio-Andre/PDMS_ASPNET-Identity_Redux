@@ -6,7 +6,8 @@ import type {
   CreateCompanyPayload,
   UpdateCompanyPayload,
 } from "../../types";
-import * as MockApi from "../../apiMock/companyMockApi";
+import * as Api from "../../api/companyApi";
+//import * as MockApi from "../../apiMock/companyMockApi";
 
 interface CompanyState {
   list: Company[];
@@ -23,28 +24,28 @@ const initialState: CompanyState = {
 export const fetchCompanies = createAsyncThunk(
   "companies/fetchCompanies",
   async () => {
-    return await MockApi.getCompanies();
+    return await Api.getCompanies();
   },
 );
 
 export const createCompany = createAsyncThunk(
   "companies/createCompany",
   async (payload: CreateCompanyPayload) => {
-    return await MockApi.createCompany(payload);
+    return await Api.createCompany(payload);
   },
 );
 
 export const updateCompany = createAsyncThunk(
   "companies/updateCompany",
   async ({ id, payload }: { id: number; payload: UpdateCompanyPayload }) => {
-    return await MockApi.updateCompany(id, payload);
+    return await Api.updateCompany(id, payload);
   },
 );
 
 export const deleteCompany = createAsyncThunk(
   "companies/deleteCompany",
   async (id: number) => {
-    await MockApi.deleteCompany(id);
+    await Api.deleteCompany(id);
     return id;
   },
 );

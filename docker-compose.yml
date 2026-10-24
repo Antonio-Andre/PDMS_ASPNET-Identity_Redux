@@ -19,7 +19,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=pdms_db;Username=admin;Password=secret;SSL Mode=Disable;
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=pdms_db;Username=admin;Password=dbsecret;SSL Mode=Disable;
     depends_on:
       - db
 

@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Employee } from "../../types";
-import * as MockApi from "../../apiMock/employeeMockApi";
+import * as Api from "../../api/employeeApi";
 import type {
   CreateEmployeePayload,
   UpdateEmployeePayload,
-} from "../../apiMock/employeeMockApi";
+} from "../../apiMock/employeeMockApi"; // REDO types in the API file instead of the mock file, and import them from there
 
 interface EmployeeState {
   list: Employee[];
@@ -22,28 +22,28 @@ const initialState: EmployeeState = {
 export const fetchEmployees = createAsyncThunk(
   "employees/fetchEmployees",
   async () => {
-    return await MockApi.getEmployees();
+    return await Api.getEmployees();
   },
 );
 
 export const createEmployee = createAsyncThunk(
   "employees/createEmployee",
   async (payload: CreateEmployeePayload) => {
-    return await MockApi.createEmployee(payload);
+    return await Api.createEmployee(payload);
   },
 );
 
 export const updateEmployee = createAsyncThunk(
   "employees/updateEmployee",
   async ({ id, payload }: { id: number; payload: UpdateEmployeePayload }) => {
-    return await MockApi.updateEmployee(id, payload);
+    return await Api.updateEmployee(id, payload);
   },
 );
 
 export const deleteEmployee = createAsyncThunk(
   "employees/deleteEmployee",
   async (id: number) => {
-    await MockApi.deleteEmployee(id);
+    await Api.deleteEmployee(id);
     return id;
   },
 );
