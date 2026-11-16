@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// 1. Substituímos o useUser pelo useDispatch do Redux
-import { useSelector, useDispatch } from "react-redux";
-import type { RootState, AppDispatch } from "../store";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../store";
 import { login } from "../store/features/authSlice";
 import { TextInput } from "../components/TextInput";
 import { Navbar } from "../components/Navbar";
@@ -12,27 +11,20 @@ export const LoginView = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const employees = useSelector((state: RootState) => state.employees.list);
-
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setError("");
 
-    setTimeout(() => {
-      const user = employees.find((emp) => emp.email === email);
+    const resultAction = await dispatch(login({ email: email, pwd: password }));
 
-      if (user && user.passwordHash === password) {
-        dispatch(login({ user }));
-
-        navigate("/home");
-      } else {
-        setError("Email ou password incorretos.");
-      }
-    }, 50);
+    if (login.fulfilled.match(resultAction)) {
+      navigate("/home");
+    } else {
+      setError((resultAction.payload as string) || "Credenciais inválidas");
+    }
   };
 
   return (
@@ -44,8 +36,9 @@ export const LoginView = () => {
           <TextInput
             label="Email"
             name="email"
-            type="email"
+            type="text"
             value={email}
+            required={true}
             onChange={(e) => setEmail(e.target.value)}
             error={error ? "Dados inválidos" : undefined}
           />
@@ -55,12 +48,13 @@ export const LoginView = () => {
             name="password"
             type="password"
             value={password}
+            required={true}
             onChange={(e) => setPassword(e.target.value)}
           />
           <button type="submit" style={styles.button}>
             Entrar
           </button>
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
         </form>
       </div>
     </>
@@ -79,12 +73,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     border: "1px solid #ddd",
     borderRadius: "8px",
     width: "300px",
-  },
-  input: {
-    width: "100%",
-    padding: "10px",
-    margin: "10px 0",
-    boxSizing: "border-box",
+    backgroundColor: "#fff",
   },
   button: {
     width: "100%",

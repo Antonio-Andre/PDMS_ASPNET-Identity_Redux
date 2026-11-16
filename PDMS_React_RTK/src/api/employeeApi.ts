@@ -5,7 +5,7 @@ import type {
   UpdateEmployeePayload,
 } from "../types";
 
-const baseUrl = `${import.meta.env.VITE_DOTNET_URL}/api/employees`;
+const baseUrl = `${import.meta.env.VITE_DOTNET_URL}/employees`;
 
 export async function getEmployees(): Promise<Employee[]> {
   try {

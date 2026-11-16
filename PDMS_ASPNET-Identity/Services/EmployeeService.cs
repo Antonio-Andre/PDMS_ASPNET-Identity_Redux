@@ -32,6 +32,17 @@ namespace PDMS.Services
             return identityResult;
         }
 
+        public async Task<Employee?> LoginAsync(LoginRequestDTO request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null) return null;
+
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Pwd);
+            if (!isPasswordValid) return null;
+
+            return user;
+        }
+
         public async Task<List<EmployeeResponseDTO>> GetAllEmployees()
         {
             var employees = await _context.Employees.ToListAsync();

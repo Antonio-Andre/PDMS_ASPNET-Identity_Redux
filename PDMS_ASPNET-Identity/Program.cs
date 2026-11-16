@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using PDMS;
 using PDMS.Data;
 using PDMS.Endpoints;
@@ -11,10 +10,7 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi(options =>
-{
-    options.AddDocumentTransformer<SwaggerHideNativeRegisterFilter>();
-});
+builder.Services.AddOpenApi("v1");
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -58,11 +54,13 @@ builder.Services.AddScoped<StockService>();
 var app = builder.Build();
 
 
-app.MapOpenApi();
-app.MapScalarApiReference((options =>
+app.MapOpenApi(); 
+app.MapScalarApiReference(options =>
 {
-    options.AddDocument("v1", "/openapi/v1.json");
-}));
+    options
+        .WithTitle("PDMS API")
+        .AddDocument("v1", "/openapi/v1.json");
+});
 
 using (var scope = app.Services.CreateScope())
 {
@@ -90,11 +88,13 @@ app.UseCors("ReactPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapHomeEndpoint();
 app.RegisterEmployeeEndpoints();
 app.RegisterCompanyEndpoints();
 app.RegisterVanEndpoints();
 app.RegisterShipmentEndpoints();
 app.RegisterStockEndpoints();
+
 
 
 app.MapIdentityApi<Employee>();

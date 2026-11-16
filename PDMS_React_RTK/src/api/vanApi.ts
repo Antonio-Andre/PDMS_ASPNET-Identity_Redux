@@ -1,0 +1,57 @@
+import { handleResponse, handleError } from "./apiUtils";
+import type { Van, CreateVanPayload, UpdateVanPayload } from "../types";
+
+const baseUrl = `${import.meta.env.VITE_DOTNET_URL}/vans`;
+
+export async function getVans(): Promise<Van[]> {
+  try {
+    const response = await fetch(baseUrl);
+    return await handleResponse(response);
+  } catch (error) {
+    handleError(error as Error);
+    throw error;
+  }
+}
+
+export async function createVan(van: CreateVanPayload): Promise<Van> {
+  try {
+    const response = await fetch(baseUrl, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(van),
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    handleError(error as Error);
+    throw error;
+  }
+}
+
+export async function updateVan(
+  id: number,
+  van: UpdateVanPayload,
+): Promise<Van> {
+  try {
+    const response = await fetch(`${baseUrl}/${id}`, {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(van),
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    handleError(error as Error);
+    throw error;
+  }
+}
+
+export async function deleteVan(id: number): Promise<void> {
+  try {
+    const response = await fetch(`${baseUrl}/${id}`, {
+      method: "DELETE",
+    });
+    await handleResponse(response);
+  } catch (error) {
+    handleError(error as Error);
+    throw error;
+  }
+}

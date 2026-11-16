@@ -1,65 +1,82 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Employee } from "../../types";
+//import * as MockApi from "../../apiMock/authMockApi";
+import * as Api from "../../api/authApi";
 
 interface AuthState {
   user: Employee | null;
   token: string | null;
   isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
 }
 
-const getStoredEmail = (): string | null => {
-  if (typeof localStorage !== "undefined") {
-    return localStorage.getItem("userEmail");
-  }
-  return null;
-};
+function getSavedUser(): Employee | null {
+  if (typeof localStorage === "undefined") return null;
 
-const defaultMockUser: Employee = {
-  id: 1,
-  name: "Admin Dev",
-  email: getStoredEmail() || "admin@dev.com",
-  initials: "AD",
-  department: "IT",
-  jobTitle: "Admin",
-  status: "Active",
-  enableNotifications: true,
-  passwordHash: "",
-};
+  try {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  } catch {
+    localStorage.removeItem("user");
+    return null;
+  }
+}
+
+const parsedUser = getSavedUser();
 
 const initialState: AuthState = {
-  user: defaultMockUser,
-  token: "mock-jwt-token-xyz-123",
-  isAuthenticated: true,
+  user: parsedUser,
+  token: parsedUser ? "mock-jwt-token-xyz-123" : null,
+  isAuthenticated: !!parsedUser,
+  loading: false,
+  error: null,
 };
+
+export const login = createAsyncThunk(
+  "auth/loginUser",
+  async (payload: { email: string; pwd: string }) => {
+    //return await MockApi.login(payload);
+    return await Api.login(payload);
+  },
+);
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (
-      state,
-      action: PayloadAction<{ user: Employee; token?: string }>,
-    ) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token || "mock-jwt-token-xyz-123";
-      state.isAuthenticated = true;
-      if (typeof localStorage !== "undefined") {
-        localStorage.setItem("userEmail", action.payload.user.email);
-      }
-    },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
       if (typeof localStorage !== "undefined") {
+        localStorage.removeItem("user");
         localStorage.removeItem("userEmail");
       }
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(login.fulfilled, (state, action: PayloadAction<Employee>) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload;
+        state.token = "mock-jwt-token-xyz-123";
+        if (typeof localStorage !== "undefined") {
+          localStorage.setItem("user", JSON.stringify(action.payload));
+        }
+      })
+      .addCase(login.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+  },
 });
-
-export const { login, logout } = authSlice.actions;
 
 export const selectCurrentUser = (state: { auth: AuthState }) =>
   state.auth.user;
@@ -69,3 +86,5 @@ export const selectUserRole = (state: { auth: AuthState }) =>
   state.auth.user?.jobTitle;
 
 export default authSlice.reducer;
+
+export const { logout } = authSlice.actions;

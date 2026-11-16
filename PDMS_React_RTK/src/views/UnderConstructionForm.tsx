@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 interface UnderConstructionViewProps {
-  resourceName: string; // Ex: "Van" ou "Employee"
+  resourceName: string;
 }
 
 export const UnderConstructionView: React.FC<UnderConstructionViewProps> = ({

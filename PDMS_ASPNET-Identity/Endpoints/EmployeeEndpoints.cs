@@ -9,17 +9,20 @@ namespace PDMS.Endpoints
     {
         public static void RegisterEmployeeEndpoints(this WebApplication app)
         {
+            app.MapPost("/api/register", RegisterEmployee);
+            app.MapPost("/api/login", Login);
+            
             var employees = app.MapGroup("/api/employees");
 
             employees.MapGet("/", GetAllEmployees);
             employees.MapGet("/{id}", GetEmployeeById);
-            employees.MapPost("/", RegisterEmployee);
             employees.MapPut("/{id}", UpdateEmployeeById);
             employees.MapDelete("/{id}", DeleteEmploye)
                 .RequireAuthorization(policy => policy.RequireRole("Admin"));
             employees.MapPut("/{id}/admin-update", AdminUpdateEmployee)
              .RequireAuthorization(policy => policy.RequireRole("Admin"));
         }
+
         public static async Task<IResult> GetAllEmployees([FromServices] EmployeeService employeeService)
         {
             var employees = await employeeService.GetAllEmployees();
@@ -46,6 +49,18 @@ namespace PDMS.Endpoints
             }
 
             return Results.Ok(new { Message = "Employee registered successfully!" });
+        }
+
+        public static async Task<IResult> Login(LoginRequestDTO request, [FromServices] EmployeeService employeeService)
+        {
+            var employee = await employeeService.LoginAsync(request);
+
+            if (employee == null)
+            {
+                return Results.Unauthorized();
+            }
+
+            return Results.Ok(employee);
         }
 
         public static async Task<IResult> UpdateEmployeeById(int id, UpdateEmployeeDTO request, [FromServices] EmployeeService employeeService)

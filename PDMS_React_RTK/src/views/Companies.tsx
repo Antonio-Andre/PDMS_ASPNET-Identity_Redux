@@ -176,7 +176,6 @@ export const CompaniesView = ({
   );
 };
 
-// Estilos
 const tableHeaderStyle = { padding: "12px", borderBottom: "2px solid #ddd" };
 
 const tableCellStyle = {
@@ -186,7 +185,6 @@ const tableCellStyle = {
   whiteSpace: "nowrap",
 };
 
-// Célula específica de ações sem o overflow:hidden para não cortar botões
 const actionCellStyle = {
   padding: "12px",
   whiteSpace: "nowrap",

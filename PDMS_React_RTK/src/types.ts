@@ -49,6 +49,16 @@ export interface Van {
   status: VanStatus;
 }
 
+export type CreateVanPayload = Omit<Van, "id">;
+
+export interface UpdateVanPayload {
+  licensePlate?: string;
+  dataOfInspection?: string;
+  maxLoadKg?: number;
+  maxVolumeM3?: number;
+  status?: Van["status"];
+}
+
 export interface Company {
   id: number;
   name: string;

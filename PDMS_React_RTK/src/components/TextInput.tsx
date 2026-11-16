@@ -8,6 +8,7 @@ interface TextInputProps {
   type?: "text" | "number" | "email" | "password";
   error?: string;
   disabled?: boolean;
+  required?: boolean;
 }
 
 export const TextInput = ({
@@ -18,6 +19,7 @@ export const TextInput = ({
   type = "text",
   error,
   disabled = false,
+  required = false,
 }: TextInputProps) => (
   <div style={{ marginBottom: "15px" }}>
     <label
@@ -31,6 +33,7 @@ export const TextInput = ({
       value={value}
       onChange={onChange}
       disabled={disabled}
+      required={required}
       style={{
         width: "100%",
         padding: "8px",

@@ -6,9 +6,8 @@ import {
   createVan as apiCreateVan,
   updateVan as apiUpdateVan,
   deleteVan as apiDeleteVan,
-  type CreateVanPayload,
-  type UpdateVanPayload,
-} from "../../apiMock/vanMockApi";
+} from "../../api/vanApi";
+import type { CreateVanPayload, UpdateVanPayload } from "../../types";
 
 interface VanState {
   list: Van[];

@@ -2,10 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Employee } from "../../types";
 import * as Api from "../../api/employeeApi";
-import type {
-  CreateEmployeePayload,
-  UpdateEmployeePayload,
-} from "../../apiMock/employeeMockApi"; // REDO types in the API file instead of the mock file, and import them from there
+import type { CreateEmployeePayload, UpdateEmployeePayload } from "../../types";
 
 interface EmployeeState {
   list: Employee[];

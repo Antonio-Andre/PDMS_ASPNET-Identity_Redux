@@ -1,17 +1,7 @@
 import { handleResponse, handleError } from "./apiUtils";
-import type { Van } from "../types";
+import type { Van, CreateVanPayload, UpdateVanPayload } from "../types";
 
 const baseUrl = `${import.meta.env.VITE_MOCKAPI_URL}/vans`;
-
-export type CreateVanPayload = Omit<Van, "id">;
-
-export interface UpdateVanPayload {
-  licensePlate?: string;
-  dataOfInspection?: string;
-  maxLoadKg?: number;
-  maxVolumeM3?: number;
-  status?: Van["status"];
-}
 
 export async function getVans(): Promise<Van[]> {
   try {

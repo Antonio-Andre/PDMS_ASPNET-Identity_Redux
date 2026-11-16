@@ -1,9 +1,11 @@
 import { Navigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectIsAuthenticated } from "../../store/features/authSlice";
 import { NavbarAuthenticated } from "./NavBarAuthenticated";
 
 export const ProtectedRoute = () => {
-  const hasToken = !!localStorage.getItem("userEmail");
+  const hasToken = useSelector(selectIsAuthenticated);
 
   if (!hasToken) {
     return <Navigate to="/login" replace />;

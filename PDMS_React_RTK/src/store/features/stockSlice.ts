@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { StockBatch } from "../../types";
-import * as MockApi from "../../apiMock/stockMockApi";
+import * as Api from "../../api/stockApi";
+//import * as MockApi from "../../apiMock/stockMockApi";
 
 interface BatchesState {
   list: StockBatch[];
@@ -21,7 +22,7 @@ export const fetchAllStock = createAsyncThunk(
   "stock/fetchAllStock",
   async (_, { rejectWithValue }) => {
     try {
-      const data = await MockApi.getStockBatches();
+      const data = await Api.getStockBatches();
       return data as StockBatch[];
     } catch (error) {
       return rejectWithValue((error as Error).message);
@@ -33,7 +34,7 @@ export const fetchStockById = createAsyncThunk(
   "stock/fetchStockById",
   async (id: number, { rejectWithValue }) => {
     try {
-      const data = await MockApi.getStockBatchById(id);
+      const data = await Api.getStockBatchById(id);
       return data as StockBatch;
     } catch (error) {
       return rejectWithValue((error as Error).message);

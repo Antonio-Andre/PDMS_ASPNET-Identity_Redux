@@ -4,7 +4,8 @@ import {
   type PayloadAction,
 } from "@reduxjs/toolkit";
 import type { Shipment } from "../../types";
-import * as ShipmentApi from "../../apiMock/shipmentMockApi";
+import * as ShipmentApi from "../../api/shipmentApi";
+//import * as ShipmentApi from "../../apiMock/shipmentMockApi";
 
 interface ShipmentState {
   list: Shipment[];

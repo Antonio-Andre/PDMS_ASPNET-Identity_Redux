@@ -6,7 +6,7 @@ interface Props {
   isLoading: boolean;
 }
 
-export const HomePage = ({ batches, isLoading }: Props) => {
+export const HomePage = ({ batches }: Props) => {
   const navigate = useNavigate();
 
   const navigationCards = [

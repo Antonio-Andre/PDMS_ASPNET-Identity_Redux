@@ -2,6 +2,7 @@
 
 namespace PDMS.DTO
 {
+
     public record EmployeeResponseDTO(int Id, string Name, string Email, string Department, string? PhoneNumber, bool EnableNotifications)
     {
         public EmployeeResponseDTO(Employee e) : this(
@@ -21,12 +22,23 @@ namespace PDMS.DTO
         string Department
     )
     {
+        private static string GetInitials(string name)
+        {
+            var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length >= 2)
+                return $"{char.ToUpper(parts[0][0])}{char.ToUpper(parts[^1][0])}";
+            return name.Length >= 2 ? name.Substring(0, 2).ToUpper() : name.ToUpper();
+        }
+
+        public string Initials => GetInitials(Name);
         public Employee ToEntity() => new Employee
         {
             UserName = this.Email,
             Email = this.Email,
             Name = this.Name,
-            Initials = this.Initials,
+            Initials = string.IsNullOrWhiteSpace(this.Initials)
+            ? GetInitials(this.Name)
+            : this.Initials.Trim().ToUpper(),
             TaxId = this.TaxId,
             Department = string.IsNullOrWhiteSpace(this.Department) ? "Unassigned" : this.Department,
             PhoneNumber = this.PhoneNumber,
@@ -35,6 +47,11 @@ namespace PDMS.DTO
             Status = EmployeeStatus.Active
         };
     }
+
+    public record LoginRequestDTO(
+    string Email,
+    string Pwd);
+
     public record UpdateEmployeeDTO
         (string Name, string? PhoneNumber, string Department, bool EnableNotifications)
     {

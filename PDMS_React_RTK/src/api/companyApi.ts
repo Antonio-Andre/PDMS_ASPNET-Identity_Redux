@@ -5,7 +5,7 @@ import type {
   UpdateCompanyPayload,
 } from "../types";
 
-const baseUrl = `${import.meta.env.VITE_DOTNET_URL}/api/companies`;
+const baseUrl = `${import.meta.env.VITE_DOTNET_URL}/companies`;
 
 export type { CreateCompanyPayload, UpdateCompanyPayload };
 
