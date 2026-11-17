@@ -12,7 +12,7 @@ using PDMS.Data;
 namespace PDMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261019165150_InitialCreate")]
+    [Migration("20261117180648_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace PDMS.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("identity")
-                .HasAnnotation("ProductVersion", "10.0.11")
+                .HasAnnotation("ProductVersion", "10.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

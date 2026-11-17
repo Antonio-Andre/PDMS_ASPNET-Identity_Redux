@@ -25,9 +25,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("ReactPolicy", policy =>
     {
         policy.WithOrigins("" +
-            "http://localhost:5173",
-            "http://localhost:3000", /*Frontend uri:port + docker:port*/
-            "https://pdms-frontend-jyba.onrender.com")
+            "http://localhost:5173", /*Frontend uri:port*/
+            "http://localhost:3000", /*Docker uri:port*/
+            "https://pdms-frontend-jyba.onrender.com") //Render
               .AllowAnyHeader()                     
               .AllowAnyMethod()                    
               .AllowCredentials();                  

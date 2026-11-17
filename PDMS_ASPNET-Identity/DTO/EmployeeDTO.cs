@@ -15,7 +15,7 @@ namespace PDMS.DTO
     (
         string Name,
         string Email,
-        string Initials,
+
         string PhoneNumber,
         string TaxId,
         string Password,
