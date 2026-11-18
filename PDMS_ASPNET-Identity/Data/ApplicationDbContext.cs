@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 using PDMS.Models;
+using System.Reflection.Emit;
 
 namespace PDMS.Data;
 
 
-public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int>, int>
+public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int>, int>, IDataProtectionKeyContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options){}
@@ -21,6 +22,7 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Company> Companies { get; set; }
     public DbSet<BusinessGroup> BusinessGroups { get; set; }
+    public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
