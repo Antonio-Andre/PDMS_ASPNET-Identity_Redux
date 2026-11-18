@@ -88,7 +88,22 @@ app.MapGet("users/me", async (ClaimsPrincipal claims, ApplicationDbContext conte
 
 }).RequireAuthorization();
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+
+{
+
+    app.UseDeveloperExceptionPage();
+
+}
+
+else
+
+{
+    app.UseHsts();
+    app.UseHttpsRedirection();
+
+}
+
 
 app.UseCors("ReactPolicy");
 
