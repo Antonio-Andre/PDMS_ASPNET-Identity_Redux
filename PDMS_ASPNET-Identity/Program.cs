@@ -101,6 +101,7 @@ app.RegisterCompanyEndpoints();
 app.RegisterVanEndpoints();
 app.RegisterShipmentEndpoints();
 app.RegisterStockEndpoints();
+app.MapFallbackToFile("index.html");
 
 
 
