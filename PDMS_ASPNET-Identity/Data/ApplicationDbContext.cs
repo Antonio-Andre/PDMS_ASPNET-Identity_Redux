@@ -14,9 +14,10 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
 
     public DbSet<Stock> Stock { get; set; }
     public DbSet<Van> Vans { get; set; }
-    public DbSet<Shipment> Deliveries { get; set; }
+    public DbSet<Shipment> Shipments { get; set; }
     public DbSet<ShipmentItem> ShipmentItems { get; set; }
     public DbSet<ReturnedItem> ReturnedItems { get; set; }
+
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Company> Companies { get; set; }
     public DbSet<BusinessGroup> BusinessGroups { get; set; }
@@ -46,11 +47,22 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
             entity.HasIndex(s => s.RegisterNumber).IsUnique(); 
         });
 
-        builder.Entity<ShipmentItem>()
-            .HasOne<Shipment>()         
-            .WithMany(s => s.Items)       
-            .HasForeignKey(i => i.ShipmentId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.Entity<ShipmentItem>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+            entity.HasOne<Shipment>()
+                  .WithMany(s => s.Items)
+                  .HasForeignKey(i => i.ShipmentId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        builder.Entity<ReturnedItem>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+        });
 
         builder.Entity<Employee>(entity =>
         {

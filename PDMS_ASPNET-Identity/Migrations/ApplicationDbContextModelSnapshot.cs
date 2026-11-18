@@ -414,7 +414,7 @@ namespace PDMS.Migrations
                     b.HasIndex("RegisterNumber")
                         .IsUnique();
 
-                    b.ToTable("Deliveries", "identity");
+                    b.ToTable("Shipments", "identity");
                 });
 
             modelBuilder.Entity("PDMS.Models.ShipmentItem", b =>

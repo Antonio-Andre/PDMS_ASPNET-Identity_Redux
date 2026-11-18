@@ -12,7 +12,7 @@ namespace PDMS.Services
 
         public async Task<List<ResponseShipmentDTO>> GetAllShipmentsAsync()
         {
-            var shipments = await _context.Deliveries
+            var shipments = await _context.Shipments
                 .Include(s => s.Items)
                 .Include(s => s.ReturnedItems)
                 .ToListAsync();
@@ -22,7 +22,7 @@ namespace PDMS.Services
 
         public async Task<ResponseShipmentDTO?> GetShipmentByRegNumberAsync(string regNumber)
         {
-            var shipment = await _context.Deliveries
+            var shipment = await _context.Shipments
                 .Include(s => s.Items)
                 .Include(s => s.ReturnedItems)
                 .FirstOrDefaultAsync(s => s.RegisterNumber == regNumber);
@@ -34,7 +34,7 @@ namespace PDMS.Services
 
         public async Task<List<ShipmentItemDTO>?> GetAllItemsAsync(string regNumber)
         {
-            var shipment = await _context.Deliveries
+            var shipment = await _context.Shipments
                 .Include(s => s.Items)
                 .FirstOrDefaultAsync(s => s.RegisterNumber == regNumber);
 
@@ -64,7 +64,7 @@ namespace PDMS.Services
                     RegisterDate = DateTime.UtcNow
                 };
 
-                _context.Deliveries.Add(shipment);
+                _context.Shipments.Add(shipment);
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
 
@@ -120,7 +120,7 @@ namespace PDMS.Services
 
         public async Task<bool> ConfirmDeliveryAsync(int id)
         {
-            var shipment = await _context.Deliveries.FindAsync(id);
+            var shipment = await _context.Shipments.FindAsync(id);
             if (shipment == null) return false;
 
             shipment.Status = DeliveryStatus.Delivered;
@@ -132,10 +132,10 @@ namespace PDMS.Services
 
         public async Task<bool> DeleteShipmentAsync(int id)
         {
-            var shipment = await _context.Deliveries.FindAsync(id);
+            var shipment = await _context.Shipments.FindAsync(id);
             if (shipment is null) return false;
 
-            _context.Deliveries.Remove(shipment);
+            _context.Shipments.Remove(shipment);
             await _context.SaveChangesAsync();
             return true;
         }

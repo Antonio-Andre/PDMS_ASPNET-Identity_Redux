@@ -195,7 +195,7 @@ namespace PDMS.Data
         }
         private static async Task SeedShipmentsAsync(ApplicationDbContext context, UserManager<Employee> userManager)
         {
-            if (await context.Deliveries.AnyAsync()) return;
+            if (await context.Shipments.AnyAsync()) return;
 
             var driver = await userManager.FindByEmailAsync("driver@gdpa.pt");
             var firstVan = await context.Vans.FirstOrDefaultAsync();
@@ -445,7 +445,7 @@ namespace PDMS.Data
                 }
             };
 
-            await context.Deliveries.AddRangeAsync(shipments);
+            await context.Shipments.AddRangeAsync(shipments);
             await context.SaveChangesAsync();
         }
     }
