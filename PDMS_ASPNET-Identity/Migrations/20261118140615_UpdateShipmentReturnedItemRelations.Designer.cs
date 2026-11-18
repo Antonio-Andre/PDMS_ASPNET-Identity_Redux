@@ -12,8 +12,8 @@ using PDMS.Data;
 namespace PDMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261117180648_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20261118140615_UpdateShipmentReturnedItemRelations")]
+    partial class UpdateShipmentReturnedItemRelations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,25 @@ namespace PDMS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BusinessGroups", "identity");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FriendlyName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Xml")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DataProtectionKeys", "identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -417,7 +436,7 @@ namespace PDMS.Migrations
                     b.HasIndex("RegisterNumber")
                         .IsUnique();
 
-                    b.ToTable("Deliveries", "identity");
+                    b.ToTable("Shipments", "identity");
                 });
 
             modelBuilder.Entity("PDMS.Models.ShipmentItem", b =>
@@ -592,20 +611,24 @@ namespace PDMS.Migrations
 
             modelBuilder.Entity("PDMS.Models.ReturnedItem", b =>
                 {
-                    b.HasOne("PDMS.Models.Shipment", null)
+                    b.HasOne("PDMS.Models.Shipment", "Shipment")
                         .WithMany("ReturnedItems")
                         .HasForeignKey("ShipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Shipment");
                 });
 
             modelBuilder.Entity("PDMS.Models.ShipmentItem", b =>
                 {
-                    b.HasOne("PDMS.Models.Shipment", null)
+                    b.HasOne("PDMS.Models.Shipment", "Shipment")
                         .WithMany("Items")
                         .HasForeignKey("ShipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Shipment");
                 });
 
             modelBuilder.Entity("BusinessGroup", b =>

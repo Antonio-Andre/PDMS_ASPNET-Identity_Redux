@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace PDMS.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class UpdateShipmentReturnedItemRelations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -81,7 +81,22 @@ namespace PDMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Deliveries",
+                name: "DataProtectionKeys",
+                schema: "identity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FriendlyName = table.Column<string>(type: "text", nullable: true),
+                    Xml = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DataProtectionKeys", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Shipments",
                 schema: "identity",
                 columns: table => new
                 {
@@ -100,7 +115,7 @@ namespace PDMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Deliveries", x => x.Id);
+                    table.PrimaryKey("PK_Shipments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -305,10 +320,10 @@ namespace PDMS.Migrations
                 {
                     table.PrimaryKey("PK_ReturnedItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ReturnedItems_Deliveries_ShipmentId",
+                        name: "FK_ReturnedItems_Shipments_ShipmentId",
                         column: x => x.ShipmentId,
                         principalSchema: "identity",
-                        principalTable: "Deliveries",
+                        principalTable: "Shipments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -320,22 +335,22 @@ namespace PDMS.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ShipmentId = table.Column<int>(type: "integer", nullable: false),
                     BatchNumber = table.Column<string>(type: "text", nullable: false),
                     Product = table.Column<int>(type: "integer", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     QuantityDelivered = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    ShipmentId = table.Column<int>(type: "integer", nullable: false),
                     ItemWeightKg = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ShipmentItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ShipmentItems_Deliveries_ShipmentId",
+                        name: "FK_ShipmentItems_Shipments_ShipmentId",
                         column: x => x.ShipmentId,
                         principalSchema: "identity",
-                        principalTable: "Deliveries",
+                        principalTable: "Shipments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -405,13 +420,6 @@ namespace PDMS.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Deliveries_RegisterNumber",
-                schema: "identity",
-                table: "Deliveries",
-                column: "RegisterNumber",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ReturnedItems_ShipmentId",
                 schema: "identity",
                 table: "ReturnedItems",
@@ -422,6 +430,13 @@ namespace PDMS.Migrations
                 schema: "identity",
                 table: "ShipmentItems",
                 column: "ShipmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shipments_RegisterNumber",
+                schema: "identity",
+                table: "Shipments",
+                column: "RegisterNumber",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vans_LicensePlate",
@@ -459,6 +474,10 @@ namespace PDMS.Migrations
                 schema: "identity");
 
             migrationBuilder.DropTable(
+                name: "DataProtectionKeys",
+                schema: "identity");
+
+            migrationBuilder.DropTable(
                 name: "ReturnedItems",
                 schema: "identity");
 
@@ -487,7 +506,7 @@ namespace PDMS.Migrations
                 schema: "identity");
 
             migrationBuilder.DropTable(
-                name: "Deliveries",
+                name: "Shipments",
                 schema: "identity");
         }
     }

@@ -608,20 +608,24 @@ namespace PDMS.Migrations
 
             modelBuilder.Entity("PDMS.Models.ReturnedItem", b =>
                 {
-                    b.HasOne("PDMS.Models.Shipment", null)
+                    b.HasOne("PDMS.Models.Shipment", "Shipment")
                         .WithMany("ReturnedItems")
                         .HasForeignKey("ShipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Shipment");
                 });
 
             modelBuilder.Entity("PDMS.Models.ShipmentItem", b =>
                 {
-                    b.HasOne("PDMS.Models.Shipment", null)
+                    b.HasOne("PDMS.Models.Shipment", "Shipment")
                         .WithMany("Items")
                         .HasForeignKey("ShipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Shipment");
                 });
 
             modelBuilder.Entity("BusinessGroup", b =>

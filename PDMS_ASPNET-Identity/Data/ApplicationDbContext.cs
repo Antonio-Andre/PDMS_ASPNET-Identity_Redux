@@ -46,24 +46,34 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
 
         builder.Entity<Shipment>(entity =>
         {
-            entity.HasIndex(s => s.RegisterNumber).IsUnique(); 
+            entity.HasIndex(s => s.RegisterNumber).IsUnique();
+
+            entity.HasMany(s => s.Items)
+              .WithOne(i => i.Shipment)
+              .HasForeignKey(i => i.ShipmentId)
+              .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(s => s.ReturnedItems)
+                  .WithOne(r => r.Shipment)
+                  .HasForeignKey(r => r.ShipmentId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
 
         builder.Entity<ShipmentItem>(entity =>
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
-            entity.HasOne<Shipment>()
-                  .WithMany(s => s.Items)
-                  .HasForeignKey(i => i.ShipmentId)
-                  .OnDelete(DeleteBehavior.Cascade);
         });
 
         builder.Entity<ReturnedItem>(entity =>
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+            entity.HasOne(r => r.Shipment)
+                  .WithMany(s => s.ReturnedItems)
+                  .HasForeignKey(r => r.ShipmentId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
 
         builder.Entity<Employee>(entity =>

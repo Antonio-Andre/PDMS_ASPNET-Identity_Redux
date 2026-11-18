@@ -1,10 +1,17 @@
-﻿namespace PDMS.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace PDMS.Models
 {
     public class ReturnedItem
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
         public int ShipmentItemId { get; set; }
+
+        [ForeignKey("ShipmentId")]
+        public Shipment? Shipment { get; set; }
         public string BatchNumber { get; set; } = string.Empty;
         public decimal QuantityReturned { get; set; }
         public string? RejectionReason { get; set; }
