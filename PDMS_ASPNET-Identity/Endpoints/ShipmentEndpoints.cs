@@ -15,8 +15,9 @@ namespace PDMS.Endpoints
             shipments.MapGet("/", GetAllShipments);
             shipments.MapGet("/{regN}", GetShipmentByRegNumber);
             shipments.MapGet("/{regN}/items", GetAllItemsOfDelivery);
-            shipments.MapPost("/", CreateShipment).RequireAuthorization(policy => policy.RequireRole("Admin"));
-            shipments.MapPut("/{id:int}", ConfirmShipment).RequireAuthorization(policy => policy.RequireRole("Admin","Driver"));
+            shipments.MapPost("/", CreateShipment)
+                .RequireAuthorization(policy => policy.RequireRole(nameof(JobTitle.InventoryManager)));
+            shipments.MapPut("/{id:int}", ConfirmShipment).RequireAuthorization(p => p.RequireRole(nameof(JobTitle.DockManager)));
         }
 
         public static async Task<IResult> GetAllShipments([FromServices] ShipmentService shipmentService)

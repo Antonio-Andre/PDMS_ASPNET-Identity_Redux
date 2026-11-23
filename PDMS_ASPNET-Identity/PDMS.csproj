@@ -9,14 +9,14 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="10.0.15" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.11" />
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.15" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.15" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.15" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.15">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.OpenApi" Version="2.8.0" />
+		<PackageReference Include="Microsoft.OpenApi" Version="2.13.0" />
 		<PackageReference Include="MinimalEndpoints.Swashbuckle.AspNetCore" Version="1.2.0" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
 		<PackageReference Include="Scalar.AspNetCore" Version="2.16.19" />

@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import type { PayloadAction, CaseReducer } from "@reduxjs/toolkit";
 import type { Employee } from "../../types";
-//import * as MockApi from "../../apiMock/authMockApi";
 import * as Api from "../../api/authApi";
 
 interface AuthState {
@@ -28,7 +27,7 @@ const parsedUser = getSavedUser();
 
 const initialState: AuthState = {
   user: parsedUser,
-  token: parsedUser ? "mock-jwt-token-xyz-123" : null,
+  token: null,
   isAuthenticated: !!parsedUser,
   loading: false,
   error: null,
@@ -37,10 +36,31 @@ const initialState: AuthState = {
 export const login = createAsyncThunk(
   "auth/loginUser",
   async (payload: { email: string; pwd: string }) => {
-    //return await MockApi.login(payload);
-    return await Api.login(payload);
+    await Api.login(payload);
+    return await Api.getCurrentUser();
   },
 );
+
+export const fetchCurrentUser = createAsyncThunk(
+  "auth/fetchCurrentUser",
+  async () => {
+    return await Api.getCurrentUser();
+  },
+);
+
+const applyAuthenticatedUser: CaseReducer<
+  AuthState,
+  PayloadAction<Employee>
+> = (state, action) => {
+  state.loading = false;
+  state.error = null;
+  state.isAuthenticated = true;
+  state.user = action.payload;
+  state.token = null;
+  if (typeof localStorage !== "undefined") {
+    localStorage.setItem("user", JSON.stringify(action.payload));
+  }
+};
 
 export const authSlice = createSlice({
   name: "auth",
@@ -58,22 +78,31 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(login.fulfilled, (state, action: PayloadAction<Employee>) => {
-        state.loading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload;
-        state.token = "mock-jwt-token-xyz-123";
-        if (typeof localStorage !== "undefined") {
-          localStorage.setItem("user", JSON.stringify(action.payload));
-        }
-      })
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
+      .addCase(login.fulfilled, applyAuthenticatedUser)
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error =
+          (action.payload as string) ||
+          action.error.message ||
+          "Falha ao iniciar sessão";
+      })
+      .addCase(fetchCurrentUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCurrentUser.fulfilled, applyAuthenticatedUser)
+      .addCase(fetchCurrentUser.rejected, (state) => {
+        state.loading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+        state.token = null;
+        if (typeof localStorage !== "undefined") {
+          localStorage.removeItem("user");
+        }
       });
   },
 });

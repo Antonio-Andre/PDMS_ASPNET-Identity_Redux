@@ -14,7 +14,7 @@ export const HomePage = ({ batches }: Props) => {
       title: "Remessas & Encomendas",
       description:
         "Gerir e monitorizar o estado de distribuição e os itens de cada remessa.",
-      path: "/shipments", // Se mantiveres a tabela principal na raiz, ou o caminho correto dela
+      path: "/shipments",
       icon: "📦",
       color: "#007bff",
     },
@@ -169,7 +169,7 @@ export const HomePage = ({ batches }: Props) => {
           }}
         >
           <h2 style={{ margin: 0, color: "#0f172a", fontSize: "1.5rem" }}>
-            📦 Registo de Stock (MockDB)
+            📦 Registo de Stock
           </h2>
         </div>
 

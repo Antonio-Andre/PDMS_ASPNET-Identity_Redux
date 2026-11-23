@@ -8,6 +8,8 @@ using PDMS.Models;
 using PDMS.Services;
 using Scalar.AspNetCore;
 using System.Security.Claims;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +18,10 @@ builder.Services.AddOpenApi("v1");
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
-        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         options.JsonSerializerOptions.WriteIndented = true;
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
 builder.Services.AddDataProtection()
@@ -38,18 +41,27 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
-    .AddIdentityCookies();
-builder.Services.AddAuthorization();
-
-builder.Services.AddIdentityCore<Employee>()
-    .AddRoles<IdentityRole<int>>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddApiEndpoints();
-
-
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddIdentity<Employee, IdentityRole<int>>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddTransient<IEmailSender<Employee>, NoOpEmailSender<Employee>>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromHours(2);
+    options.SlidingExpiration = true;
+});
+
+builder.Services.AddAuthorization();
+
+
+
+
+
 
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<CompanyService>();
@@ -57,6 +69,9 @@ builder.Services.AddScoped<VanService>();
 builder.Services.AddScoped<ShipmentService>();
 //builder.Services.AddScoped<ShipmentItemService>();
 builder.Services.AddScoped<StockService>();
+
+
+
 
 var app = builder.Build();
 
@@ -77,16 +92,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 
-app.MapGet("users/me", async (ClaimsPrincipal claims, ApplicationDbContext context) => {
-    string? userId = claims.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-    if (string.IsNullOrEmpty(userId)) return Results.Unauthorized();
-
-    var employee = await context.Employees.FindAsync(int.Parse(userId));
-
-    return employee is not null ? Results.Ok(employee) : Results.NotFound();
-
-}).RequireAuthorization();
 
 if (app.Environment.IsDevelopment())
 
@@ -110,6 +116,17 @@ app.UseCors("ReactPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+app.MapGet("users/me", async (ClaimsPrincipal claims, ApplicationDbContext context) => {
+    string? userId = claims.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+    if (string.IsNullOrEmpty(userId)) return Results.Unauthorized();
+
+    var employee = await context.Employees.FindAsync(int.Parse(userId));
+
+    return employee is not null ? Results.Ok(employee) : Results.NotFound();
+
+}).RequireAuthorization();
 app.MapHomeEndpoint();
 app.RegisterEmployeeEndpoints();
 app.RegisterCompanyEndpoints();

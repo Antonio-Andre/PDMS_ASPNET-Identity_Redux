@@ -13,9 +13,11 @@ namespace PDMS.Endpoints
 
             vans.MapGet("/", GetAllVans);
             vans.MapGet("/{id:int}", GetVanById);
-            vans.MapPost("/", CreateVan).RequireAuthorization(policy => policy.RequireRole("Admin"));
+            vans.MapPost("/", CreateVan)
+                .RequireAuthorization(p => p.RequireRole(nameof(JobTitle.Admin)));
             vans.MapPut("/{id:int}", UpdateVan);
-            vans.MapDelete("/{id:int}", DeleteVan).RequireAuthorization(policy => policy.RequireRole("Admin"));
+            vans.MapDelete("/{id:int}", DeleteVan).RequireAuthorization(policy => policy.RequireRole("Admin"))
+                .RequireAuthorization(p => p.RequireRole(nameof(JobTitle.Admin))); ;
         }
 
         public static async Task<IResult> GetAllVans(VanService vanService)

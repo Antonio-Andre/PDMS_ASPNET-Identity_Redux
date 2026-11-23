@@ -14,12 +14,23 @@ export async function login({
   return fetch(`${baseUrl}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    credentials: "include",
     body: JSON.stringify({ email, pwd }),
   })
     .then(handleResponse)
-    .then((employee: Employee) => {
-      return employee;
-    })
+    .catch((error) => {
+      handleError(error);
+      throw error;
+    });
+}
+
+export async function getCurrentUser(): Promise<Employee> {
+  return fetch(`${baseUrl}/auth/me`, {
+    method: "GET",
+    credentials: "include",
+  })
+    .then(handleResponse)
+    .then((employee: Employee) => employee)
     .catch((error) => {
       handleError(error);
       throw error;

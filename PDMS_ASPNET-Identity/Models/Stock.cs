@@ -12,7 +12,7 @@ namespace PDMS.Models
 
         public ProductType Product { get; set; }
 
-        [Range(typeof(decimal), "0.01", "10.0")]
+        [Range(typeof(decimal), "0.01", "9999.99")]
         public decimal Quantity { get; set; }
 
         public string Source { get; set; } = string.Empty;

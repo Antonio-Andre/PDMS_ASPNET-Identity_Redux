@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PDMS.DTO;
 using PDMS.Services;
+using System.Security.Claims;
 
 
 namespace PDMS.Endpoints
@@ -11,6 +12,8 @@ namespace PDMS.Endpoints
         {
             app.MapPost("/api/register", RegisterEmployee);
             app.MapPost("/api/login", Login);
+            app.MapGet("/api/auth/me", GetCurrentUser)
+    .RequireAuthorization();
             
             var employees = app.MapGroup("/api/employees");
 
@@ -53,16 +56,29 @@ namespace PDMS.Endpoints
 
         public static async Task<IResult> Login(LoginRequestDTO request, [FromServices] EmployeeService employeeService)
         {
-            var employee = await employeeService.LoginAsync(request);
-
-            if (employee == null)
-            {
+            var result = await employeeService.LoginAsync(request);
+            
+            if (!result.Succeeded)
                 return Results.Unauthorized();
-            }
 
-            return Results.Ok(employee);
+            return Results.Ok(new { Message = "Logged in successfully!" }); 
         }
 
+public static async Task<IResult> GetCurrentUser(
+    ClaimsPrincipal principal,
+    [FromServices] EmployeeService employeeService,
+    [FromServices] ILogger<EmployeeService> logger)
+{
+    var currentEmployee = await employeeService.GetCurrentEmployeeAsync(principal);
+
+    if (currentEmployee is null)
+    {
+        logger.LogDebug("Current user lookup returned null; responding with 401 Unauthorized.");
+        return Results.Unauthorized();
+    }
+
+    return Results.Ok(new EmployeeResponseDTO(currentEmployee));
+}
         public static async Task<IResult> UpdateEmployeeById(int id, UpdateEmployeeDTO request, [FromServices] EmployeeService employeeService)
         {
             var success = await employeeService.UpdateEmployeeAsync(id, request);

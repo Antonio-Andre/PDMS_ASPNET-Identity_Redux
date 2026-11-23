@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using PDMS.Data;
 using PDMS.Models;
 using PDMS.DTO;
+using System.Security.Claims;
+using System.Xml.XPath;
+
 
 namespace PDMS.Services
 {
@@ -10,11 +13,15 @@ namespace PDMS.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Employee> _userManager;
+        private readonly SignInManager<Employee> _signInManager;
+        private readonly ILogger<EmployeeService> _logger;
 
-        public EmployeeService(ApplicationDbContext context, UserManager<Employee> userManager)
+        public EmployeeService(ApplicationDbContext context, UserManager<Employee> userManager, SignInManager<Employee> signInManager, ILogger<EmployeeService> logger)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
         }
         
         public async Task<IdentityResult> RegisterEmployeeAsync(RegisterEmployeeDTO request)
@@ -23,25 +30,51 @@ namespace PDMS.Services
 
             IdentityResult identityResult = await _userManager.CreateAsync(user, request.Password);
 
-            var addToRoleResult = await _userManager.AddToRoleAsync(user, JobTitle.Operator.ToString());
-
-            if (identityResult.Succeeded)
+            if (!identityResult.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, JobTitle.Operator.ToString());
+                return identityResult;
             }
-            return identityResult;
+
+            return await _userManager.AddToRoleAsync(user, JobTitle.Operator.ToString());
         }
 
-        public async Task<Employee?> LoginAsync(LoginRequestDTO request)
+        public async Task<SignInResult> LoginAsync(LoginRequestDTO request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
-            if (user == null) return null;
+            if (user == null) return SignInResult.Failed;
+            
+            var result = await _signInManager.PasswordSignInAsync
+                (
+                    user,
+                    request.Pwd,
+                    isPersistent: true,
+                    lockoutOnFailure: false
+                );
 
-            var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Pwd);
-            if (!isPasswordValid) return null;
+            Console.WriteLine($"[LOGIN DEBUG] UserFound={user != null}, Succeeded={result.Succeeded}, LockedOut={result.IsLockedOut}, NotAllowed={result.IsNotAllowed}, TwoFactor={result.RequiresTwoFactor}");
 
-            return user;
+            return result;
+                
         }
+
+public async Task<Employee?> GetCurrentEmployeeAsync(ClaimsPrincipal principal)
+{
+    if (principal.Identity?.IsAuthenticated != true)
+    {
+        _logger.LogDebug("Principal is not authenticated when resolving current employee.");
+        return null;
+    }
+
+    var nameId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    var user = await _userManager.GetUserAsync(principal);
+
+    _logger.LogDebug(
+        "Resolved current employee. NameId={NameId}, UserFound={UserFound}",
+        nameId,
+        user is not null);
+
+    return user;
+}
 
         public async Task<List<EmployeeResponseDTO>> GetAllEmployees()
         {

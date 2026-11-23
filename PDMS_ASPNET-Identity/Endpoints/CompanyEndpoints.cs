@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PDMS.DTO;
+using PDMS.Models;
 using PDMS.Services;
 
 
@@ -13,9 +14,11 @@ namespace PDMS.Endpoints
 
             company.MapGet("/", GetAllCompanies);
             company.MapGet("/{name}", GetCompanyById);
-            company.MapPost("/", RegisterCompany);
+            company.MapPost("/", RegisterCompany)
+                .RequireAuthorization(p => p.RequireRole(nameof(JobTitle.Admin)));
             company.MapPut("/{name}", UpdateCompanyByName);
-            company.MapDelete("/{name}", DeleteCompany);
+            company.MapDelete("/{name}", DeleteCompany)
+                .RequireAuthorization(p => p.RequireRole(nameof(JobTitle.Admin))); ;
         }
 
         public static async Task<IResult> GetAllCompanies([FromServices] CompanyService companyService)

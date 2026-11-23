@@ -12,8 +12,8 @@ using PDMS.Data;
 namespace PDMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261118140615_UpdateShipmentReturnedItemRelations")]
-    partial class UpdateShipmentReturnedItemRelations
+    [Migration("20261123145640_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
