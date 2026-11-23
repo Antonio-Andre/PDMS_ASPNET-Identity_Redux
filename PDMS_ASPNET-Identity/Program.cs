@@ -34,7 +34,8 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("" +
             "http://localhost:5173", /*Frontend uri:port*/
             "http://localhost:3000", /*Docker uri:port*/
-            "https://pdms-frontend-jyba.onrender.com") //Render
+            "https://pdms-frontend-jyba.onrender.com",
+            "https://pdms-backend-pa75.onrender.com/api/employees") //Render
               .AllowAnyHeader()                     
               .AllowAnyMethod()                    
               .AllowCredentials();                  
