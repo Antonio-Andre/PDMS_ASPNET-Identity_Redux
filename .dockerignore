@@ -4,4 +4,3 @@ obj/
 .vscode/
 .git/
 .gitignore
-Dockerfile
