@@ -169,11 +169,11 @@ app.RegisterCompanyEndpoints();
 app.RegisterVanEndpoints();
 app.RegisterShipmentEndpoints();
 app.RegisterStockEndpoints();
-app.MapFallbackToFile("index.html");
-
-
 
 app.MapIdentityApi<Employee>();
+
+app.MapFallbackToFile("index.html");
+
 
 app.Run();
 

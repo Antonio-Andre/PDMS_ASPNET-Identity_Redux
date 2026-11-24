@@ -1,0 +1,34 @@
+# Stage 1: Build do frontend React (Vite)
+FROM node:20-alpine AS fe-build
+WORKDIR /fe
+
+COPY PDMS_React_RTK/package*.json ./
+RUN npm ci
+
+COPY PDMS_React_RTK/ .
+ARG VITE_DOTNET_URL=/api
+ENV VITE_DOTNET_URL=${VITE_DOTNET_URL}
+RUN npm run build
+
+# Stage 2: Build do backend ASP.NET Core
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS be-build
+WORKDIR /src
+
+COPY PDMS_ASPNET-Identity/*.csproj ./PDMS_ASPNET-Identity/
+RUN dotnet restore PDMS_ASPNET-Identity/PDMS.csproj
+
+COPY PDMS_ASPNET-Identity/ ./PDMS_ASPNET-Identity/
+RUN dotnet publish PDMS_ASPNET-Identity/PDMS.csproj -c Release -o /app/publish
+
+# Stage 3: Runtime unificado (.NET + estáticos do React em wwwroot)
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+WORKDIR /app
+
+COPY --from=be-build /app/publish .
+COPY --from=fe-build /fe/dist ./wwwroot
+
+# O Render injeta a variável PORT; garantir escuta em todas as interfaces
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
+
+ENTRYPOINT ["dotnet", "PDMS.dll"]
