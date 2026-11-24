@@ -148,7 +148,7 @@ else
 
 
 app.UseCors("ReactPolicy");
-
+app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
